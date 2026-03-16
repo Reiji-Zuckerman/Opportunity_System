@@ -1,7 +1,32 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Briefcase, Building2, Users, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Briefcase, Building2, Users, Calendar, Tag, FileText } from 'lucide-react';
 import Badge from '../components/Badge';
 import { JOBS, DEALS, DEAL_DETAILS } from '../data/dummy';
+
+const JOB_DESCRIPTION = `【業務内容】
+クライアント企業のプロジェクトにおいて、要件定義・基本設計・詳細設計・実装・テスト・運用保守まで一連の工程をご担当いただきます。チームメンバーと協力しながら、品質の高いシステム開発を推進していただくポジションです。
+
+【必須スキル】
+・該当技術領域での実務経験3年以上
+・チームでの開発経験
+・基本的なコミュニケーション能力
+・自発的に課題を発見し解決する姿勢
+
+【歓迎スキル】
+・上流工程（要件定義・基本設計）の経験
+・リーダー/サブリーダー経験
+・アジャイル開発の経験
+・関連する資格保有
+
+【働き方】
+・勤務形態: 常駐型（クライアント先）/ リモート併用可
+・契約期間: 長期（3ヶ月更新）
+・稼働: 月160〜180時間目安
+
+【その他】
+・面談回数: 1〜2回
+・就業開始: 即日〜1ヶ月以内
+・服装: ビジネスカジュアル`;
 
 export default function JobDetail() {
   const { id } = useParams();
@@ -18,8 +43,6 @@ export default function JobDetail() {
 
   const deal = DEALS.find(d => d.id === job.dealId);
   const dealDetail = DEAL_DETAILS[job.dealId];
-
-  // Find other jobs from the same deal
   const relatedJobs = JOBS.filter(j => j.dealId === job.dealId && j.id !== job.id);
 
   return (
@@ -32,13 +55,15 @@ export default function JobDetail() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-[1fr_1fr] gap-6">
-        {/* Left: Job info */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-5">
-            <Briefcase className="w-5 h-5 text-gray-500" />
-            <h2 className="text-lg font-semibold text-gray-900">求人詳細</h2>
-          </div>
+      {/* Upper: Job detail */}
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="flex items-center gap-2 mb-5">
+          <Briefcase className="w-5 h-5 text-gray-500" />
+          <h2 className="text-lg font-semibold text-gray-900">求人詳細</h2>
+        </div>
+
+        <div className="grid grid-cols-[1fr_1fr] gap-8">
+          {/* Left: basic info */}
           <div className="space-y-4 text-sm">
             <div>
               <span className="text-gray-500">求人タイトル</span>
@@ -75,75 +100,80 @@ export default function JobDetail() {
               <div className="mt-1"><Badge label={job.status} /></div>
             </div>
           </div>
+
+          {/* Right: job description */}
+          <div>
+            <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
+              <FileText className="w-3.5 h-3.5" />
+              <span>求人内容</span>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 leading-relaxed whitespace-pre-line max-h-[400px] overflow-y-auto">
+              {JOB_DESCRIPTION}
+            </div>
+          </div>
         </div>
 
-        {/* Right: Related deal and other jobs */}
-        <div className="flex flex-col gap-6">
-          {deal && dealDetail && (
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">紐づく商談</h2>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <span className="text-gray-500">商談名</span>
-                  <p className="mt-0.5">
-                    <Link to={`/deals/${deal.id}`} className="font-medium text-blue-600 hover:underline">
-                      {deal.name}
-                    </Link>
-                  </p>
-                </div>
-                <div>
-                  <span className="text-gray-500">企業名</span>
-                  <p className="mt-0.5">
-                    <Link to={`/companies/${deal.companyId}`} className="font-medium text-blue-600 hover:underline">
-                      {dealDetail.basicInfo.company}
-                    </Link>
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-500">事業部</span>
-                  <Badge label={dealDetail.basicInfo.businessDept} />
-                </div>
-                <div>
-                  <span className="text-gray-500">先方部署</span>
-                  <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.dept}</p>
-                </div>
-                <div>
-                  <span className="text-gray-500">先方担当者</span>
-                  <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.clientPerson}</p>
-                </div>
-                <div>
-                  <span className="text-gray-500">商談経路</span>
-                  <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.channel}</p>
-                </div>
-              </div>
+        {/* Related jobs from same deal */}
+        {relatedJobs.length > 0 && (
+          <div className="mt-6 pt-5 border-t border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">同じ商談の他の求人</h3>
+            <div className="flex flex-wrap gap-2">
+              {relatedJobs.map((rj) => (
+                <Link
+                  key={rj.id}
+                  to={`/jobs/${rj.id}`}
+                  className="inline-flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+                >
+                  <span className="font-medium text-gray-900">{rj.title}</span>
+                  <span className="text-xs bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded-full">{rj.count}名</span>
+                  <Badge label={rj.dept} />
+                </Link>
+              ))}
             </div>
-          )}
-
-          {relatedJobs.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">同じ商談の他の求人</h2>
-              <div className="space-y-3">
-                {relatedJobs.map((rj) => (
-                  <Link
-                    key={rj.id}
-                    to={`/jobs/${rj.id}`}
-                    className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-900">{rj.title}</span>
-                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{rj.count}名</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Badge label={rj.dept} />
-                      <span>{rj.date}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Lower: Related deal */}
+      {deal && dealDetail && (
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">紐づく商談</h2>
+          <div className="grid grid-cols-3 gap-6 text-sm">
+            <div>
+              <span className="text-gray-500">商談名</span>
+              <p className="mt-0.5">
+                <Link to={`/deals/${deal.id}`} className="font-medium text-blue-600 hover:underline">
+                  {deal.name}
+                </Link>
+              </p>
+            </div>
+            <div>
+              <span className="text-gray-500">企業名</span>
+              <p className="mt-0.5">
+                <Link to={`/companies/${deal.companyId}`} className="font-medium text-blue-600 hover:underline">
+                  {dealDetail.basicInfo.company}
+                </Link>
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">事業部</span>
+              <Badge label={dealDetail.basicInfo.businessDept} />
+            </div>
+            <div>
+              <span className="text-gray-500">先方部署</span>
+              <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.dept}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">先方担当者</span>
+              <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.clientPerson}</p>
+            </div>
+            <div>
+              <span className="text-gray-500">商談経路</span>
+              <p className="font-medium text-gray-900 mt-0.5">{dealDetail.basicInfo.channel}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

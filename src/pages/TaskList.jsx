@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, Plus, Filter } from 'lucide-react';
+import { Search, Plus, Filter, ChevronDown } from 'lucide-react';
 import Badge from '../components/Badge';
 import { TASKS, MEMBERS, TASK_CATEGORIES } from '../data/dummy';
 import TaskModal from '../components/modals/TaskModal';
@@ -25,6 +24,20 @@ function getMonthRange() {
   return { start, end };
 }
 
+const STATUS_OPTIONS = [
+  { value: 'pending', label: '未実施' },
+  { value: 'in_progress', label: '実施中' },
+  { value: 'done', label: '完了' },
+];
+
+const STATUS_COLORS = {
+  pending: 'bg-gray-100 text-gray-700',
+  in_progress: 'bg-blue-100 text-blue-700',
+  done: 'bg-green-100 text-green-700',
+  today: 'bg-amber-100 text-amber-700',
+  overdue: 'bg-red-100 text-red-700',
+};
+
 export default function TaskList() {
   const [search, setSearch] = useState('');
   const [memberFilter, setMemberFilter] = useState('');
@@ -35,13 +48,24 @@ export default function TaskList() {
   const [typeFilter, setTypeFilter] = useState('すべて');
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
-  const navigate = useNavigate();
+  const [taskStatuses, setTaskStatuses] = useState(() => {
+    const map = {};
+    TASKS.forEach(t => { map[t.id] = t.status; });
+    return map;
+  });
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const handleStatusChange = (taskId, newStatus) => {
+    setTaskStatuses(prev => ({ ...prev, [taskId]: newStatus }));
+    setOpenDropdown(null);
+  };
 
   const filtered = TASKS.filter((task) => {
+    const currentStatus = taskStatuses[task.id];
     if (search && !task.company.toLowerCase().includes(search.toLowerCase())) return false;
     if (memberFilter && task.assignee !== memberFilter) return false;
     if (categoryFilter && task.category !== categoryFilter) return false;
-    if (statusFilter && task.status !== statusFilter) return false;
+    if (statusFilter && currentStatus !== statusFilter) return false;
     if (companyFilter && !task.company.toLowerCase().includes(companyFilter.toLowerCase())) return false;
     if (typeFilter !== 'すべて' && task.type !== typeFilter) return false;
 
@@ -60,6 +84,14 @@ export default function TaskList() {
   });
 
   const typeOptions = ['すべて', 'Task', 'Activity'];
+
+  const getStatusLabel = (status) => {
+    const opt = STATUS_OPTIONS.find(o => o.value === status);
+    if (opt) return opt.label;
+    if (status === 'today') return '本日';
+    if (status === 'overdue') return '期限切れ';
+    return status;
+  };
 
   return (
     <div className="space-y-6">
@@ -126,8 +158,9 @@ export default function TaskList() {
         >
           <option value="">ステータス</option>
           <option value="pending">未実施</option>
-          <option value="today">本日</option>
+          <option value="in_progress">実施中</option>
           <option value="done">完了</option>
+          <option value="today">本日</option>
           <option value="overdue">期限切れ</option>
         </select>
         <select
@@ -179,27 +212,62 @@ export default function TaskList() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((task) => (
-              <tr
-                key={task.id}
-                onClick={() => navigate(`/tasks/${task.id}`)}
-                className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-              >
-                <td className="px-5 py-3.5">
-                  <Badge label={task.type} />
-                </td>
-                <td className="px-5 py-3.5 font-medium text-gray-900">{task.name}</td>
-                <td className="px-5 py-3.5 text-gray-600">{task.company}</td>
-                <td className="px-5 py-3.5">
-                  <Badge label={task.category} />
-                </td>
-                <td className="px-5 py-3.5 text-gray-600">{task.due}</td>
-                <td className="px-5 py-3.5 text-gray-600">{task.assignee}</td>
-                <td className="px-5 py-3.5">
-                  <Badge label={task.status} />
-                </td>
-              </tr>
-            ))}
+            {filtered.map((task) => {
+              const currentStatus = taskStatuses[task.id];
+              return (
+                <tr
+                  key={task.id}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-5 py-3.5">
+                    <Badge label={task.type} />
+                  </td>
+                  <td className="px-5 py-3.5 font-medium text-gray-900">{task.name}</td>
+                  <td className="px-5 py-3.5 text-gray-600">{task.company}</td>
+                  <td className="px-5 py-3.5">
+                    <Badge label={task.category} />
+                  </td>
+                  <td className="px-5 py-3.5 text-gray-600">{task.due}</td>
+                  <td className="px-5 py-3.5 text-gray-600">{task.assignee}</td>
+                  <td className="px-5 py-3.5">
+                    <div className="relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenDropdown(openDropdown === task.id ? null : task.id);
+                        }}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${STATUS_COLORS[currentStatus] || 'bg-gray-100 text-gray-700'}`}
+                      >
+                        {getStatusLabel(currentStatus)}
+                        <ChevronDown className="w-3 h-3" />
+                      </button>
+                      {openDropdown === task.id && (
+                        <>
+                          <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />
+                          <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[120px]">
+                            {STATUS_OPTIONS.map((opt) => (
+                              <button
+                                key={opt.value}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStatusChange(task.id, opt.value);
+                                }}
+                                className={`w-full text-left px-3 py-2 text-xs hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg ${
+                                  currentStatus === opt.value ? 'font-bold bg-gray-50' : ''
+                                }`}
+                              >
+                                <span className={`inline-block w-2 h-2 rounded-full mr-2 ${STATUS_COLORS[opt.value]?.split(' ')[0] || 'bg-gray-200'}`} />
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
             {filtered.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-5 py-8 text-center text-gray-400">

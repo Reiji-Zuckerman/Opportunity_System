@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare } from 'lucide-react';
+import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react';
 import Badge from '../components/Badge';
 import DealTree from '../components/DealTree';
 import { DEALS, DEAL_DETAILS, TASKS } from '../data/dummy';
@@ -18,6 +18,7 @@ export default function DealDetail() {
   const [showBranch, setShowBranch] = useState(false);
   const [showTask, setShowTask] = useState(false);
   const [showJob, setShowJob] = useState(false);
+  const [expandedMeetings, setExpandedMeetings] = useState({});
 
   if (!detail) {
     return (
@@ -31,6 +32,10 @@ export default function DealDetail() {
   const info = detail.basicInfo;
   const dealName = dealSummary?.name || detail.tree.current;
   const sortedMeetings = [...detail.meetings].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const toggleMeeting = (idx) => {
+    setExpandedMeetings(prev => ({ ...prev, [idx]: !prev[idx] }));
+  };
 
   return (
     <div>
@@ -144,25 +149,41 @@ export default function DealDetail() {
                 {/* Vertical timeline line */}
                 <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gray-200" />
 
-                <div className="space-y-6">
-                  {sortedMeetings.map((meeting, idx) => (
-                    <div key={idx} className="relative pl-8">
-                      {/* Timeline dot */}
-                      <div className="absolute left-0 top-1 w-[15px] h-[15px] rounded-full bg-blue-600 border-2 border-white shadow-sm" />
+                <div className="space-y-4">
+                  {sortedMeetings.map((meeting, idx) => {
+                    const isExpanded = expandedMeetings[idx] !== false;
+                    return (
+                      <div key={idx} className="relative pl-8">
+                        {/* Timeline dot */}
+                        <div className="absolute left-0 top-1 w-[15px] h-[15px] rounded-full bg-blue-600 border-2 border-white shadow-sm" />
 
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <Badge label={meeting.date} />
-                          <span className="text-sm font-medium text-gray-900">第{meeting.round}回</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-500">
-                          <Users className="w-3 h-3" />
-                          <span>{meeting.attendees}</span>
-                        </div>
-                        <p className="text-sm text-gray-700 leading-relaxed">{meeting.content}</p>
+                        <button
+                          onClick={() => toggleMeeting(idx)}
+                          className="w-full text-left group"
+                        >
+                          <div className="flex items-center gap-3 flex-wrap">
+                            {isExpanded ? (
+                              <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                            ) : (
+                              <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+                            )}
+                            <Badge label={meeting.date} />
+                            <span className="text-sm font-medium text-gray-900">第{meeting.round}回</span>
+                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                              <Users className="w-3 h-3" />
+                              <span>{meeting.attendees}</span>
+                            </div>
+                          </div>
+                        </button>
+
+                        {isExpanded && (
+                          <div className="mt-2 ml-6">
+                            <p className="text-sm text-gray-700 leading-relaxed">{meeting.content}</p>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -170,9 +191,18 @@ export default function DealDetail() {
 
           {/* 紐づくTask */}
           <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <CheckSquare className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">紐づくTask</h2>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <CheckSquare className="w-4 h-4 text-gray-500" />
+                <h2 className="font-semibold text-gray-900">紐づくTask</h2>
+              </div>
+              <Link
+                to="/tasks"
+                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Task一覧へ
+                <ExternalLink className="w-3 h-3" />
+              </Link>
             </div>
             {detail.tasks.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">タスクがありません</p>
@@ -192,10 +222,12 @@ export default function DealDetail() {
                     return (
                       <tr
                         key={idx}
-                        onClick={() => globalTask && (window.location.hash = `/tasks/${globalTask.id}`)}
-                        className={`border-b border-gray-50 ${globalTask ? 'cursor-pointer hover:bg-gray-50' : ''}`}
+                        className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer"
+                        onClick={() => {
+                          window.location.hash = '/tasks';
+                        }}
                       >
-                        <td className="py-2.5 text-gray-900">{task.name}</td>
+                        <td className="py-2.5 text-blue-600 hover:text-blue-800">{task.name}</td>
                         <td className="py-2.5 text-gray-600">{task.due}</td>
                         <td className="py-2.5 text-gray-600">{task.assignee}</td>
                         <td className="py-2.5"><Badge label={task.status} /></td>
@@ -224,7 +256,7 @@ export default function DealDetail() {
                     className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-gray-900">{job.title}</span>
+                      <span className="text-sm font-medium text-blue-600">{job.title}</span>
                       <span className="text-xs text-gray-500">{job.count}名</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
