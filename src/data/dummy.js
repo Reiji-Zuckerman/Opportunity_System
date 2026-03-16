@@ -17,6 +17,11 @@ export const COMPANIES = [
   { id: 3, name: 'ノースサンド', tier: 'Mid',        category: 'コンサル', itss: '契約中', perm: '契約中', dsl: '未接触', lastDealDate: '2024/12/10' },
   { id: 4, name: 'Sansan',       tier: 'Mid',        category: 'Web系',   itss: '商談中', perm: '未接触', dsl: '未接触', lastDealDate: '2025/3/1' },
   { id: 5, name: 'トヨタ自動車', tier: 'Enterprise', category: '一般事業', itss: '契約中', perm: '未接触', dsl: '商談中', lastDealDate: '2025/2/28' },
+  { id: 6, name: '日立製作所',     tier: 'Enterprise', category: 'SIer',    itss: '契約中', perm: '商談中', dsl: '契約中', lastDealDate: '2025/3/8'  },
+  { id: 7, name: 'リクルート',     tier: 'Enterprise', category: 'Web系',   itss: '商談中', perm: '契約中', dsl: '未接触', lastDealDate: '2025/3/5'  },
+  { id: 8, name: '楽天グループ',   tier: 'Enterprise', category: 'Web系',   itss: '契約中', perm: '商談中', dsl: '商談中', lastDealDate: '2025/3/10' },
+  { id: 9, name: 'KDDI',           tier: 'Enterprise', category: '通信',    itss: '契約中', perm: '未接触', dsl: '契約中', lastDealDate: '2025/3/3'  },
+  { id: 10, name: 'ソニーグループ', tier: 'Enterprise', category: 'メーカー', itss: '商談中', perm: '契約中', dsl: '商談中', lastDealDate: '2025/3/12' },
 ]
 
 export const COMPANY_DETAILS = {

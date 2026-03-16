@@ -44,7 +44,7 @@ export default function TaskList() {
     if (typeFilter !== 'すべて' && task.type !== typeFilter) return false;
 
     if (deadlineFilter) {
-      const taskDate = new Date(task.deadline);
+      const taskDate = new Date(task.due);
       if (deadlineFilter === '今週') {
         const { start, end } = getWeekRange();
         if (taskDate < start || taskDate > end) return false;
@@ -123,10 +123,10 @@ export default function TaskList() {
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
           <option value="">ステータス</option>
-          <option value="未実施">未実施</option>
-          <option value="実施中">実施中</option>
-          <option value="完了">完了</option>
-          <option value="期限切れ">期限切れ</option>
+          <option value="pending">未実施</option>
+          <option value="today">本日</option>
+          <option value="done">完了</option>
+          <option value="overdue">期限切れ</option>
         </select>
         <select
           value={deadlineFilter}
@@ -185,12 +185,12 @@ export default function TaskList() {
                 <td className="px-5 py-3.5">
                   <Badge label={task.type} />
                 </td>
-                <td className="px-5 py-3.5 font-medium text-gray-900">{task.content}</td>
+                <td className="px-5 py-3.5 font-medium text-gray-900">{task.name}</td>
                 <td className="px-5 py-3.5 text-gray-600">{task.company}</td>
                 <td className="px-5 py-3.5">
                   <Badge label={task.category} />
                 </td>
-                <td className="px-5 py-3.5 text-gray-600">{task.deadline}</td>
+                <td className="px-5 py-3.5 text-gray-600">{task.due}</td>
                 <td className="px-5 py-3.5 text-gray-600">{task.assignee}</td>
                 <td className="px-5 py-3.5">
                   <Badge label={task.status} />

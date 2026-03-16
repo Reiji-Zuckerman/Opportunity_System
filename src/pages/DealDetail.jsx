@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare } from 'lucide-react';
 import Badge from '../components/Badge';
+import DealTree from '../components/DealTree';
 import { DEALS, DEAL_DETAILS } from '../data/dummy';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
@@ -67,38 +68,13 @@ export default function DealDetail() {
         </div>
       </div>
 
-      {/* 商談ツリー (horizontal, full width) */}
+      {/* 商談ツリー (full width, recursive) */}
       <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
         <div className="flex items-center gap-2 mb-4">
           <GitBranch className="w-4 h-4 text-gray-500" />
           <h2 className="font-semibold text-gray-900">商談ツリー</h2>
         </div>
-        <div className="flex items-center gap-3 overflow-x-auto text-sm py-2">
-          {/* Parent */}
-          {detail.tree.parent && (
-            <>
-              <div className="shrink-0 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700">
-                {detail.tree.parent}
-              </div>
-              <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
-            </>
-          )}
-
-          {/* Current (highlighted) */}
-          <div className="shrink-0 px-4 py-2 rounded-lg border-2 border-blue-600 bg-blue-50 font-medium text-gray-900">
-            {detail.tree.current}
-          </div>
-
-          {/* Children */}
-          {detail.tree.children && detail.tree.children.map((child, idx) => (
-            <div key={idx} className="flex items-center gap-3 shrink-0">
-              <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
-              <div className="px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700">
-                {child}
-              </div>
-            </div>
-          ))}
-        </div>
+        <DealTree currentDealId={id} />
       </div>
 
       {/* Two column layout */}
