@@ -1,0 +1,215 @@
+import { useState } from 'react';
+import { Search, Plus, Filter } from 'lucide-react';
+import Badge from '../components/Badge';
+import { TASKS, MEMBERS, TASK_CATEGORIES } from '../data/dummy';
+import TaskModal from '../components/modals/TaskModal';
+import ActivityModal from '../components/modals/ActivityModal';
+
+function getWeekRange() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  return { start: monday, end: sunday };
+}
+
+function getMonthRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  return { start, end };
+}
+
+export default function TaskList() {
+  const [search, setSearch] = useState('');
+  const [memberFilter, setMemberFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [deadlineFilter, setDeadlineFilter] = useState('');
+  const [companyFilter, setCompanyFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('すべて');
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [showActivityModal, setShowActivityModal] = useState(false);
+
+  const filtered = TASKS.filter((task) => {
+    if (search && !task.company.toLowerCase().includes(search.toLowerCase())) return false;
+    if (memberFilter && task.person !== memberFilter) return false;
+    if (categoryFilter && task.category !== categoryFilter) return false;
+    if (statusFilter && task.status !== statusFilter) return false;
+    if (companyFilter && !task.company.toLowerCase().includes(companyFilter.toLowerCase())) return false;
+    if (typeFilter !== 'すべて' && task.type !== typeFilter) return false;
+
+    if (deadlineFilter) {
+      const taskDate = new Date(task.deadline);
+      if (deadlineFilter === '今週') {
+        const { start, end } = getWeekRange();
+        if (taskDate < start || taskDate > end) return false;
+      } else if (deadlineFilter === '今月') {
+        const { start, end } = getMonthRange();
+        if (taskDate < start || taskDate > end) return false;
+      }
+    }
+
+    return true;
+  });
+
+  const typeOptions = ['すべて', 'Task', 'Activity'];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">Task一覧</h1>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowActivityModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:opacity-90 transition-colors"
+          >
+            <Plus size={16} />
+            Activity
+          </button>
+          <button
+            onClick={() => setShowTaskModal(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-medium rounded-lg hover:opacity-90 transition-colors"
+          >
+            <Plus size={16} />
+            Task
+          </button>
+        </div>
+      </div>
+
+      {/* Search bar */}
+      <div className="relative">
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="企業名で検索"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
+        />
+      </div>
+
+      {/* Filters */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <Filter size={16} className="text-gray-400" />
+        <select
+          value={memberFilter}
+          onChange={(e) => setMemberFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <option value="">担当者</option>
+          {MEMBERS.map((m) => (
+            <option key={m} value={m}>{m}</option>
+          ))}
+        </select>
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <option value="">種別</option>
+          {TASK_CATEGORIES.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <option value="">ステータス</option>
+          <option value="未実施">未実施</option>
+          <option value="実施中">実施中</option>
+          <option value="完了">完了</option>
+          <option value="期限切れ">期限切れ</option>
+        </select>
+        <select
+          value={deadlineFilter}
+          onChange={(e) => setDeadlineFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <option value="">期日</option>
+          <option value="今週">今週</option>
+          <option value="今月">今月</option>
+          <option value="">すべて</option>
+        </select>
+        <input
+          type="text"
+          placeholder="企業名"
+          value={companyFilter}
+          onChange={(e) => setCompanyFilter(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 w-32"
+        />
+        <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden">
+          {typeOptions.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => setTypeFilter(opt)}
+              className={`px-3 py-2 text-sm font-medium transition-colors ${
+                typeFilter === opt
+                  ? 'bg-accent text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="text-left px-5 py-3 font-medium text-gray-600">種類</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">内容</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">企業名</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">種別</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">期日</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">担当者</th>
+              <th className="text-left px-5 py-3 font-medium text-gray-600">ステータス</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((task) => (
+              <tr
+                key={task.id}
+                className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              >
+                <td className="px-5 py-3.5">
+                  <Badge label={task.type} />
+                </td>
+                <td className="px-5 py-3.5 font-medium text-gray-900">{task.content}</td>
+                <td className="px-5 py-3.5 text-gray-600">{task.company}</td>
+                <td className="px-5 py-3.5">
+                  <Badge label={task.category} />
+                </td>
+                <td className="px-5 py-3.5 text-gray-600">{task.deadline}</td>
+                <td className="px-5 py-3.5 text-gray-600">{task.person}</td>
+                <td className="px-5 py-3.5">
+                  <Badge label={task.status} />
+                </td>
+              </tr>
+            ))}
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-5 py-8 text-center text-gray-400">
+                  該当するタスクがありません
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <TaskModal isOpen={showTaskModal} onClose={() => setShowTaskModal(false)} />
+      <ActivityModal isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
+    </div>
+  );
+}
