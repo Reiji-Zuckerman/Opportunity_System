@@ -19,8 +19,8 @@ export default function DealList() {
       !search ||
       deal.company.toLowerCase().includes(search.toLowerCase()) ||
       deal.name.toLowerCase().includes(search.toLowerCase());
-    const matchesDivision = !divisionFilter || deal.division === divisionFilter;
-    const matchesMember = !memberFilter || deal.person === memberFilter;
+    const matchesDivision = !divisionFilter || deal.dept === divisionFilter;
+    const matchesMember = !memberFilter || deal.assignee === memberFilter;
     const matchesRoute = !routeFilter || deal.route === routeFilter;
     const matchesStatus = !statusFilter || deal.status === statusFilter;
     return matchesSearch && matchesDivision && matchesMember && matchesRoute && matchesStatus;
@@ -118,8 +118,8 @@ export default function DealList() {
               >
                 <td className="px-5 py-3.5 font-medium text-gray-900">{deal.name}</td>
                 <td className="px-5 py-3.5 text-gray-600">{deal.company}</td>
-                <td className="px-5 py-3.5 text-gray-600">{deal.person}</td>
-                <td className="px-5 py-3.5"><Badge label={deal.division} /></td>
+                <td className="px-5 py-3.5 text-gray-600">{deal.assignee}</td>
+                <td className="px-5 py-3.5"><Badge label={deal.dept} /></td>
                 <td className="px-5 py-3.5 text-gray-600">{deal.lastMeeting}</td>
                 <td className="px-5 py-3.5"><Badge label={deal.status} /></td>
               </tr>

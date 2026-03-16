@@ -126,11 +126,11 @@ export default function DealDetail() {
               </div>
               <div>
                 <span className="text-gray-500">担当者</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.person}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{deal.assignee}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">事業部</span>
-                <Badge label={deal.division} />
+                <Badge label={deal.dept} />
               </div>
               <div>
                 <span className="text-gray-500">商談経路</span>
@@ -219,7 +219,7 @@ export default function DealDetail() {
                       <td className="py-2.5 text-gray-900">{task.content}</td>
                       <td className="py-2.5"><Badge label={task.category} /></td>
                       <td className="py-2.5 text-gray-600">{task.deadline}</td>
-                      <td className="py-2.5 text-gray-600">{task.person}</td>
+                      <td className="py-2.5 text-gray-600">{task.assignee}</td>
                       <td className="py-2.5"><Badge label={task.status} /></td>
                     </tr>
                   ))}

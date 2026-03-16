@@ -239,7 +239,7 @@ export default function CompanyDetail() {
                       >
                         {deal.name}
                       </Link>
-                      <Badge label={deal.division} />
+                      <Badge label={deal.dept} />
                       <Badge label={deal.status} />
                     </div>
                     <span className="text-xs text-gray-400">{deal.date}</span>
@@ -259,7 +259,7 @@ export default function CompanyDetail() {
                         >
                           {child.name}
                         </Link>
-                        <Badge label={child.division} />
+                        <Badge label={child.dept} />
                         <Badge label={child.status} />
                       </div>
                       <span className="text-xs text-gray-400">{child.date}</span>

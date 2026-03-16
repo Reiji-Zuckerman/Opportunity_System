@@ -37,7 +37,7 @@ export default function TaskList() {
 
   const filtered = TASKS.filter((task) => {
     if (search && !task.company.toLowerCase().includes(search.toLowerCase())) return false;
-    if (memberFilter && task.person !== memberFilter) return false;
+    if (memberFilter && task.assignee !== memberFilter) return false;
     if (categoryFilter && task.category !== categoryFilter) return false;
     if (statusFilter && task.status !== statusFilter) return false;
     if (companyFilter && !task.company.toLowerCase().includes(companyFilter.toLowerCase())) return false;
@@ -191,7 +191,7 @@ export default function TaskList() {
                   <Badge label={task.category} />
                 </td>
                 <td className="px-5 py-3.5 text-gray-600">{task.deadline}</td>
-                <td className="px-5 py-3.5 text-gray-600">{task.person}</td>
+                <td className="px-5 py-3.5 text-gray-600">{task.assignee}</td>
                 <td className="px-5 py-3.5">
                   <Badge label={task.status} />
                 </td>

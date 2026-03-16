@@ -993,6 +993,14 @@ export const TASKS = [
   { id: 20, type: 'Activity', name: 'FPGAエンジニア市場調査レポート作成',   company: 'トヨタ自動車',  category: '資料作成',       due: '2025/3/10', assignee: '鈴木 一郎', method: 'メール',  status: 'done',    dealId: 47 },
 ]
 
+// フィルター用定数（DEALSとTASKSから自動生成）
+export const DIVISIONS = [...new Set(DEALS.map(d => d.dept))];
+export const MEMBERS = [...new Set(DEALS.map(d => d.assignee))];
+export const DEAL_ROUTES = [...new Set(DEALS.filter(d => d.route).map(d => d.route))];
+export const TASK_CATEGORIES = [...new Set(TASKS.map(t => t.category))];
+export const CONTACT_METHODS = [...new Set(TASKS.map(t => t.method))];
+export const CONTRACT_STATUSES = ['未接触', '商談中', '契約中', '完了'];
+
 export const MY_PAGE_DATA = {
   user: { name: '鈴木 一郎', dept: 'ITSS' },
   score: {
