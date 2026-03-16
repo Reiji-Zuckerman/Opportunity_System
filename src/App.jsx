@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import DealList from './pages/DealList';
 import DealDetail from './pages/DealDetail';
@@ -9,7 +9,7 @@ import MyPage from './pages/MyPage';
 
 export default function App() {
   return (
-    <BrowserRouter basename="/Opportunity_System">
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/deals" replace />} />
@@ -21,6 +21,6 @@ export default function App() {
           <Route path="/mypage" element={<MyPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
