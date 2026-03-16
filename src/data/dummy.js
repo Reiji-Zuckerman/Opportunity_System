@@ -20,8 +20,8 @@ export const COMPANIES = [
   { id: 6, name: '日立製作所',     tier: 'Enterprise', category: 'SIer',    itss: '契約中', perm: '商談中', dsl: '契約中', lastDealDate: '2025/3/8'  },
   { id: 7, name: 'リクルート',     tier: 'Enterprise', category: 'Web系',   itss: '商談中', perm: '契約中', dsl: '未接触', lastDealDate: '2025/3/5'  },
   { id: 8, name: '楽天グループ',   tier: 'Enterprise', category: 'Web系',   itss: '契約中', perm: '商談中', dsl: '商談中', lastDealDate: '2025/3/10' },
-  { id: 9, name: 'KDDI',           tier: 'Enterprise', category: '通信',    itss: '契約中', perm: '未接触', dsl: '契約中', lastDealDate: '2025/3/3'  },
-  { id: 10, name: 'ソニーグループ', tier: 'Enterprise', category: 'メーカー', itss: '商談中', perm: '契約中', dsl: '商談中', lastDealDate: '2025/3/12' },
+  { id: 9, name: 'KDDI',           tier: 'Enterprise', category: 'SES派遣',    itss: '契約中', perm: '未接触', dsl: '契約中', lastDealDate: '2025/3/3'  },
+  { id: 10, name: 'ソニーグループ', tier: 'Enterprise', category: 'SES派遣', itss: '商談中', perm: '契約中', dsl: '商談中', lastDealDate: '2025/3/12' },
 ]
 
 export const COMPANY_DETAILS = {
@@ -299,7 +299,7 @@ export const COMPANY_DETAILS = {
   },
 
   9: {
-    info: { tier: 'Enterprise', category: '通信', grossProfit: 31200000, lastDealDate: '2025/3/3' },
+    info: { tier: 'Enterprise', category: 'SES派遣', grossProfit: 31200000, lastDealDate: '2025/3/3' },
     contractStatus: { itss: '契約中', perm: '未接触', dsl: '契約中' },
     deptActivity: [
       { dept: 'ITSS', deals: 7, jobs: 5, lastContact: '2025/3/3'  },
@@ -332,7 +332,7 @@ export const COMPANY_DETAILS = {
   },
 
   10: {
-    info: { tier: 'Enterprise', category: 'メーカー', grossProfit: 26400000, lastDealDate: '2025/3/12' },
+    info: { tier: 'Enterprise', category: 'SES派遣', grossProfit: 26400000, lastDealDate: '2025/3/12' },
     contractStatus: { itss: '商談中', perm: '契約中', dsl: '商談中' },
     deptActivity: [
       { dept: 'ITSS', deals: 5, jobs: 4, lastContact: '2025/3/12' },
@@ -508,7 +508,7 @@ export const DEAL_DETAILS = {
       { round: 1, date: '2024/11/20', attendees: '山田部長',                     content: '初回訪問。40年以上稼働のCOBOL基幹システム刷新が急務。' },
     ],
     tasks: [
-      { status: 'overdue', name: 'COBOLエンジニア追加候補者ピック', due: '2025/3/10', assignee: '鈴木 一郎' },
+      { status: 'pending', name: 'COBOLエンジニア追加候補者ピック', due: '2025/3/10', assignee: '鈴木 一郎' },
       { status: 'pending', name: 'フェーズ2提案資料作成',           due: '2025/3/20', assignee: '田中 花子' },
     ],
     jobs: [
@@ -723,7 +723,7 @@ export const DEAL_DETAILS = {
       { round: 1, date: '2025/3/12', attendees: '中村部長、田中', content: '初回商談予定。エンジニア採用強化施策について議論予定。クラウド・AI人材の採用が急務。' },
     ],
     tasks: [
-      { status: 'today', name: '商談前資料準備・会社概要送付', due: '2025/3/12', assignee: '田中 花子' },
+      { status: 'in_progress', name: '商談前資料準備・会社概要送付', due: '2025/3/12', assignee: '田中 花子' },
     ],
     jobs: [
       { title: 'HR採用マネージャー', count: 1, date: '2025/3/12', dept: 'PERM' },
@@ -1928,8 +1928,8 @@ export const DEAL_DETAILS = {
 }
 
 export const TASKS = [
-  { id: 1,  type: 'Task',     name: 'COBOLエンジニア追加候補者ピック',       company: 'NTTデータ',    category: '候補者ピック',   due: '2025/3/10', assignee: '鈴木 一郎', method: 'メール',  status: 'overdue', dealId: 2  },
-  { id: 2,  type: 'Task',     name: 'HR部門 商談前資料準備・送付',           company: '富士通',        category: '資料作成',       due: '2025/3/12', assignee: '田中 花子', method: 'メール',  status: 'today',   dealId: 10 },
+  { id: 1,  type: 'Task',     name: 'COBOLエンジニア追加候補者ピック',       company: 'NTTデータ',    category: '候補者ピック',   due: '2025/3/10', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 2  },
+  { id: 2,  type: 'Task',     name: 'HR部門 商談前資料準備・送付',           company: '富士通',        category: '資料作成',       due: '2025/3/12', assignee: '田中 花子', method: 'メール',  status: 'in_progress',   dealId: 10 },
   { id: 3,  type: 'Activity', name: 'Goエンジニア候補フォロー電話',          company: 'Sansan',        category: 'アポ依頼',       due: '2025/3/10', assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 21 },
   { id: 4,  type: 'Task',     name: 'ITコンサル最終候補者確認',              company: 'トヨタ自動車',  category: '候補者ピック',   due: '2025/3/15', assignee: '山本 三郎', method: 'その他',  status: 'pending', dealId: 24 },
   { id: 5,  type: 'Activity', name: 'SAP移行フェーズ2提案資料送付',          company: 'トヨタ自動車',  category: '資料作成',       due: '2025/3/11', assignee: '山本 三郎', method: 'メール',  status: 'done',    dealId: 25 },
@@ -2040,7 +2040,7 @@ export const TASKS = [
 // フィルター用定数（DEALSとTASKSから自動生成）
 export const DIVISIONS = [...new Set(DEALS.map(d => d.dept))];
 export const MEMBERS = [...new Set(DEALS.map(d => d.assignee))];
-export const DEAL_ROUTES = [...new Set(DEALS.filter(d => d.route).map(d => d.route))];
+export const DEAL_ROUTES = ['IS', '営業顧問', 'toBマーケ', '展示会', '紹介'];
 export const TASK_CATEGORIES = [...new Set(TASKS.map(t => t.category))];
 export const CONTACT_METHODS = [...new Set(TASKS.map(t => t.method))];
 export const CONTRACT_STATUSES = ['未接触', '商談中', '契約中', '完了'];
@@ -2060,7 +2060,7 @@ export const MY_PAGE_DATA = {
     { date: '3/17', dayOfWeek: '月', company: 'トヨタ自動車 コネクティッド部門', time: '15:00', dealId: 31 },
   ],
   myTasks: [
-    { status: 'overdue', name: 'COBOLエンジニア追加候補者ピック',         company: 'NTTデータ 製造事業部',          due: '3/10', method: 'メール', dept: 'ITSS' },
+    { status: 'pending', name: 'COBOLエンジニア追加候補者ピック',         company: 'NTTデータ 製造事業部',          due: '3/10', method: 'メール', dept: 'ITSS' },
     { status: 'pending', name: 'AWSエンジニア候補提出（5名）',             company: 'NTTデータ フェーズ2',           due: '3/15', method: 'メール', dept: 'ITSS' },
     { status: 'pending', name: 'IoTエンジニア候補最終調整',                company: 'NTTデータ DX推進室',            due: '3/20', method: 'メール', dept: 'ITSS' },
     { status: 'pending', name: '組込みC/C++エンジニア候補最終確認',        company: 'トヨタ自動車 生産技術部',        due: '3/22', method: 'メール', dept: 'ITSS' },

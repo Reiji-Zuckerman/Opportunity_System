@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, ExternalLink } from 'lucide-react';
+import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText } from 'lucide-react';
 import Badge from '../components/Badge';
 import DealTree from '../components/DealTree';
 import { DEALS, DEAL_DETAILS, TASKS } from '../data/dummy';
@@ -8,6 +8,40 @@ import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
 import TaskModal from '../components/modals/TaskModal';
 import JobModal from '../components/modals/JobModal';
+
+const STATUS_OPTIONS = [
+  { value: 'pending', label: '未実施' },
+  { value: 'in_progress', label: '実施中' },
+  { value: 'done', label: '完了' },
+];
+
+const STATUS_COLORS = {
+  pending: 'bg-gray-100 text-gray-700',
+  in_progress: 'bg-blue-100 text-blue-700',
+  done: 'bg-green-100 text-green-700',
+};
+
+const DEAL_DESCRIPTION = `【商談概要】
+本商談はクライアント企業の事業課題・人材ニーズをヒアリングし、最適なIT人材ソリューションを提案するものです。初回面談にて先方の組織体制・プロジェクト状況を把握し、具体的な人材要件の定義を行います。
+
+【提案内容】
+・クライアントの技術スタック・開発体制に適合する人材のご紹介
+・プロジェクトの規模・期間に応じた柔軟なチーム編成の提案
+・技術顧問・PMOなど上流工程を含む包括的な支援体制の構築
+・長期的なパートナーシップに基づく継続的な人材供給計画
+
+【進行フロー】
+1. 初回ヒアリング（課題・ニーズの把握）
+2. 人材要件定義・求人票作成
+3. 候補者選定・ご紹介
+4. クライアント面談調整
+5. 契約条件交渉・合意
+6. 稼働開始・フォローアップ
+
+【備考】
+・契約形態: SES / 業務委託 / 人材紹介（ポジションにより異なる）
+・想定期間: 3ヶ月〜長期
+・フォローアップ: 月次定例MTGにて稼働状況を確認`;
 
 export default function DealDetail() {
   const { id } = useParams();
@@ -19,6 +53,13 @@ export default function DealDetail() {
   const [showTask, setShowTask] = useState(false);
   const [showJob, setShowJob] = useState(false);
   const [expandedMeetings, setExpandedMeetings] = useState({});
+  const [taskStatuses, setTaskStatuses] = useState(() => {
+    if (!detail) return {};
+    const map = {};
+    detail.tasks.forEach((t, idx) => { map[idx] = t.status; });
+    return map;
+  });
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   if (!detail) {
     return (
@@ -35,6 +76,16 @@ export default function DealDetail() {
 
   const toggleMeeting = (idx) => {
     setExpandedMeetings(prev => ({ ...prev, [idx]: !prev[idx] }));
+  };
+
+  const handleStatusChange = (taskIdx, newStatus) => {
+    setTaskStatuses(prev => ({ ...prev, [taskIdx]: newStatus }));
+    setOpenDropdown(null);
+  };
+
+  const getStatusLabel = (status) => {
+    const opt = STATUS_OPTIONS.find(o => o.value === status);
+    return opt ? opt.label : status;
   };
 
   return (
@@ -73,19 +124,21 @@ export default function DealDetail() {
         </div>
       </div>
 
-      {/* 商談ツリー (full width, recursive) */}
+      {/* 商談ツリー (full width, fixed height with horizontal scroll) */}
       <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
         <div className="flex items-center gap-2 mb-4">
           <GitBranch className="w-4 h-4 text-gray-500" />
           <h2 className="font-semibold text-gray-900">商談ツリー</h2>
         </div>
-        <DealTree currentDealId={id} />
+        <div className="overflow-x-auto max-h-[200px] overflow-y-auto">
+          <DealTree currentDealId={id} />
+        </div>
       </div>
 
-      {/* Two column layout */}
-      <div className="grid grid-cols-[1.2fr_1.8fr] gap-6">
+      {/* Two column layout - fixed left column width */}
+      <div className="grid grid-cols-[320px_1fr] gap-6">
         {/* Left column */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 min-w-0">
           {/* 商談基本情報 */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <h2 className="font-semibold text-gray-900 mb-4">商談基本情報</h2>
@@ -135,7 +188,18 @@ export default function DealDetail() {
         </div>
 
         {/* Right column */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 min-w-0">
+          {/* 商談内容 */}
+          <div className="bg-white rounded-xl shadow-sm p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="w-4 h-4 text-gray-500" />
+              <h2 className="font-semibold text-gray-900">商談内容</h2>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 leading-relaxed whitespace-pre-line max-h-[300px] overflow-y-auto">
+              {DEAL_DESCRIPTION}
+            </div>
+          </div>
+
           {/* 面談履歴 */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
@@ -146,20 +210,16 @@ export default function DealDetail() {
               <p className="text-sm text-gray-400 text-center py-4">面談履歴がありません</p>
             ) : (
               <div className="relative">
-                {/* Vertical timeline line */}
                 <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gray-200" />
-
                 <div className="space-y-4">
                   {sortedMeetings.map((meeting, idx) => {
                     const isExpanded = expandedMeetings[idx] !== false;
                     return (
                       <div key={idx} className="relative pl-8">
-                        {/* Timeline dot */}
                         <div className="absolute left-0 top-1 w-[15px] h-[15px] rounded-full bg-blue-600 border-2 border-white shadow-sm" />
-
                         <button
                           onClick={() => toggleMeeting(idx)}
-                          className="w-full text-left group"
+                          className="w-full text-left"
                         >
                           <div className="flex items-center gap-3 flex-wrap">
                             {isExpanded ? (
@@ -175,7 +235,6 @@ export default function DealDetail() {
                             </div>
                           </div>
                         </button>
-
                         {isExpanded && (
                           <div className="mt-2 ml-6">
                             <p className="text-sm text-gray-700 leading-relaxed">{meeting.content}</p>
@@ -189,20 +248,11 @@ export default function DealDetail() {
             )}
           </div>
 
-          {/* 紐づくTask */}
+          {/* 紐づくTask - inline status change */}
           <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <CheckSquare className="w-4 h-4 text-gray-500" />
-                <h2 className="font-semibold text-gray-900">紐づくTask</h2>
-              </div>
-              <Link
-                to="/tasks"
-                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                Task一覧へ
-                <ExternalLink className="w-3 h-3" />
-              </Link>
+            <div className="flex items-center gap-2 mb-4">
+              <CheckSquare className="w-4 h-4 text-gray-500" />
+              <h2 className="font-semibold text-gray-900">紐づくTask</h2>
             </div>
             {detail.tasks.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">タスクがありません</p>
@@ -218,19 +268,42 @@ export default function DealDetail() {
                 </thead>
                 <tbody>
                   {detail.tasks.map((task, idx) => {
-                    const globalTask = TASKS.find(t => t.name === task.name && t.assignee === task.assignee);
+                    const currentStatus = taskStatuses[idx] || task.status;
                     return (
-                      <tr
-                        key={idx}
-                        className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer"
-                        onClick={() => {
-                          window.location.hash = '/tasks';
-                        }}
-                      >
-                        <td className="py-2.5 text-blue-600 hover:text-blue-800">{task.name}</td>
+                      <tr key={idx} className="border-b border-gray-50">
+                        <td className="py-2.5 text-gray-900">{task.name}</td>
                         <td className="py-2.5 text-gray-600">{task.due}</td>
                         <td className="py-2.5 text-gray-600">{task.assignee}</td>
-                        <td className="py-2.5"><Badge label={task.status} /></td>
+                        <td className="py-2.5">
+                          <div className="relative">
+                            <button
+                              onClick={() => setOpenDropdown(openDropdown === `task-${idx}` ? null : `task-${idx}`)}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${STATUS_COLORS[currentStatus] || 'bg-gray-100 text-gray-700'}`}
+                            >
+                              {getStatusLabel(currentStatus)}
+                              <ChevronDown className="w-3 h-3" />
+                            </button>
+                            {openDropdown === `task-${idx}` && (
+                              <>
+                                <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />
+                                <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[120px]">
+                                  {STATUS_OPTIONS.map((opt) => (
+                                    <button
+                                      key={opt.value}
+                                      onClick={() => handleStatusChange(idx, opt.value)}
+                                      className={`w-full text-left px-3 py-2 text-xs hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg ${
+                                        currentStatus === opt.value ? 'font-bold bg-gray-50' : ''
+                                      }`}
+                                    >
+                                      <span className={`inline-block w-2 h-2 rounded-full mr-2 ${STATUS_COLORS[opt.value]?.split(' ')[0]}`} />
+                                      {opt.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     );
                   })}

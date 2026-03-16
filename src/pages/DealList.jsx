@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus, Filter } from 'lucide-react';
 import Badge from '../components/Badge';
-import { DEALS, DIVISIONS, MEMBERS, DEAL_ROUTES } from '../data/dummy';
+import { DEALS, DEAL_DETAILS, DIVISIONS, MEMBERS, DEAL_ROUTES } from '../data/dummy';
 import NewDealModal from '../components/modals/NewDealModal';
 
 export default function DealList() {
@@ -21,7 +21,7 @@ export default function DealList() {
       deal.name.toLowerCase().includes(search.toLowerCase());
     const matchesDivision = !divisionFilter || deal.dept === divisionFilter;
     const matchesMember = !memberFilter || deal.assignee === memberFilter;
-    const matchesRoute = !routeFilter || deal.route === routeFilter;
+    const matchesRoute = !routeFilter || DEAL_DETAILS[deal.id]?.basicInfo.channel === routeFilter;
     const matchesStatus = !statusFilter || deal.status === statusFilter;
     return matchesSearch && matchesDivision && matchesMember && matchesRoute && matchesStatus;
   });

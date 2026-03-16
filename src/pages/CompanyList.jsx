@@ -80,8 +80,11 @@ export default function CompanyList() {
           className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm bg-white"
         >
           <option value="">事業分類</option>
-          <option value="IS">IS</option>
-          <option value="FS">FS</option>
+          <option value="SIer">SIer</option>
+          <option value="SES派遣">SES派遣</option>
+          <option value="コンサル">コンサル</option>
+          <option value="Web系">Web系</option>
+          <option value="一般事業">一般事業</option>
         </select>
 
         <select
