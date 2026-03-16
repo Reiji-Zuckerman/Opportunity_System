@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare } from 'lucide-react';
+import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare, ArrowRight } from 'lucide-react';
 import Badge from '../components/Badge';
 import { DEAL_DETAILS } from '../data/dummy';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
@@ -53,14 +53,54 @@ export default function DealDetail() {
             onClick={() => setShowMeeting(true)}
             className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
           >
-            + 面談追記
+            + 商談追記
           </button>
           <button
             onClick={() => setShowBranch(true)}
-            className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
           >
-            担当分岐 new
+            担当分岐
           </button>
+        </div>
+      </div>
+
+      {/* 商談ツリー (horizontal, full width) */}
+      <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <GitBranch className="w-4 h-4 text-gray-500" />
+          <h2 className="font-semibold text-gray-900">商談ツリー</h2>
+        </div>
+        <div className="flex items-center gap-3 overflow-x-auto text-sm py-2">
+          {/* Parent */}
+          {deal.tree.parent && (
+            <>
+              <Link
+                to={`/deals/${deal.tree.parent.id}`}
+                className="shrink-0 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-blue-600 hover:bg-gray-100 hover:underline transition-colors"
+              >
+                {deal.tree.parent.name}
+              </Link>
+              <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
+            </>
+          )}
+
+          {/* Current (highlighted) */}
+          <div className="shrink-0 px-4 py-2 rounded-lg border-2 border-blue-600 bg-blue-50 font-medium text-gray-900">
+            {deal.tree.current.name}
+          </div>
+
+          {/* Children */}
+          {deal.tree.children && deal.tree.children.map((child) => (
+            <div key={child.id} className="flex items-center gap-3 shrink-0">
+              <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
+              <Link
+                to={`/deals/${child.id}`}
+                className="px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-blue-600 hover:bg-gray-100 hover:underline transition-colors"
+              >
+                {child.name}
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -108,41 +148,6 @@ export default function DealDetail() {
                 <span className="text-gray-500">人物名</span>
                 <p className="font-medium text-gray-900 mt-0.5">{deal.contactPerson}</p>
               </div>
-            </div>
-          </div>
-
-          {/* 商談ツリー */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <GitBranch className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">商談ツリー</h2>
-            </div>
-            <div className="space-y-1 text-sm">
-              {/* Parent */}
-              {deal.tree.parent && (
-                <Link
-                  to={`/deals/${deal.tree.parent.id}`}
-                  className="block px-3 py-2 rounded-lg hover:bg-gray-50 text-blue-600 hover:underline transition-colors"
-                >
-                  {deal.tree.parent.name}
-                </Link>
-              )}
-
-              {/* Current (highlighted with accent left border) */}
-              <div className="border-l-4 border-blue-600 px-3 py-2 rounded-lg bg-blue-50 font-medium text-gray-900">
-                {deal.tree.current.name}
-              </div>
-
-              {/* Children (indented) */}
-              {deal.tree.children && deal.tree.children.map((child) => (
-                <Link
-                  key={child.id}
-                  to={`/deals/${child.id}`}
-                  className="block ml-6 px-3 py-2 rounded-lg hover:bg-gray-50 text-blue-600 hover:underline transition-colors"
-                >
-                  {child.name}
-                </Link>
-              ))}
             </div>
           </div>
         </div>

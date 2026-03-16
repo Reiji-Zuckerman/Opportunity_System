@@ -17,6 +17,7 @@ export default function CompanyDetail() {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showContractModal, setShowContractModal] = useState(false);
   const [treeView, setTreeView] = useState(false);
+  const [whiteListFilter, setWhiteListFilter] = useState('all');
 
   if (!company) {
     return (
@@ -143,6 +144,26 @@ export default function CompanyDetail() {
               <FileText className="w-4 h-4 text-gray-500" />
               <h2 className="font-semibold text-gray-900">部署別ホワイトリスト</h2>
             </div>
+            <div className="flex items-center gap-2 mb-4">
+              {[
+                { key: 'all', label: 'すべて' },
+                { key: 'contacted', label: '接触済のみ' },
+                { key: 'jobAcquired', label: '求人取得済のみ' },
+                { key: 'untouched', label: '未接触のみ' },
+              ].map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setWhiteListFilter(f.key)}
+                  className={`px-3 py-1 text-xs rounded-lg border transition-colors ${
+                    whiteListFilter === f.key
+                      ? 'bg-blue-50 border-blue-200 text-blue-700'
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
@@ -152,7 +173,14 @@ export default function CompanyDetail() {
                 </tr>
               </thead>
               <tbody>
-                {company.whiteList.map((item, idx) => (
+                {company.whiteList
+                  .filter((item) => {
+                    if (whiteListFilter === 'contacted') return item.contacted;
+                    if (whiteListFilter === 'jobAcquired') return item.jobAcquired;
+                    if (whiteListFilter === 'untouched') return !item.contacted;
+                    return true;
+                  })
+                  .map((item, idx) => (
                   <tr key={idx} className="border-b border-gray-50">
                     <td className="py-2 text-gray-700">{item.dept}</td>
                     <td className="py-2 text-center">
