@@ -1,40 +1,57 @@
 import { useState } from 'react';
-import Modal, { FormField, FormTextarea, ToggleGroup } from '../Modal.jsx';
+import Modal, { FormField, FormTextarea, ToggleGroup, NoteBox } from '../Modal.jsx';
 import { CONTRACT_STATUSES } from '../../data/dummy.js';
 
-export default function ContractStatusModal({ isOpen, onClose, companyName }) {
-  const [itss, setItss] = useState('未接触');
-  const [perm, setPerm] = useState('未接触');
-  const [dsl, setDsl] = useState('未接触');
+export default function ContractStatusModal({ isOpen, onClose, companyName, currentStatus }) {
+  const [itss, setItss] = useState(currentStatus?.itss || '未接触');
+  const [perm, setPerm] = useState(currentStatus?.perm || '未接触');
+  const [dsl, setDsl] = useState(currentStatus?.dsl || '未接触');
   const [remarks, setRemarks] = useState('');
 
+  const changed = currentStatus && (
+    itss !== currentStatus.itss || perm !== currentStatus.perm || dsl !== currentStatus.dsl
+  );
+
   const handleSubmit = () => {
-    setItss('未接触');
-    setPerm('未接触');
-    setDsl('未接触');
-    setRemarks('');
+    // Mock: just close
+    onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="契約ステータス更新" onSubmit={handleSubmit}>
-      <div className="text-sm text-gray-700">
+    <Modal isOpen={true} onClose={onClose} title="契約ステータス更新" onSubmit={handleSubmit} submitLabel="更新">
+      <div className="text-sm text-gray-700 mb-1">
         <span className="font-medium">対象企業:</span> {companyName}
       </div>
 
-      <FormField label="ITSS">
+      {currentStatus && (
+        <NoteBox color="blue">
+          現在のステータス — ITSS: {currentStatus.itss} / PERM: {currentStatus.perm} / DSL: {currentStatus.dsl}
+        </NoteBox>
+      )}
+
+      <FormField label="ITSS" required>
         <ToggleGroup options={CONTRACT_STATUSES} value={itss} onChange={setItss} />
       </FormField>
 
-      <FormField label="PERM">
+      <FormField label="PERM" required>
         <ToggleGroup options={CONTRACT_STATUSES} value={perm} onChange={setPerm} />
       </FormField>
 
-      <FormField label="DSL">
+      <FormField label="DSL" required>
         <ToggleGroup options={CONTRACT_STATUSES} value={dsl} onChange={setDsl} />
       </FormField>
 
+      {changed && (
+        <NoteBox color="orange">
+          変更あり:{' '}
+          {itss !== currentStatus.itss && `ITSS: ${currentStatus.itss} → ${itss}  `}
+          {perm !== currentStatus.perm && `PERM: ${currentStatus.perm} → ${perm}  `}
+          {dsl !== currentStatus.dsl && `DSL: ${currentStatus.dsl} → ${dsl}`}
+        </NoteBox>
+      )}
+
       <FormField label="備考">
-        <FormTextarea value={remarks} onChange={e => setRemarks(e.target.value)} placeholder="備考を入力" />
+        <FormTextarea value={remarks} onChange={e => setRemarks(e.target.value)} placeholder="ステータス変更の理由を入力" />
       </FormField>
     </Modal>
   );
