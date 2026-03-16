@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Building2, Users, FileText, CheckSquare, ChevronDown, ChevronRight } from 'lucide-react';
 import Badge from '../components/Badge';
-import { COMPANY_DETAILS } from '../data/dummy';
+import { COMPANIES, COMPANY_DETAILS } from '../data/dummy';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
 
-const DIVISION_LABELS = { itss: 'ITSS', perm: 'PERM', dsl: 'DSL' };
-
 export default function CompanyDetail() {
   const { id } = useParams();
   const company = COMPANY_DETAILS[id];
+  const companySummary = COMPANIES.find(c => c.id === Number(id));
 
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
@@ -27,6 +26,9 @@ export default function CompanyDetail() {
       </div>
     );
   }
+
+  const info = company.info;
+  const companyName = companySummary?.name || '—';
 
   return (
     <div>
@@ -71,23 +73,23 @@ export default function CompanyDetail() {
             <div className="space-y-3 text-sm">
               <div>
                 <span className="text-gray-500">企業名</span>
-                <p className="font-medium text-gray-900 mt-0.5">{company.name}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{companyName}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">Tier</span>
-                <Badge label={company.tier} />
+                <Badge label={info.tier} />
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">事業分類</span>
-                <Badge label={company.classification} />
+                <Badge label={info.category} />
               </div>
               <div>
                 <span className="text-gray-500">累計粗利</span>
-                <p className="font-medium text-gray-900 mt-0.5">{company.totalProfit}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{info.grossProfit.toLocaleString()}円</p>
               </div>
               <div>
                 <span className="text-gray-500">最終商談日</span>
-                <p className="font-medium text-gray-900 mt-0.5">{company.lastDeal}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{info.lastDealDate}</p>
               </div>
             </div>
           </div>
@@ -96,15 +98,10 @@ export default function CompanyDetail() {
           <div className="bg-white rounded-xl shadow-sm p-5">
             <h2 className="font-semibold text-gray-900 mb-4">事業部別契約ステータス</h2>
             <div className="space-y-3">
-              {Object.entries(company.contracts).map(([key, contract]) => (
+              {Object.entries(company.contractStatus).map(([key, status]) => (
                 <div key={key} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">{DIVISION_LABELS[key]}</span>
-                    <Badge label={contract.status} />
-                  </div>
-                  {contract.since && (
-                    <span className="text-xs text-gray-400">{contract.since}〜</span>
-                  )}
+                  <span className="text-sm font-medium text-gray-700">{key.toUpperCase()}</span>
+                  <Badge label={status} />
                 </div>
               ))}
             </div>
@@ -123,9 +120,9 @@ export default function CompanyDetail() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(company.divisionActions).map(([key, action]) => (
-                  <tr key={key} className="border-b border-gray-50">
-                    <td className="py-2 font-medium text-gray-700">{DIVISION_LABELS[key]}</td>
+                {company.deptActivity.map((action) => (
+                  <tr key={action.dept} className="border-b border-gray-50">
+                    <td className="py-2 font-medium text-gray-700">{action.dept}</td>
                     <td className="py-2 text-gray-600">{action.deals}</td>
                     <td className="py-2 text-gray-600">{action.jobs}</td>
                     <td className="py-2 text-gray-600">{action.lastContact}</td>
@@ -173,7 +170,7 @@ export default function CompanyDetail() {
                 </tr>
               </thead>
               <tbody>
-                {company.whiteList
+                {company.whitelist
                   .filter((item) => {
                     if (whiteListFilter === 'contacted') return item.contacted;
                     if (whiteListFilter === 'jobAcquired') return item.jobAcquired;
@@ -223,48 +220,26 @@ export default function CompanyDetail() {
             </div>
             <div className="space-y-2">
               {company.deals.map((deal) => (
-                <div key={deal.id}>
-                  {/* Parent deal */}
-                  <div className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2">
-                      {treeView && deal.children && deal.children.length > 0 && (
-                        <ChevronDown className="w-4 h-4 text-gray-400" />
-                      )}
-                      {treeView && (!deal.children || deal.children.length === 0) && (
-                        <ChevronRight className="w-4 h-4 text-gray-300" />
-                      )}
-                      <Link
-                        to={`/deals/${deal.id}`}
-                        className="text-sm font-medium text-blue-600 hover:underline"
-                      >
-                        {deal.name}
-                      </Link>
-                      <Badge label={deal.dept} />
-                      <Badge label={deal.status} />
-                    </div>
-                    <span className="text-xs text-gray-400">{deal.date}</span>
-                  </div>
-
-                  {/* Children (shown in tree view) */}
-                  {treeView && deal.children && deal.children.map((child) => (
-                    <div
-                      key={child.id}
-                      className="flex items-center justify-between py-2 px-2 pl-10 rounded-lg hover:bg-gray-50 transition-colors"
+                <div
+                  key={deal.id}
+                  className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <Link
+                      to={`/deals/${deal.id}`}
+                      className="text-sm font-medium text-blue-600 hover:underline"
                     >
-                      <div className="flex items-center gap-2">
-                        <ChevronRight className="w-4 h-4 text-gray-300" />
-                        <Link
-                          to={`/deals/${child.id}`}
-                          className="text-sm font-medium text-blue-600 hover:underline"
-                        >
-                          {child.name}
-                        </Link>
-                        <Badge label={child.dept} />
-                        <Badge label={child.status} />
-                      </div>
-                      <span className="text-xs text-gray-400">{child.date}</span>
-                    </div>
-                  ))}
+                      {deal.name}
+                    </Link>
+                    <Badge label={deal.dept} />
+                    <Badge label={deal.status} />
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-400">
+                    {deal.remainingTasks > 0 && (
+                      <span>残Task: {deal.remainingTasks}</span>
+                    )}
+                    <span>{deal.lastMeeting}</span>
+                  </div>
                 </div>
               ))}
               {company.deals.length === 0 && (
@@ -280,14 +255,14 @@ export default function CompanyDetail() {
               <h2 className="font-semibold text-gray-900">担当者</h2>
             </div>
             <div className="space-y-3">
-              {company.contacts.map((contact, idx) => (
+              {company.assignees.map((person, idx) => (
                 <div key={idx} className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-medium shrink-0">
-                    {contact.avatar || contact.name.charAt(0)}
+                    {person.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{contact.name}</p>
-                    <p className="text-xs text-gray-500">{contact.dept} / {contact.role}</p>
+                    <p className="text-sm font-medium text-gray-900">{person.name}</p>
+                    <p className="text-xs text-gray-500">{person.role}</p>
                   </div>
                 </div>
               ))}
@@ -298,13 +273,13 @@ export default function CompanyDetail() {
 
       {/* Modals */}
       {showActivityModal && (
-        <ActivityModal onClose={() => setShowActivityModal(false)} companyId={company.id} />
+        <ActivityModal onClose={() => setShowActivityModal(false)} companyId={Number(id)} />
       )}
       {showTaskModal && (
-        <TaskModal onClose={() => setShowTaskModal(false)} companyId={company.id} />
+        <TaskModal onClose={() => setShowTaskModal(false)} companyId={Number(id)} />
       )}
       {showContractModal && (
-        <ContractStatusModal onClose={() => setShowContractModal(false)} companyId={company.id} />
+        <ContractStatusModal onClose={() => setShowContractModal(false)} companyId={Number(id)} />
       )}
     </div>
   );

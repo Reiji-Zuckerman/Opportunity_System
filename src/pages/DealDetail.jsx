@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare, ArrowRight } from 'lucide-react';
 import Badge from '../components/Badge';
-import { DEAL_DETAILS } from '../data/dummy';
+import { DEALS, DEAL_DETAILS } from '../data/dummy';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
 import TaskModal from '../components/modals/TaskModal';
@@ -10,14 +10,15 @@ import JobModal from '../components/modals/JobModal';
 
 export default function DealDetail() {
   const { id } = useParams();
-  const deal = DEAL_DETAILS[id];
+  const detail = DEAL_DETAILS[id];
+  const dealSummary = DEALS.find(d => d.id === Number(id));
 
   const [showMeeting, setShowMeeting] = useState(false);
   const [showBranch, setShowBranch] = useState(false);
   const [showTask, setShowTask] = useState(false);
   const [showJob, setShowJob] = useState(false);
 
-  if (!deal) {
+  if (!detail) {
     return (
       <div className="text-center py-20 text-gray-400">
         <p>商談が見つかりません</p>
@@ -26,7 +27,9 @@ export default function DealDetail() {
     );
   }
 
-  const sortedMeetings = [...deal.meetings].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const info = detail.basicInfo;
+  const dealName = dealSummary?.name || detail.tree.current;
+  const sortedMeetings = [...detail.meetings].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div>
@@ -72,33 +75,27 @@ export default function DealDetail() {
         </div>
         <div className="flex items-center gap-3 overflow-x-auto text-sm py-2">
           {/* Parent */}
-          {deal.tree.parent && (
+          {detail.tree.parent && (
             <>
-              <Link
-                to={`/deals/${deal.tree.parent.id}`}
-                className="shrink-0 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-blue-600 hover:bg-gray-100 hover:underline transition-colors"
-              >
-                {deal.tree.parent.name}
-              </Link>
+              <div className="shrink-0 px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700">
+                {detail.tree.parent}
+              </div>
               <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
             </>
           )}
 
           {/* Current (highlighted) */}
           <div className="shrink-0 px-4 py-2 rounded-lg border-2 border-blue-600 bg-blue-50 font-medium text-gray-900">
-            {deal.tree.current.name}
+            {detail.tree.current}
           </div>
 
           {/* Children */}
-          {deal.tree.children && deal.tree.children.map((child) => (
-            <div key={child.id} className="flex items-center gap-3 shrink-0">
+          {detail.tree.children && detail.tree.children.map((child, idx) => (
+            <div key={idx} className="flex items-center gap-3 shrink-0">
               <ArrowRight className="w-4 h-4 text-gray-400 shrink-0" />
-              <Link
-                to={`/deals/${child.id}`}
-                className="px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-blue-600 hover:bg-gray-100 hover:underline transition-colors"
-              >
-                {child.name}
-              </Link>
+              <div className="px-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-700">
+                {child}
+              </div>
             </div>
           ))}
         </div>
@@ -114,39 +111,43 @@ export default function DealDetail() {
             <div className="space-y-3 text-sm">
               <div>
                 <span className="text-gray-500">商談名</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.name}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{dealName}</p>
               </div>
               <div>
                 <span className="text-gray-500">企業名</span>
                 <p className="mt-0.5">
-                  <Link to={`/companies/${deal.companyId}`} className="font-medium text-blue-600 hover:underline">
-                    {deal.company}
-                  </Link>
+                  {dealSummary?.companyId ? (
+                    <Link to={`/companies/${dealSummary.companyId}`} className="font-medium text-blue-600 hover:underline">
+                      {info.company}
+                    </Link>
+                  ) : (
+                    <span className="font-medium text-gray-900">{info.company}</span>
+                  )}
                 </p>
               </div>
               <div>
-                <span className="text-gray-500">担当者</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.assignee}</p>
+                <span className="text-gray-500">担当者（自社）</span>
+                <p className="font-medium text-gray-900 mt-0.5">{info.ourPerson}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-gray-500">事業部</span>
-                <Badge label={deal.dept} />
+                <Badge label={info.businessDept} />
               </div>
               <div>
                 <span className="text-gray-500">商談経路</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.route}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{info.channel}</p>
               </div>
               <div>
                 <span className="text-gray-500">商談獲得者</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.acquirer}</p>
+                <p className="font-medium text-gray-900 mt-0.5">{info.acquiredBy}</p>
               </div>
               <div>
-                <span className="text-gray-500">事業部名</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.departmentName}</p>
+                <span className="text-gray-500">先方部署</span>
+                <p className="font-medium text-gray-900 mt-0.5">{info.dept}</p>
               </div>
               <div>
-                <span className="text-gray-500">人物名</span>
-                <p className="font-medium text-gray-900 mt-0.5">{deal.contactPerson}</p>
+                <span className="text-gray-500">先方担当者</span>
+                <p className="font-medium text-gray-900 mt-0.5">{info.clientPerson}</p>
               </div>
             </div>
           </div>
@@ -168,22 +169,19 @@ export default function DealDetail() {
                 <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gray-200" />
 
                 <div className="space-y-6">
-                  {sortedMeetings.map((meeting) => (
-                    <div key={meeting.id} className="relative pl-8">
+                  {sortedMeetings.map((meeting, idx) => (
+                    <div key={idx} className="relative pl-8">
                       {/* Timeline dot */}
                       <div className="absolute left-0 top-1 w-[15px] h-[15px] rounded-full bg-blue-600 border-2 border-white shadow-sm" />
 
                       <div className="space-y-2">
                         <div className="flex items-center gap-3 flex-wrap">
                           <Badge label={meeting.date} />
-                          <span className="text-sm font-medium text-gray-900">第{meeting.count}回</span>
-                          <Badge label={meeting.status} />
+                          <span className="text-sm font-medium text-gray-900">第{meeting.round}回</span>
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-500">
                           <Users className="w-3 h-3" />
-                          <span>先方: {meeting.attendeesClient.join(', ')}</span>
-                          <span className="mx-1">|</span>
-                          <span>自社: {meeting.attendeesOwn.join(', ')}</span>
+                          <span>{meeting.attendees}</span>
                         </div>
                         <p className="text-sm text-gray-700 leading-relaxed">{meeting.content}</p>
                       </div>
@@ -200,25 +198,23 @@ export default function DealDetail() {
               <CheckSquare className="w-4 h-4 text-gray-500" />
               <h2 className="font-semibold text-gray-900">紐づくTask</h2>
             </div>
-            {deal.tasks.length === 0 ? (
+            {detail.tasks.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">タスクがありません</p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100">
                     <th className="text-left py-2 font-medium text-gray-500">内容</th>
-                    <th className="text-left py-2 font-medium text-gray-500">カテゴリ</th>
                     <th className="text-left py-2 font-medium text-gray-500">期限</th>
                     <th className="text-left py-2 font-medium text-gray-500">担当者</th>
                     <th className="text-left py-2 font-medium text-gray-500">ステータス</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {deal.tasks.map((task) => (
-                    <tr key={task.id} className="border-b border-gray-50">
-                      <td className="py-2.5 text-gray-900">{task.content}</td>
-                      <td className="py-2.5"><Badge label={task.category} /></td>
-                      <td className="py-2.5 text-gray-600">{task.deadline}</td>
+                  {detail.tasks.map((task, idx) => (
+                    <tr key={idx} className="border-b border-gray-50">
+                      <td className="py-2.5 text-gray-900">{task.name}</td>
+                      <td className="py-2.5 text-gray-600">{task.due}</td>
                       <td className="py-2.5 text-gray-600">{task.assignee}</td>
                       <td className="py-2.5"><Badge label={task.status} /></td>
                     </tr>
@@ -234,17 +230,20 @@ export default function DealDetail() {
               <Briefcase className="w-4 h-4 text-gray-500" />
               <h2 className="font-semibold text-gray-900">求人情報</h2>
             </div>
-            {deal.jobs.length === 0 ? (
+            {detail.jobs.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">求人情報がありません</p>
             ) : (
               <div className="space-y-3">
-                {deal.jobs.map((job) => (
-                  <div key={job.id} className="p-3 border border-gray-100 rounded-lg">
+                {detail.jobs.map((job, idx) => (
+                  <div key={idx} className="p-3 border border-gray-100 rounded-lg">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm font-medium text-gray-900">{job.title}</span>
                       <span className="text-xs text-gray-500">{job.count}名</span>
                     </div>
-                    <p className="text-xs text-gray-500">{job.detail}</p>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Badge label={job.dept} />
+                      <span>{job.date}</span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -254,7 +253,7 @@ export default function DealDetail() {
       </div>
 
       {/* Modals */}
-      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={deal.name} meetingCount={deal.meetings.length} />
+      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} meetingCount={detail.meetings.length} />
       <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} />
       <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} />
       <JobModal isOpen={showJob} onClose={() => setShowJob(false)} />

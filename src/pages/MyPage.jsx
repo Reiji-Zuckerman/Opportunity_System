@@ -6,35 +6,17 @@ import { MY_PAGE_DATA } from '../data/dummy';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-function getWeekDates(weekStart) {
-  const start = new Date(weekStart);
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    return d;
-  });
-}
-
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return `${d.getMonth() + 1}/${d.getDate()}`;
-}
-
 export default function MyPage() {
   const [activityModalOpen, setActivityModalOpen] = useState(false);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
 
-  const { user, notification, scores, weekSchedule, myTasks, myDeals } = MY_PAGE_DATA;
-  const weekDates = getWeekDates(weekSchedule.weekStart);
-  const todayStr = '2026-03-16';
+  const data = MY_PAGE_DATA;
 
   const scoreItems = [
-    { ...scores.deals, icon: TrendingUp },
-    { ...scores.appointments, icon: Calendar },
-    { ...scores.tasks, icon: CheckSquare },
-    { ...scores.jobs, icon: Briefcase },
+    { label: '初回商談数', value: data.score.initialDeals, icon: TrendingUp },
+    { label: 'アポ獲得数', value: data.score.appointmentCount, icon: Calendar },
+    { label: 'Task完了数', value: data.score.taskDoneCount, icon: CheckSquare },
+    { label: '求人取得数', value: data.score.jobAcquiredCount, icon: Briefcase },
   ];
 
   return (
@@ -42,7 +24,7 @@ export default function MyPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">
-          マイページ &mdash; {user.name}
+          マイページ &mdash; {data.user.name}
         </h1>
         <div className="flex gap-3">
           <button
@@ -63,7 +45,7 @@ export default function MyPage() {
       {/* Notification Banner */}
       <div className="bg-orange-50 border border-orange-200 text-orange-800 rounded-xl p-4 flex items-center gap-3">
         <AlertTriangle className="h-5 w-5 flex-shrink-0" />
-        <span className="text-sm">{notification.message}</span>
+        <span className="text-sm">{data.notification}</span>
       </div>
 
       {/* Upper Section: 2 columns */}
@@ -87,48 +69,18 @@ export default function MyPage() {
           </div>
         </div>
 
-        {/* Right: Weekly Schedule */}
+        {/* Right: Calendar Events */}
         <div className="bg-white rounded-xl shadow-sm p-5">
           <h2 className="font-semibold text-gray-900 mb-4">今週の予定商談</h2>
-
-          {/* Mini Calendar Header */}
-          <div className="text-sm text-gray-600 mb-3 flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <span>{weekSchedule.year}年{weekSchedule.month}月 第3週</span>
-          </div>
-
-          {/* Day Labels */}
-          <div className="grid grid-cols-7 gap-1 mb-4">
-            {weekDates.map((date, i) => {
-              const dateStr = date.toISOString().split('T')[0];
-              const isToday = dateStr === todayStr;
-              return (
-                <div
-                  key={i}
-                  className={`text-center text-xs py-1.5 rounded-lg ${
-                    isToday
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'text-gray-500'
-                  }`}
-                >
-                  <div>{DAY_LABELS[i]}</div>
-                  <div className="font-medium">{date.getDate()}</div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Events List */}
           <div className="space-y-3">
-            {weekSchedule.events.map((event, i) => (
+            {data.calendarEvents.map((event, i) => (
               <div key={i} className="flex items-start gap-3 text-sm">
-                <div className="flex items-center gap-1.5 text-gray-500 min-w-[90px]">
+                <div className="flex items-center gap-1.5 text-gray-500 min-w-[100px]">
                   <Clock className="h-3.5 w-3.5" />
-                  <span>{formatDate(event.date)} {event.time}</span>
+                  <span>{event.date}({event.dayOfWeek}) {event.time}</span>
                 </div>
                 <div>
-                  <div className="text-gray-900 font-medium">{event.title}</div>
-                  <div className="text-gray-500 text-xs">{event.company}</div>
+                  <div className="text-gray-900 font-medium">{event.company}</div>
                 </div>
               </div>
             ))}
@@ -149,16 +101,16 @@ export default function MyPage() {
             </tr>
           </thead>
           <tbody>
-            {myTasks.map((task) => (
+            {data.myTasks.map((task, idx) => (
               <tr
-                key={task.id}
+                key={idx}
                 className={`border-b border-gray-50 ${
-                  task.status === '期限切れ' ? 'bg-red-50' : ''
+                  task.status === 'overdue' ? 'bg-red-50' : ''
                 }`}
               >
-                <td className="py-3 text-gray-900">{task.content}</td>
+                <td className="py-3 text-gray-900">{task.name}</td>
                 <td className="py-3 text-gray-600">{task.company}</td>
-                <td className="py-3 text-gray-600">{task.deadline}</td>
+                <td className="py-3 text-gray-600">{task.due}</td>
                 <td className="py-3">
                   <Badge label={task.status} />
                 </td>
@@ -175,36 +127,27 @@ export default function MyPage() {
           <thead>
             <tr className="text-left text-gray-500 border-b border-gray-100">
               <th className="pb-3 font-medium">商談名</th>
-              <th className="pb-3 font-medium">企業名</th>
               <th className="pb-3 font-medium">ステータス</th>
-              <th className="pb-3 font-medium">未完了Task数</th>
+              <th className="pb-3 font-medium">残Task数</th>
               <th className="pb-3 font-medium">最終面談日</th>
             </tr>
           </thead>
           <tbody>
-            {myDeals.map((deal) => (
+            {data.myDeals.map((deal, idx) => (
               <tr
-                key={deal.id}
+                key={idx}
                 className={`border-b border-gray-50 ${
-                  deal.incompleteTasks > 0 ? 'bg-yellow-50' : ''
+                  deal.remainingTasks > 0 ? 'bg-yellow-50' : ''
                 }`}
               >
-                <td className="py-3">
-                  <Link
-                    to={`/deals/${deal.id}`}
-                    className="text-blue-600 hover:text-blue-800 hover:underline font-medium"
-                  >
-                    {deal.name}
-                  </Link>
-                </td>
-                <td className="py-3 text-gray-600">{deal.company}</td>
+                <td className="py-3 text-gray-900 font-medium">{deal.name}</td>
                 <td className="py-3">
                   <Badge label={deal.status} />
                 </td>
                 <td className="py-3">
-                  {deal.incompleteTasks > 0 ? (
+                  {deal.remainingTasks > 0 ? (
                     <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-100 text-yellow-800 font-semibold text-xs">
-                      {deal.incompleteTasks}
+                      {deal.remainingTasks}
                     </span>
                   ) : (
                     <span className="text-gray-400">0</span>

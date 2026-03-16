@@ -30,11 +30,11 @@ export default function CompanyList() {
     .filter((c) => {
       if (search && !c.name.includes(search)) return false;
       if (tierFilter && c.tier !== tierFilter) return false;
-      if (classificationFilter && c.classification !== classificationFilter) return false;
+      if (classificationFilter && c.category !== classificationFilter) return false;
       if (itssFilter && c.itss !== itssFilter) return false;
       if (permFilter && c.perm !== permFilter) return false;
       if (dslFilter && c.dsl !== dslFilter) return false;
-      if (showExpiredOnly && !isExpired(c.lastDeal)) return false;
+      if (showExpiredOnly && !isExpired(c.lastDealDate)) return false;
       return true;
     })
     .sort((a, b) => {
@@ -156,7 +156,7 @@ export default function CompanyList() {
           </thead>
           <tbody>
             {filtered.map((company) => {
-              const expired = isExpired(company.lastDeal);
+              const expired = isExpired(company.lastDealDate);
               return (
                 <tr
                   key={company.id}
@@ -165,7 +165,7 @@ export default function CompanyList() {
                 >
                   <td className="px-5 py-3 font-medium text-gray-900">{company.name}</td>
                   <td className="px-5 py-3"><Badge label={company.tier} /></td>
-                  <td className="px-5 py-3"><Badge label={company.classification} /></td>
+                  <td className="px-5 py-3"><Badge label={company.category} /></td>
                   <td className="px-5 py-3"><Badge label={company.itss} /></td>
                   <td className="px-5 py-3"><Badge label={company.perm} /></td>
                   <td className="px-5 py-3"><Badge label={company.dsl} /></td>
@@ -173,7 +173,7 @@ export default function CompanyList() {
                     {expired ? (
                       <Badge label="期限切れ" />
                     ) : (
-                      <span className="text-gray-700">{company.lastDeal}</span>
+                      <span className="text-gray-700">{company.lastDealDate}</span>
                     )}
                   </td>
                 </tr>
