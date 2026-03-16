@@ -490,7 +490,12 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/10/5',  attendees: '佐々木社長、山田部長、伊藤', content: '経営課題の深掘り。製造・金融・HR各領域でのDX推進ニーズを確認。各部門責任者への紹介を取り付ける。' },
       { round: 1, date: '2024/9/15',  attendees: '佐々木社長、伊藤',           content: 'toBマーケ経由の初訪問。2030年問題に向けたレガシー刷新と人材確保が最優先課題。' },
     ],
-    tasks: [], jobs: [],
+    tasks: [
+      { status: 'done', name: '初回商談 議事録作成', due: '2024/10/10', assignee: '伊藤 美咲' },
+    ],
+    jobs: [
+      { title: '各部門 DXエンジニア（初回商談経由）', count: 5, date: '2024/10/5', dept: 'FS' },
+    ],
   },
 
   2: {
@@ -639,7 +644,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/12/10', attendees: '中川部長、鈴木', content: '要件詳細確認。金融系COBOLの経験が必須。FISCガイドライン対応の知識も求められる。' },
       { round: 1, date: '2024/11/25', attendees: '中川部長',       content: '山田部長紹介で初訪問。勘定系システムの段階的刷新PJで5名規模の体制が必要。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: '基幹刷新 最終レポート提出', due: '2025/2/5', assignee: '鈴木 一郎' },
+    ],
     jobs: [
       { title: '金融系COBOLエンジニア', count: 2, date: '2025/1/30', dept: 'ITSS' },
       { title: 'Javaエンジニア（金融）', count: 3, date: '2025/1/30', dept: 'ITSS' },
@@ -718,7 +725,10 @@ export const DEAL_DETAILS = {
     tasks: [
       { status: 'today', name: '商談前資料準備・会社概要送付', due: '2025/3/12', assignee: '田中 花子' },
     ],
-    jobs: [],
+    jobs: [
+      { title: 'HR採用マネージャー', count: 1, date: '2025/3/12', dept: 'PERM' },
+      { title: '新卒採用コーディネーター', count: 2, date: '2025/3/12', dept: 'PERM' },
+    ],
   },
 
   11: {
@@ -745,7 +755,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/1/15', attendees: '田所リーダー、田中', content: '成約。理系大学院生エンジニア職を中心に20名の採用支援確定。2月より候補者紹介開始。' },
       { round: 1, date: '2024/12/20', attendees: '中村部長、田所、田中', content: '新卒採用強化について相談。AI・クラウド専攻の学生採用が課題。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: '新卒採用強化 成果レポート提出', due: '2025/1/20', assignee: '田中 花子' },
+    ],
     jobs: [
       { title: '理系院卒エンジニア（新卒）', count: 20, date: '2025/1/15', dept: 'PERM' },
     ],
@@ -792,7 +804,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/10', attendees: '松本課長、佐藤', content: 'AWSとTerraformの経験者が必須。Infrastructure as Code対応が求められる。' },
       { round: 1, date: '2025/1/20', attendees: '松本課長',       content: 'オンプレミスからAWS移行PJの人材ニーズをヒアリング。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: 'クラウドリフト完了報告書作成', due: '2025/3/10', assignee: '佐藤 次郎' },
+    ],
     jobs: [
       { title: 'AWSインフラエンジニア（Terraform）', count: 2, date: '2025/3/5', dept: 'ITSS' },
     ],
@@ -852,7 +866,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/12/10', attendees: '小林部長、鈴木', content: '成約。SAP ABAPエンジニア1名の参画確定。1月より稼働。追加の人材ニーズについても話し合い。' },
       { round: 1, date: '2024/11/15', attendees: '小林部長',       content: 'NTTデータからの紹介で初訪問。SAP ABAPの開発者不足。複数PJで同時に人材が必要な状況。' },
     ],
-    tasks: [], jobs: [{ title: 'SAP ABAPエンジニア', count: 1, date: '2024/12/10', dept: 'ITSS' }],
+    tasks: [
+      { status: 'done', name: 'SAP人材 稼働完了報告', due: '2024/12/15', assignee: '山本 三郎' },
+    ], jobs: [{ title: 'SAP ABAPエンジニア', count: 1, date: '2024/12/10', dept: 'ITSS' }],
   },
 
   17: {
@@ -862,7 +878,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/11/20', attendees: '村山主任、鈴木', content: '成約。SAP FI/COコンサルタント2名の追加参画確定。12月より稼働。' },
       { round: 1, date: '2024/11/5',  attendees: '小林部長、村山主任、鈴木', content: 'FI/CO領域の追加ニーズが浮上。2名体制での支援を依頼。' },
     ],
-    tasks: [], jobs: [{ title: 'SAP FI/COコンサルタント', count: 2, date: '2024/11/20', dept: 'ITSS' }],
+    tasks: [
+      { status: 'done', name: 'SAP追加支援 検収確認', due: '2025/1/10', assignee: '山本 三郎' },
+    ], jobs: [{ title: 'SAP FI/COコンサルタント', count: 2, date: '2024/11/20', dept: 'ITSS' }],
   },
 
   40: {
@@ -872,7 +890,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/1/15', attendees: '田村リーダー、鈴木', content: '成約。SAP BTP専門家1名の参画確定。SAP S/4HANAとBTPの統合プロジェクトに参画。' },
       { round: 1, date: '2025/1/5',  attendees: '小林部長、田村リーダー、鈴木', content: 'SAP追加支援から派生。クラウドプラットフォームであるBTPへの移行専門家が必要。' },
     ],
-    tasks: [], jobs: [{ title: 'SAP BTP専門家', count: 1, date: '2025/1/15', dept: 'ITSS' }],
+    tasks: [
+      { status: 'done', name: 'SAP BTP対応 完了報告', due: '2025/2/15', assignee: '山本 三郎' },
+    ], jobs: [{ title: 'SAP BTP専門家', count: 1, date: '2025/1/15', dept: 'ITSS' }],
   },
 
   18: {
@@ -882,7 +902,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/11/28', attendees: '加藤マネージャー、田中', content: '成約。PMP保有のPMO人材1名の紹介確定。12月入社予定。' },
       { round: 1, date: '2024/11/5',  attendees: '加藤マネージャー',       content: '小林部長紹介でPMO部門を訪問。PMP保有者の中途採用ニーズ。' },
     ],
-    tasks: [], jobs: [{ title: 'PMO・PM（PMP保有）', count: 1, date: '2024/11/28', dept: 'PERM' }],
+    tasks: [
+      { status: 'done', name: 'PJ管理人材 配属完了確認', due: '2025/1/25', assignee: '田中 花子' },
+    ], jobs: [{ title: 'PMO・PM（PMP保有）', count: 1, date: '2024/11/28', dept: 'PERM' }],
   },
 
   19: {
@@ -892,7 +914,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/10/15', attendees: '高田シニア、田中', content: '成約。PgMP保有のシニアPM1名採用。事業拡大に伴う大型PJ対応のため即戦力が必要。' },
       { round: 1, date: '2024/10/1',  attendees: '加藤マネージャー、高田、田中', content: 'PMO初回採用成功後の追加依頼。シニアクラスのPMが必要。' },
     ],
-    tasks: [], jobs: [{ title: 'シニアPM（PgMP保有）', count: 1, date: '2024/10/15', dept: 'PERM' }],
+    tasks: [
+      { status: 'done', name: 'シニアPM 採用成功レポート', due: '2024/12/20', assignee: '田中 花子' },
+    ], jobs: [{ title: 'シニアPM（PgMP保有）', count: 1, date: '2024/10/15', dept: 'PERM' }],
   },
 
   41: {
@@ -902,7 +926,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/1/10', attendees: '安井リーダー、田中', content: '成約。CSP/CSM保有のアジャイルコーチ1名の採用確定。Scrum導入の旗振り役として即戦力が必要。' },
       { round: 1, date: '2024/12/20', attendees: '加藤マネージャー、安井、田中', content: '組織全体のアジャイル移行推進のため、専門コーチの採用が急務とのこと。' },
     ],
-    tasks: [], jobs: [{ title: 'アジャイルコーチ（CSP保有）', count: 1, date: '2025/1/10', dept: 'PERM' }],
+    tasks: [
+      { status: 'done', name: 'アジャイルコーチ 採用成功報告', due: '2024/12/25', assignee: '田中 花子' },
+    ], jobs: [{ title: 'アジャイルコーチ（CSP保有）', count: 1, date: '2025/1/10', dept: 'PERM' }],
   },
 
   20: {
@@ -912,7 +938,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/12/5',  attendees: '三浦専門家、鈴木', content: '成約。ABAP開発者をさらに1名追加。計2名体制でSAP拡張開発PJを進める。' },
       { round: 1, date: '2024/11/20', attendees: '村山主任、三浦、鈴木', content: 'SAP追加支援の流れで、ABAP専門チームにも人材ニーズを確認。' },
     ],
-    tasks: [], jobs: [{ title: 'SAP ABAP追加開発者', count: 1, date: '2024/12/5', dept: 'ITSS' }],
+    tasks: [
+      { status: 'done', name: 'ABAP開発者 追加稼働確認', due: '2024/12/25', assignee: '山本 三郎' },
+    ], jobs: [{ title: 'SAP ABAP追加開発者', count: 1, date: '2024/12/5', dept: 'ITSS' }],
   },
 
   42: {
@@ -1049,7 +1077,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/1/10', attendees: '中田リーダー、山本', content: 'データレイク構築の要件確認。Snowflake/BigQueryとPython/Sparkエンジニアが必要。' },
       { round: 1, date: '2024/12/20', attendees: '渡辺本部長、中田、山本', content: 'データ活用基盤構築PJのコンサル・エンジニア人材ニーズをヒアリング。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: 'データ基盤構築 完了報告書', due: '2025/2/1', assignee: '山本 三郎' },
+    ],
     jobs: [
       { title: 'データアーキテクト',           count: 1, date: '2025/1/25', dept: 'DSL' },
       { title: 'データエンジニア（Snowflake）', count: 3, date: '2025/1/25', dept: 'DSL' },
@@ -1118,7 +1148,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/12/20', attendees: '大野課長、鈴木', content: 'レガシーJavaシステムの移行要件確認。Spring Bootへのリアーキテクチャ経験者が必要。' },
       { round: 1, date: '2024/12/5',  attendees: '大野課長',       content: '渡辺本部長の紹介で訪問。20年以上稼働のレガシーJavaシステムの刷新PJで人材不足。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: 'レガシー移行 マイルストーン報告', due: '2025/2/5', assignee: '鈴木 一郎' },
+    ],
     jobs: [
       { title: 'Javaエンジニア（Spring Boot）', count: 2, date: '2025/1/30', dept: 'ITSS' },
       { title: 'Pythonエンジニア',               count: 1, date: '2025/1/30', dept: 'ITSS' },
@@ -1133,7 +1165,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2024/12/5',  attendees: '大野課長、篠原、鈴木', content: 'KotlinへのマイグレーションPJの詳細確認。コルーチン・Flowの実務経験者が必須。' },
       { round: 1, date: '2024/11/20', attendees: '篠原リーダー、鈴木', content: 'レガシーJavaをKotlinに段階移行する追加PJの相談。Kotlinの専門家が社内にいない。' },
     ],
-    tasks: [],
+    tasks: [
+      { status: 'done', name: 'Java/Kotlin刷新 検収完了確認', due: '2025/1/5', assignee: '鈴木 一郎' },
+    ],
     jobs: [{ title: 'Kotlinエンジニア（コルーチン）', count: 2, date: '2024/12/20', dept: 'ITSS' }],
   },
 
@@ -1267,7 +1301,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/20', attendees: '田中リーダー、佐藤', content: 'DevOps導入完了。CI/CDパイプライン構築成功。SRE体制の必要性が浮上。' },
       { round: 1, date: '2025/1/20', attendees: '田中リーダー、佐藤', content: 'toBマーケ経由。DevOps導入のエンジニア支援依頼。' },
     ],
-    tasks: [], jobs: [
+    tasks: [
+      { status: 'done', name: 'DevOps導入 成果報告書提出', due: '2025/2/25', assignee: '佐藤 次郎' },
+    ], jobs: [
       { title: 'DevOpsエンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
     ],
   },
@@ -1377,7 +1413,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/28', attendees: '山口部長、佐藤', content: 'SREエンジニア2名の稼働開始報告。満足度高く完了。' },
       { round: 1, date: '2025/1/20', attendees: '山口部長、佐藤', content: 'SaaS事業のSRE体制強化ニーズ。' },
     ],
-    tasks: [], jobs: [
+    tasks: [
+      { status: 'done', name: 'SRE人材 稼働開始確認', due: '2025/3/5', assignee: '佐藤 次郎' },
+    ], jobs: [
       { title: 'SREエンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
     ],
   },
@@ -1488,7 +1526,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/20', attendees: '橋本部長、佐藤', content: 'Flutter開発チーム立ち上げ完了。3名の稼働を確認。' },
       { round: 1, date: '2025/1/15', attendees: '橋本部長、佐藤', content: 'Flutter/Dartエンジニアの支援依頼。' },
     ],
-    tasks: [], jobs: [
+    tasks: [
+      { status: 'done', name: 'Flutter開発チーム 立ち上げ完了報告', due: '2025/2/25', assignee: '佐藤 次郎' },
+    ], jobs: [
       { title: 'Flutterエンジニア', count: 3, date: '2025/1/15', dept: 'ITSS' },
     ],
   },
@@ -1609,7 +1649,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/10', attendees: '川口リーダー、山本', content: 'データ分析基盤構築完了。Snowflake環境の運用開始。' },
       { round: 1, date: '2025/1/15', attendees: '川口リーダー、山本', content: 'データ分析基盤の設計支援依頼。' },
     ],
-    tasks: [], jobs: [
+    tasks: [
+      { status: 'done', name: 'データ分析基盤 Snowflake運用開始報告', due: '2025/2/15', assignee: '山本 三郎' },
+    ], jobs: [
       { title: 'データアナリスト', count: 2, date: '2025/1/15', dept: 'DSL' },
     ],
   },
@@ -1703,7 +1745,9 @@ export const DEAL_DETAILS = {
       { round: 2, date: '2025/2/20', attendees: '原田部長、鈴木', content: 'EDA設計エンジニア2名の稼働確認。検証自動化の追加支援を依頼。' },
       { round: 1, date: '2025/1/20', attendees: '原田部長、鈴木', content: 'EDA設計ツールの運用エンジニア支援依頼。' },
     ],
-    tasks: [], jobs: [
+    tasks: [
+      { status: 'done', name: 'EDA設計エンジニア 稼働確認完了', due: '2025/2/25', assignee: '鈴木 一郎' },
+    ], jobs: [
       { title: 'EDA設計エンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
     ],
   },
