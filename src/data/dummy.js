@@ -2080,3 +2080,29 @@ export const MY_PAGE_DATA = {
   ],
   notification: 'NTTデータ との契約書取交しが完了しています。契約ステータスを更新してください。',
 }
+
+// Auto-generated JOBS array with unique IDs
+export const JOBS = (() => {
+  const jobs = [];
+  let jobId = 1;
+  Object.entries(DEAL_DETAILS).forEach(([dealId, detail]) => {
+    const deal = DEALS.find(d => d.id === Number(dealId));
+    if (detail.jobs) {
+      detail.jobs.forEach((job) => {
+        jobs.push({
+          id: jobId,
+          ...job,
+          dealId: Number(dealId),
+          dealName: deal?.name || detail.tree.current,
+          company: detail.basicInfo.company,
+          companyId: deal?.companyId || null,
+          businessDept: detail.basicInfo.businessDept,
+          status: detail.basicInfo.status,
+        });
+        job.id = jobId;
+        jobId++;
+      });
+    }
+  });
+  return jobs;
+})();

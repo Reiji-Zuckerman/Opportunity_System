@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown } from 'lucide-react';
 import Badge from '../components/Badge';
 import CompanyDealTrees from '../components/CompanyDealTrees';
-import { COMPANIES, COMPANY_DETAILS, DEAL_DETAILS, DEALS } from '../data/dummy';
+import { COMPANIES, COMPANY_DETAILS, DEAL_DETAILS, DEALS, JOBS } from '../data/dummy';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
@@ -16,7 +16,8 @@ export default function CompanyDetail() {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showContractModal, setShowContractModal] = useState(false);
-  const [treeView, setTreeView] = useState(false);
+  const [treeView, setTreeView] = useState(true);
+  const [jobDisplayCount, setJobDisplayCount] = useState(10);
   const [whiteListFilter, setWhiteListFilter] = useState('all');
   const [selectedDept, setSelectedDept] = useState(null);
 
@@ -295,16 +296,28 @@ export default function CompanyDetail() {
                 <GitBranch className="w-4 h-4 text-gray-500" />
                 <h2 className="font-semibold text-gray-900">商談ツリー</h2>
               </div>
-              <button
-                onClick={() => setTreeView(!treeView)}
-                className={`px-3 py-1 text-xs rounded-lg border transition-colors ${
-                  treeView
-                    ? 'bg-blue-50 border-blue-200 text-blue-700'
-                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                {treeView ? 'ツリー表示' : 'リスト表示'}
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setTreeView(true)}
+                  className={`px-3 py-1 text-xs rounded-lg border transition-colors ${
+                    treeView
+                      ? 'bg-blue-50 border-blue-200 text-blue-700'
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  ツリー表示
+                </button>
+                <button
+                  onClick={() => setTreeView(false)}
+                  className={`px-3 py-1 text-xs rounded-lg border transition-colors ${
+                    !treeView
+                      ? 'bg-blue-50 border-blue-200 text-blue-700'
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  リスト表示
+                </button>
+              </div>
             </div>
 
             {treeView ? (
@@ -349,28 +362,39 @@ export default function CompanyDetail() {
               <span className="text-xs text-gray-400 ml-1">({companyJobs.length}件)</span>
             </div>
             {companyJobs.length > 0 ? (
-              <div className="grid grid-cols-2 gap-3">
-                {companyJobs.map((job, idx) => (
-                  <div key={idx} className="border border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-start justify-between mb-1">
-                      <p className="text-sm font-medium text-gray-900">{job.title}</p>
-                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full shrink-0 ml-2">
-                        {job.count}名
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Badge label={job.dept} />
-                      <span>{job.date}</span>
-                    </div>
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  {companyJobs.slice(0, jobDisplayCount).map((job, idx) => (
                     <Link
-                      to={`/deals/${job.dealId}`}
-                      className="text-xs text-blue-500 hover:underline mt-1 inline-block"
+                      key={idx}
+                      to={job.id ? `/jobs/${job.id}` : `/deals/${job.dealId}`}
+                      className="block border border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition-colors"
                     >
-                      {job.dealName}
+                      <div className="flex items-start justify-between mb-1">
+                        <p className="text-sm font-medium text-gray-900">{job.title}</p>
+                        <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full shrink-0 ml-2">
+                          {job.count}名
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <Badge label={job.dept} />
+                        <span>{job.date}</span>
+                      </div>
+                      <span className="text-xs text-blue-500 mt-1 inline-block">
+                        {job.dealName}
+                      </span>
                     </Link>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+                {companyJobs.length > jobDisplayCount && (
+                  <button
+                    onClick={() => setJobDisplayCount(prev => prev + 10)}
+                    className="w-full mt-4 py-2.5 text-sm text-blue-600 font-medium bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                  >
+                    さらに読み込む（残り{companyJobs.length - jobDisplayCount}件）
+                  </button>
+                )}
+              </>
             ) : (
               <p className="text-sm text-gray-400 text-center py-4">求人情報がありません</p>
             )}

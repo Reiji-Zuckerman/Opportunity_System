@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, GitBranch, Calendar, Users, Briefcase, CheckSquare } from 'lucide-react';
 import Badge from '../components/Badge';
 import DealTree from '../components/DealTree';
-import { DEALS, DEAL_DETAILS } from '../data/dummy';
+import { DEALS, DEAL_DETAILS, TASKS } from '../data/dummy';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
 import TaskModal from '../components/modals/TaskModal';
@@ -187,14 +187,21 @@ export default function DealDetail() {
                   </tr>
                 </thead>
                 <tbody>
-                  {detail.tasks.map((task, idx) => (
-                    <tr key={idx} className="border-b border-gray-50">
-                      <td className="py-2.5 text-gray-900">{task.name}</td>
-                      <td className="py-2.5 text-gray-600">{task.due}</td>
-                      <td className="py-2.5 text-gray-600">{task.assignee}</td>
-                      <td className="py-2.5"><Badge label={task.status} /></td>
-                    </tr>
-                  ))}
+                  {detail.tasks.map((task, idx) => {
+                    const globalTask = TASKS.find(t => t.name === task.name && t.assignee === task.assignee);
+                    return (
+                      <tr
+                        key={idx}
+                        onClick={() => globalTask && (window.location.hash = `/tasks/${globalTask.id}`)}
+                        className={`border-b border-gray-50 ${globalTask ? 'cursor-pointer hover:bg-gray-50' : ''}`}
+                      >
+                        <td className="py-2.5 text-gray-900">{task.name}</td>
+                        <td className="py-2.5 text-gray-600">{task.due}</td>
+                        <td className="py-2.5 text-gray-600">{task.assignee}</td>
+                        <td className="py-2.5"><Badge label={task.status} /></td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}
@@ -211,7 +218,11 @@ export default function DealDetail() {
             ) : (
               <div className="space-y-3">
                 {detail.jobs.map((job, idx) => (
-                  <div key={idx} className="p-3 border border-gray-100 rounded-lg">
+                  <Link
+                    key={idx}
+                    to={job.id ? `/jobs/${job.id}` : '#'}
+                    className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm font-medium text-gray-900">{job.title}</span>
                       <span className="text-xs text-gray-500">{job.count}名</span>
@@ -220,7 +231,7 @@ export default function DealDetail() {
                       <Badge label={job.dept} />
                       <span>{job.date}</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

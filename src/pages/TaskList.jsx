@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Plus, Filter } from 'lucide-react';
 import Badge from '../components/Badge';
 import { TASKS, MEMBERS, TASK_CATEGORIES } from '../data/dummy';
@@ -34,6 +35,7 @@ export default function TaskList() {
   const [typeFilter, setTypeFilter] = useState('すべて');
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
+  const navigate = useNavigate();
 
   const filtered = TASKS.filter((task) => {
     if (search && !task.company.toLowerCase().includes(search.toLowerCase())) return false;
@@ -180,7 +182,8 @@ export default function TaskList() {
             {filtered.map((task) => (
               <tr
                 key={task.id}
-                className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                onClick={() => navigate(`/tasks/${task.id}`)}
+                className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <td className="px-5 py-3.5">
                   <Badge label={task.type} />
