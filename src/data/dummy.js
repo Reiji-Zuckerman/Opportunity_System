@@ -1197,6 +1197,690 @@ export const DEAL_DETAILS = {
       { title: '点群データ処理専門家',           count: 1, date: '2025/2/10', dept: 'ITSS' },
     ],
   },
+
+  // ===== 日立製作所 =====
+  51: {
+    basicInfo: { company: '日立製作所', dept: 'システム統括本部', clientPerson: '中村 CTO', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'システム統括本部 基幹系モダナイゼーションPJ', children: ['システム統括本部 クラウドネイティブ移行', 'Lumada事業部 IoTプラットフォーム開発'] },
+    meetings: [
+      { round: 3, date: '2025/3/8', attendees: '中村CTO、鈴木', content: 'モダナイゼーション進捗確認。Java17への移行完了報告。クラウド移行とIoT基盤の追加ニーズを確認。' },
+      { round: 2, date: '2025/2/10', attendees: '中村CTO、鈴木', content: 'レガシーJavaシステムの移行計画策定。段階的アプローチで合意。' },
+      { round: 1, date: '2025/1/15', attendees: '中村CTO', content: '初回訪問。基幹系のモダナイゼーション課題をヒアリング。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'Javaアーキテクト候補3名提出', due: '2025/3/20', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'Javaアーキテクト（17対応）', count: 2, date: '2025/3/8', dept: 'ITSS' },
+      { title: 'レガシー移行エンジニア', count: 3, date: '2025/2/10', dept: 'ITSS' },
+    ],
+  },
+  52: {
+    basicInfo: { company: '日立製作所', dept: 'システム統括本部', clientPerson: '中村 CTO、高橋 インフラ部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'システム統括本部 クラウドネイティブ移行', children: [] },
+    meetings: [
+      { round: 2, date: '2025/2/25', attendees: '高橋部長、鈴木', content: 'AWS/Azure選定完了。Kubernetes基盤の設計レビュー。' },
+      { round: 1, date: '2025/1/30', attendees: '中村CTO、高橋部長、鈴木', content: 'モダナイゼーションの延長でクラウド移行を検討。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'Kubernetesエンジニア候補提出', due: '2025/3/18', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'Kubernetesエンジニア', count: 2, date: '2025/2/25', dept: 'ITSS' },
+      { title: 'クラウドアーキテクト', count: 1, date: '2025/2/25', dept: 'ITSS' },
+    ],
+  },
+  53: {
+    basicInfo: { company: '日立製作所', dept: 'Lumada事業部', clientPerson: '佐々木 Lumada事業部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'Lumada事業部 IoTプラットフォーム開発', children: ['Lumada事業部 AI分析基盤構築', 'Lumada事業部 データマネジメント戦略策定'] },
+    meetings: [
+      { round: 2, date: '2025/3/5', attendees: '佐々木部長、佐藤', content: 'IoTプラットフォーム設計レビュー。エッジ処理の高速化がキーテーマ。' },
+      { round: 1, date: '2025/2/5', attendees: '佐々木部長、佐藤', content: '中村CTOの紹介でLumada事業部を訪問。IoT基盤強化のニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'IoTエンジニア候補2名提出', due: '2025/3/22', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'IoTプラットフォームエンジニア', count: 2, date: '2025/3/5', dept: 'ITSS' },
+      { title: 'エッジコンピューティング専門家', count: 1, date: '2025/3/5', dept: 'ITSS' },
+    ],
+  },
+  54: {
+    basicInfo: { company: '日立製作所', dept: 'Lumada事業部 AI推進チーム', clientPerson: '佐々木部長、松田 AI推進リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 AI分析基盤構築', children: [] },
+    meetings: [
+      { round: 2, date: '2025/2/28', attendees: '松田リーダー、山本', content: 'AI分析基盤のアーキテクチャ確定。MLOpsパイプライン構築が次のステップ。' },
+      { round: 1, date: '2025/2/10', attendees: '佐々木部長、松田リーダー、山本', content: 'IoT基盤と連携したAI分析ニーズをヒアリング。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'MLエンジニア候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'MLエンジニア', count: 2, date: '2025/2/28', dept: 'DSL' },
+      { title: 'データエンジニア', count: 1, date: '2025/2/28', dept: 'DSL' },
+    ],
+  },
+  55: {
+    basicInfo: { company: '日立製作所', dept: 'デジタルエンジニアリング部', clientPerson: '田中 DevOps推進リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '完了' },
+    tree: { parent: null, current: 'デジタルエンジニアリング部 DevOps導入支援', children: ['デジタルエンジニアリング部 SRE体制構築'] },
+    meetings: [
+      { round: 2, date: '2025/2/20', attendees: '田中リーダー、佐藤', content: 'DevOps導入完了。CI/CDパイプライン構築成功。SRE体制の必要性が浮上。' },
+      { round: 1, date: '2025/1/20', attendees: '田中リーダー、佐藤', content: 'toBマーケ経由。DevOps導入のエンジニア支援依頼。' },
+    ],
+    tasks: [], jobs: [
+      { title: 'DevOpsエンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
+    ],
+  },
+  56: {
+    basicInfo: { company: '日立製作所', dept: 'デジタルエンジニアリング部', clientPerson: '田中 DevOps推進リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'デジタルエンジニアリング部 DevOps導入支援', current: 'デジタルエンジニアリング部 SRE体制構築', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/1', attendees: '田中リーダー、佐藤', content: 'DevOps導入の延長でSRE体制構築を開始。オブザーバビリティ専門家が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'SREエンジニア候補提出', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'SREエンジニア', count: 2, date: '2025/3/1', dept: 'ITSS' },
+      { title: 'オブザーバビリティ専門家', count: 1, date: '2025/3/1', dept: 'ITSS' },
+    ],
+  },
+  57: {
+    basicInfo: { company: '日立製作所', dept: '人財統括本部', clientPerson: '小林 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: null, current: '人財統括本部 DX人材採用支援', children: ['人財統括本部 エグゼクティブサーチ'] },
+    meetings: [
+      { round: 2, date: '2025/3/1', attendees: '小林部長、田中', content: 'DX人材の採用要件確定。即戦力のテックリード2名が最優先。' },
+      { round: 1, date: '2025/2/5', attendees: '小林部長、田中', content: '初回訪問。DX推進に向けた人材不足の課題をヒアリング。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'テックリード候補スカウト', due: '2025/3/22', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'テックリード（DX推進）', count: 2, date: '2025/3/1', dept: 'PERM' },
+    ],
+  },
+  58: {
+    basicInfo: { company: '日立製作所', dept: '人財統括本部', clientPerson: '小林 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: '人財統括本部 DX人材採用支援', current: '人財統括本部 エグゼクティブサーチ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/15', attendees: '小林部長、田中', content: 'CTO補佐ポジションの採用依頼。グローバル経験者を希望。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'CTO補佐候補リストアップ', due: '2025/3/25', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'CTO補佐（グローバル経験者）', count: 1, date: '2025/2/15', dept: 'PERM' },
+    ],
+  },
+  59: {
+    basicInfo: { company: '日立製作所', dept: 'クラウドサービス部', clientPerson: '遠藤 クラウド事業リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'クラウドサービス部 マネージドサービス人材支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/10', attendees: '遠藤リーダー、鈴木', content: 'マネージドサービスチームの増員ニーズ。AWS認定保有者を希望。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'AWS認定エンジニア候補提出', due: '2025/3/15', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'AWSマネージドサービスエンジニア', count: 2, date: '2025/2/10', dept: 'ITSS' },
+    ],
+  },
+  60: {
+    basicInfo: { company: '日立製作所', dept: 'Lumada事業部 データ戦略チーム', clientPerson: '佐々木部長、岡田 データ戦略リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 データマネジメント戦略策定', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/18', attendees: '岡田リーダー、山本', content: 'IoTデータのマネジメント戦略策定支援。データカタログ構築が急務。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'データエンジニア候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'データカタログエンジニア', count: 1, date: '2025/2/18', dept: 'DSL' },
+      { title: 'データガバナンス専門家', count: 1, date: '2025/2/18', dept: 'DSL' },
+    ],
+  },
+
+  // ===== リクルート =====
+  61: {
+    basicInfo: { company: 'リクルート', dept: 'プロダクト開発本部', clientPerson: '渡辺 VPoE', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'プロダクト開発本部 バックエンド刷新PJ', children: ['プロダクト開発本部 フロントエンド強化', 'データサイエンス部 ML基盤エンジニア支援'] },
+    meetings: [
+      { round: 2, date: '2025/3/5', attendees: '渡辺VPoE、佐藤', content: 'バックエンド刷新の進捗確認。Go言語への移行順調。フロントとML基盤も追加依頼。' },
+      { round: 1, date: '2025/2/5', attendees: '渡辺VPoE、佐藤', content: '初回訪問。Rubyレガシーからの脱却が課題。Goエンジニアのニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'Goエンジニア追加候補提出', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'Goバックエンドエンジニア', count: 3, date: '2025/3/5', dept: 'ITSS' },
+      { title: 'テックリード（Go）', count: 1, date: '2025/3/5', dept: 'ITSS' },
+    ],
+  },
+  62: {
+    basicInfo: { company: 'リクルート', dept: 'プロダクト開発本部 フロントチーム', clientPerson: '渡辺VPoE、木下 フロントリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'プロダクト開発本部 フロントエンド強化', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/20', attendees: '木下リード、佐藤', content: 'React/Next.jsベースのフロントエンド刷新。TypeScript必須。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'React/TypeScriptエンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'React/TypeScriptエンジニア', count: 2, date: '2025/2/20', dept: 'ITSS' },
+      { title: 'フロントエンドアーキテクト', count: 1, date: '2025/2/20', dept: 'ITSS' },
+    ],
+  },
+  63: {
+    basicInfo: { company: 'リクルート', dept: 'SaaS事業推進部', clientPerson: '山口 SRE部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '完了' },
+    tree: { parent: null, current: 'SaaS事業推進部 SRE人材支援', children: [] },
+    meetings: [
+      { round: 2, date: '2025/2/28', attendees: '山口部長、佐藤', content: 'SREエンジニア2名の稼働開始報告。満足度高く完了。' },
+      { round: 1, date: '2025/1/20', attendees: '山口部長、佐藤', content: 'SaaS事業のSRE体制強化ニーズ。' },
+    ],
+    tasks: [], jobs: [
+      { title: 'SREエンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
+    ],
+  },
+  64: {
+    basicInfo: { company: 'リクルート', dept: '人事企画部', clientPerson: '加藤 CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: null, current: '人事企画部 エンジニア採用強化PJ', children: ['人事企画部 ハイクラスエンジニア採用'] },
+    meetings: [
+      { round: 2, date: '2025/2/28', attendees: '加藤CHRO、田中', content: 'エンジニア採用の進捗確認。ハイクラス層の採用強化も依頼。' },
+      { round: 1, date: '2025/2/1', attendees: '加藤CHRO、田中', content: '初回訪問。エンジニア採用力強化の包括的支援依頼。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'シニアエンジニア候補スカウト', due: '2025/3/22', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'シニアバックエンドエンジニア', count: 3, date: '2025/2/28', dept: 'PERM' },
+    ],
+  },
+  65: {
+    basicInfo: { company: 'リクルート', dept: '人事企画部', clientPerson: '加藤CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: '人事企画部 エンジニア採用強化PJ', current: '人事企画部 ハイクラスエンジニア採用', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/15', attendees: '加藤CHRO、田中', content: 'VPoE/CTOクラスのヘッドハンティング依頼。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'VPoE候補リストアップ', due: '2025/3/25', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'VPoE/CTO候補', count: 1, date: '2025/2/15', dept: 'PERM' },
+    ],
+  },
+  66: {
+    basicInfo: { company: 'リクルート', dept: 'データサイエンス部', clientPerson: '渡辺VPoE、斎藤 DS部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'データサイエンス部 ML基盤エンジニア支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/10', attendees: '斎藤DS部長、佐藤', content: 'ML基盤のインフラ刷新ニーズ。Kubeflow/MLflow環境構築。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'MLOpsエンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'MLOpsエンジニア', count: 2, date: '2025/2/10', dept: 'ITSS' },
+    ],
+  },
+
+  // ===== 楽天グループ =====
+  67: {
+    basicInfo: { company: '楽天グループ', dept: 'コマース開発本部', clientPerson: '井上 コマースCTO', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'コマース開発本部 マイクロサービス化PJ', children: ['コマース開発本部 パフォーマンス改善PJ', 'コマース開発本部 データパイプライン構築'] },
+    meetings: [
+      { round: 3, date: '2025/3/10', attendees: '井上CTO、佐藤', content: 'マイクロサービス化の第1フェーズ完了報告。パフォーマンス改善とデータ基盤の追加支援を依頼。' },
+      { round: 2, date: '2025/2/15', attendees: '井上CTO、佐藤', content: 'マイクロサービス設計レビュー。ドメイン分割方針を確定。' },
+      { round: 1, date: '2025/1/20', attendees: '井上CTO、佐藤', content: '初回訪問。モノリスからの脱却が最重要課題。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'マイクロサービスアーキテクト追加候補', due: '2025/3/22', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'マイクロサービスアーキテクト', count: 1, date: '2025/3/10', dept: 'ITSS' },
+      { title: 'Javaバックエンドエンジニア', count: 3, date: '2025/1/20', dept: 'ITSS' },
+    ],
+  },
+  68: {
+    basicInfo: { company: '楽天グループ', dept: 'コマース開発本部 パフォーマンスチーム', clientPerson: '井上CTO、川崎 パフォーマンスリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 パフォーマンス改善PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/25', attendees: '川崎リード、佐藤', content: '大規模セール時のパフォーマンス問題対応。負荷試験専門家が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '負荷試験エンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'パフォーマンスエンジニア', count: 2, date: '2025/2/25', dept: 'ITSS' },
+    ],
+  },
+  69: {
+    basicInfo: { company: '楽天グループ', dept: 'フィンテック事業部', clientPerson: '森 フィンテック事業部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'フィンテック事業部 決済基盤刷新', children: ['フィンテック事業部 ブロックチェーン検証PJ'] },
+    meetings: [
+      { round: 2, date: '2025/3/5', attendees: '森部長、鈴木', content: '決済基盤刷新の技術選定完了。Go言語＋gRPCで再構築。' },
+      { round: 1, date: '2025/2/10', attendees: '森部長、鈴木', content: '初回訪問。決済基盤のスケーラビリティ課題。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'Go/gRPCエンジニア候補提出', due: '2025/3/20', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'Go/gRPCエンジニア', count: 2, date: '2025/3/5', dept: 'ITSS' },
+      { title: '決済システムアーキテクト', count: 1, date: '2025/3/5', dept: 'ITSS' },
+    ],
+  },
+  70: {
+    basicInfo: { company: '楽天グループ', dept: 'フィンテック事業部 ブロックチェーンチーム', clientPerson: '森部長、西田 BCリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: 'フィンテック事業部 決済基盤刷新', current: 'フィンテック事業部 ブロックチェーン検証PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/1', attendees: '西田リーダー、山本', content: 'ブロックチェーン技術のPoC支援依頼。Solidity/Rust経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ブロックチェーンエンジニア候補提出', due: '2025/3/22', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'ブロックチェーンエンジニア（Solidity）', count: 1, date: '2025/3/1', dept: 'DSL' },
+      { title: 'スマートコントラクト監査人', count: 1, date: '2025/3/1', dept: 'DSL' },
+    ],
+  },
+  71: {
+    basicInfo: { company: '楽天グループ', dept: 'モバイル事業部', clientPerson: '橋本 モバイル開発部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '完了' },
+    tree: { parent: null, current: 'モバイル事業部 Flutter開発人材支援', children: [] },
+    meetings: [
+      { round: 2, date: '2025/2/20', attendees: '橋本部長、佐藤', content: 'Flutter開発チーム立ち上げ完了。3名の稼働を確認。' },
+      { round: 1, date: '2025/1/15', attendees: '橋本部長、佐藤', content: 'Flutter/Dartエンジニアの支援依頼。' },
+    ],
+    tasks: [], jobs: [
+      { title: 'Flutterエンジニア', count: 3, date: '2025/1/15', dept: 'ITSS' },
+    ],
+  },
+  72: {
+    basicInfo: { company: '楽天グループ', dept: 'AI推進室', clientPerson: '大西 AI推進室長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: null, current: 'AI推進室 レコメンドエンジン開発', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/15', attendees: '大西室長、山本', content: 'レコメンドエンジンの精度向上PJ。深層学習専門家が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '深層学習エンジニア候補提出', due: '2025/3/18', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: '深層学習エンジニア（推薦システム）', count: 2, date: '2025/2/15', dept: 'DSL' },
+    ],
+  },
+  73: {
+    basicInfo: { company: '楽天グループ', dept: '人事本部', clientPerson: '吉田 CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: null, current: '人事本部 テックリード採用支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/20', attendees: '吉田CHRO、田中', content: 'テックリード層の中途採用強化。グローバル人材を希望。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'テックリード候補リストアップ', due: '2025/3/25', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'テックリード（グローバル）', count: 2, date: '2025/2/20', dept: 'PERM' },
+    ],
+  },
+  74: {
+    basicInfo: { company: '楽天グループ', dept: 'コマース開発本部 データチーム', clientPerson: '井上CTO、安藤 データリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 データパイプライン構築', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/28', attendees: '安藤リード、佐藤', content: 'データパイプラインの刷新ニーズ。Apache Kafka/Flinkの知見が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'データパイプラインエンジニア候補提出', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'データパイプラインエンジニア（Kafka）', count: 2, date: '2025/2/28', dept: 'ITSS' },
+    ],
+  },
+
+  // ===== KDDI =====
+  75: {
+    basicInfo: { company: 'KDDI', dept: 'ネットワーク技術本部', clientPerson: '松本 ネットワーク本部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'ネットワーク技術本部 5G基盤開発PJ', children: ['ネットワーク技術本部 ネットワーク自動化', '5G/6G推進室 エッジコンピューティング開発'] },
+    meetings: [
+      { round: 2, date: '2025/3/3', attendees: '松本本部長、鈴木', content: '5G基盤開発の進捗確認。自動化とエッジの追加ニーズが発生。' },
+      { round: 1, date: '2025/2/1', attendees: '松本本部長、鈴木', content: '初回訪問。5G基盤の開発体制強化ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '5Gエンジニア候補追加提出', due: '2025/3/20', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: '5G基盤エンジニア', count: 3, date: '2025/2/1', dept: 'ITSS' },
+      { title: 'ネットワークアーキテクト', count: 1, date: '2025/3/3', dept: 'ITSS' },
+    ],
+  },
+  76: {
+    basicInfo: { company: 'KDDI', dept: 'ネットワーク技術本部 自動化チーム', clientPerson: '松本本部長、石川 自動化リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: 'ネットワーク技術本部 ネットワーク自動化', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/20', attendees: '石川リーダー、鈴木', content: 'ネットワーク自動化のAnsible/Terraform導入支援。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ネットワーク自動化エンジニア候補提出', due: '2025/3/15', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'ネットワーク自動化エンジニア', count: 2, date: '2025/2/20', dept: 'ITSS' },
+    ],
+  },
+  77: {
+    basicInfo: { company: 'KDDI', dept: '5G/6G推進室', clientPerson: '松本本部長、藤田 5G推進室長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: '5G/6G推進室 エッジコンピューティング開発', children: ['5G/6G推進室 次世代通信プロトコル研究'] },
+    meetings: [
+      { round: 1, date: '2025/2/28', attendees: '藤田室長、佐藤', content: 'エッジコンピューティング開発のエンジニア支援依頼。低レイテンシ処理の知見が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'エッジコンピューティングエンジニア候補提出', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'エッジコンピューティングエンジニア', count: 2, date: '2025/2/28', dept: 'ITSS' },
+    ],
+  },
+  78: {
+    basicInfo: { company: 'KDDI', dept: '5G/6G推進室 研究チーム', clientPerson: '藤田室長、中島 研究リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: '5G/6G推進室 エッジコンピューティング開発', current: '5G/6G推進室 次世代通信プロトコル研究', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/15', attendees: '中島リーダー、山本', content: '次世代通信プロトコルの研究支援。QUIC/HTTP3の専門家が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '通信プロトコル研究者候補提出', due: '2025/3/22', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: '通信プロトコル研究者', count: 1, date: '2025/2/15', dept: 'DSL' },
+    ],
+  },
+  79: {
+    basicInfo: { company: 'KDDI', dept: 'DX推進本部', clientPerson: '高田 DX推進本部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: null, current: 'DX推進本部 顧客基盤システム刷新', children: ['DX推進本部 データ分析基盤構築'] },
+    meetings: [
+      { round: 2, date: '2025/2/28', attendees: '高田本部長、山本', content: '顧客基盤システム刷新の設計完了。データ分析基盤の追加支援を依頼。' },
+      { round: 1, date: '2025/2/1', attendees: '高田本部長、山本', content: '初回訪問。顧客データ基盤の刷新ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'データ基盤アーキテクト候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'データ基盤アーキテクト', count: 1, date: '2025/2/28', dept: 'DSL' },
+      { title: 'バックエンドエンジニア', count: 2, date: '2025/2/1', dept: 'DSL' },
+    ],
+  },
+  80: {
+    basicInfo: { company: 'KDDI', dept: 'DX推進本部 データ分析チーム', clientPerson: '高田本部長、川口 データ分析リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '完了' },
+    tree: { parent: 'DX推進本部 顧客基盤システム刷新', current: 'DX推進本部 データ分析基盤構築', children: [] },
+    meetings: [
+      { round: 2, date: '2025/2/10', attendees: '川口リーダー、山本', content: 'データ分析基盤構築完了。Snowflake環境の運用開始。' },
+      { round: 1, date: '2025/1/15', attendees: '川口リーダー、山本', content: 'データ分析基盤の設計支援依頼。' },
+    ],
+    tasks: [], jobs: [
+      { title: 'データアナリスト', count: 2, date: '2025/1/15', dept: 'DSL' },
+    ],
+  },
+  81: {
+    basicInfo: { company: 'KDDI', dept: 'プラットフォーム開発部', clientPerson: '平田 プラットフォーム部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'プラットフォーム開発部 APIプラットフォーム構築', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/25', attendees: '平田部長、佐藤', content: 'APIプラットフォーム構築支援。GraphQL/REST APIの設計経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'APIエンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'APIプラットフォームエンジニア', count: 2, date: '2025/2/25', dept: 'ITSS' },
+    ],
+  },
+  82: {
+    basicInfo: { company: 'KDDI', dept: 'セキュリティ統括部', clientPerson: '三浦 CISO', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'セキュリティ統括部 SOC構築支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/18', attendees: '三浦CISO、鈴木', content: 'SOC（セキュリティオペレーションセンター）構築支援。SIEM運用経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'SOCアナリスト候補提出', due: '2025/3/22', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'SOCアナリスト', count: 2, date: '2025/2/18', dept: 'ITSS' },
+      { title: 'SIEM運用エンジニア', count: 1, date: '2025/2/18', dept: 'ITSS' },
+    ],
+  },
+
+  // ===== ソニーグループ =====
+  83: {
+    basicInfo: { company: 'ソニーグループ', dept: 'R&D本部', clientPerson: '村上 R&D本部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'R&D本部 画像処理エンジン開発PJ', children: ['R&D本部 量子コンピューティング研究支援', 'R&D本部 コンピュータビジョン研究強化'] },
+    meetings: [
+      { round: 2, date: '2025/3/12', attendees: '村上本部長、佐藤', content: '画像処理エンジン開発順調。量子コンピューティングとCV研究の追加支援を依頼。' },
+      { round: 1, date: '2025/2/10', attendees: '村上本部長、佐藤', content: '初回訪問。次世代画像処理エンジンの開発体制強化ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '画像処理エンジニア追加候補提出', due: '2025/3/25', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: '画像処理エンジニア（C++/CUDA）', count: 3, date: '2025/2/10', dept: 'ITSS' },
+    ],
+  },
+  84: {
+    basicInfo: { company: 'ソニーグループ', dept: 'R&D本部 量子チーム', clientPerson: '村上本部長、小野 量子研究リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 量子コンピューティング研究支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/1', attendees: '小野リーダー、山本', content: '量子コンピューティング研究の人材支援依頼。量子アルゴリズムの研究者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '量子コンピューティング研究者候補提出', due: '2025/3/25', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: '量子コンピューティング研究者', count: 1, date: '2025/3/1', dept: 'DSL' },
+    ],
+  },
+  85: {
+    basicInfo: { company: 'ソニーグループ', dept: 'ゲーム&ネットワークサービス部', clientPerson: '田村 ゲーム開発部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', children: ['ゲーム&ネットワークサービス部 リアルタイム通信基盤'] },
+    meetings: [
+      { round: 2, date: '2025/3/5', attendees: '田村部長、佐藤', content: 'バックエンド強化の進捗確認。リアルタイム通信基盤の追加支援を依頼。' },
+      { round: 1, date: '2025/2/10', attendees: '田村部長、佐藤', content: '大規模オンラインゲームのバックエンド強化ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ゲームバックエンドエンジニア候補提出', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'ゲームバックエンドエンジニア（Go/Rust）', count: 2, date: '2025/2/10', dept: 'ITSS' },
+    ],
+  },
+  86: {
+    basicInfo: { company: 'ソニーグループ', dept: 'ゲーム&ネットワークサービス部 通信チーム', clientPerson: '田村部長、佐野 通信リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', current: 'ゲーム&ネットワークサービス部 リアルタイム通信基盤', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/25', attendees: '佐野リーダー、佐藤', content: 'WebSocket/WebRTCベースのリアルタイム通信基盤構築。低レイテンシ実装の経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'リアルタイム通信エンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'リアルタイム通信エンジニア', count: 2, date: '2025/2/25', dept: 'ITSS' },
+    ],
+  },
+  87: {
+    basicInfo: { company: 'ソニーグループ', dept: '半導体事業部', clientPerson: '原田 半導体事業部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '完了' },
+    tree: { parent: null, current: '半導体事業部 EDA設計エンジニア支援', children: ['半導体事業部 検証自動化PJ'] },
+    meetings: [
+      { round: 2, date: '2025/2/20', attendees: '原田部長、鈴木', content: 'EDA設計エンジニア2名の稼働確認。検証自動化の追加支援を依頼。' },
+      { round: 1, date: '2025/1/20', attendees: '原田部長、鈴木', content: 'EDA設計ツールの運用エンジニア支援依頼。' },
+    ],
+    tasks: [], jobs: [
+      { title: 'EDA設計エンジニア', count: 2, date: '2025/1/20', dept: 'ITSS' },
+    ],
+  },
+  88: {
+    basicInfo: { company: 'ソニーグループ', dept: '半導体事業部 検証チーム', clientPerson: '原田部長、内藤 検証リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: '半導体事業部 EDA設計エンジニア支援', current: '半導体事業部 検証自動化PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/15', attendees: '内藤リーダー、山本', content: '半導体検証の自動化ツール開発支援。SystemVerilog/UVM経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '検証自動化エンジニア候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: '検証自動化エンジニア（SystemVerilog）', count: 2, date: '2025/2/15', dept: 'DSL' },
+    ],
+  },
+  89: {
+    basicInfo: { company: 'ソニーグループ', dept: '人事部', clientPerson: '清水 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: null, current: '人事部 エンジニア中途採用強化', children: ['人事部 AI研究者ヘッドハンティング'] },
+    meetings: [
+      { round: 2, date: '2025/3/5', attendees: '清水部長、田中', content: 'エンジニア採用の進捗確認。AI研究者のヘッドハンティングを追加依頼。' },
+      { round: 1, date: '2025/2/5', attendees: '清水部長、田中', content: '初回訪問。エンジニア中途採用の包括的支援依頼。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'シニアエンジニア候補スカウト', due: '2025/3/22', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'シニアエンジニア（ソフトウェア）', count: 3, date: '2025/2/5', dept: 'PERM' },
+    ],
+  },
+  90: {
+    basicInfo: { company: 'ソニーグループ', dept: '人事部', clientPerson: '清水人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: '人事部 エンジニア中途採用強化', current: '人事部 AI研究者ヘッドハンティング', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/25', attendees: '清水部長、田中', content: 'AI研究者（PhD）のヘッドハンティング依頼。自然言語処理またはCV専門。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'AI研究者候補リストアップ', due: '2025/3/25', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'AI研究者（PhD、NLP/CV）', count: 2, date: '2025/2/25', dept: 'PERM' },
+    ],
+  },
+  91: {
+    basicInfo: { company: 'ソニーグループ', dept: 'AIロボティクス研究所', clientPerson: '山下 AIロボティクス所長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: 'AIロボティクス研究所 自律制御エンジニア支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/28', attendees: '山下所長、鈴木', content: '自律制御システムのエンジニア支援依頼。ROS2/C++の経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ROS2エンジニア候補提出', due: '2025/3/22', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: '自律制御エンジニア（ROS2/C++）', count: 2, date: '2025/2/28', dept: 'ITSS' },
+    ],
+  },
+  92: {
+    basicInfo: { company: 'ソニーグループ', dept: 'R&D本部 CVチーム', clientPerson: '村上本部長、工藤 CVリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 コンピュータビジョン研究強化', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/18', attendees: '工藤リーダー、山本', content: 'CV研究チームの強化支援。3Dビジョンの研究者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '3Dビジョン研究者候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: '3Dビジョン研究者', count: 1, date: '2025/2/18', dept: 'DSL' },
+      { title: 'コンピュータビジョンエンジニア', count: 2, date: '2025/2/18', dept: 'DSL' },
+    ],
+  },
+
+  // ===== 既存企業追加分 =====
+  93: {
+    basicInfo: { company: 'NTTデータ', dept: '製造事業部 AI推進チーム', clientPerson: '山田部長、木村 AI推進リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
+    tree: { parent: null, current: '製造事業部 AI外観検査PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/8', attendees: '木村リーダー、鈴木', content: 'AI外観検査システムのエンジニア支援依頼。PyTorch/OpenCV経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'AI外観検査エンジニア候補提出', due: '2025/3/22', assignee: '鈴木 一郎' },
+    ],
+    jobs: [
+      { title: 'AI外観検査エンジニア（PyTorch）', count: 2, date: '2025/3/8', dept: 'ITSS' },
+    ],
+  },
+  94: {
+    basicInfo: { company: '富士通', dept: 'デジタル推進部 データチーム', clientPerson: 'デジタル推進部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '予定' },
+    tree: { parent: null, current: 'デジタル推進部 データメッシュ導入PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/10', attendees: 'デジタル推進部長、佐藤', content: 'データメッシュアーキテクチャの導入検討。次回詳細ヒアリング予定。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'データメッシュ提案資料作成', due: '2025/3/20', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'データメッシュアーキテクト', count: 1, date: '2025/3/10', dept: 'ITSS' },
+    ],
+  },
+  95: {
+    basicInfo: { company: 'ノースサンド', dept: '戦略企画部', clientPerson: '戦略企画部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: null, current: '戦略企画部 IT戦略コンサル支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/2/28', attendees: '戦略企画部長、山本', content: 'IT戦略策定のコンサルタント支援依頼。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ITコンサルタント候補提出', due: '2025/3/18', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'IT戦略コンサルタント', count: 2, date: '2025/2/28', dept: 'DSL' },
+    ],
+  },
+  96: {
+    basicInfo: { company: 'Sansan', dept: 'セキュリティ部門', clientPerson: 'セキュリティ部門長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'セキュリティ部門 脆弱性診断エンジニア支援', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/5', attendees: 'セキュリティ部門長、佐藤', content: '脆弱性診断チームの体制強化ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: '脆弱性診断エンジニア候補提出', due: '2025/3/22', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: '脆弱性診断エンジニア', count: 2, date: '2025/3/5', dept: 'ITSS' },
+    ],
+  },
+  97: {
+    basicInfo: { company: 'トヨタ自動車', dept: 'HR・人事部', clientPerson: 'HR・人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
+    tree: { parent: null, current: 'HR・人事部 タレントマネジメント導入PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/1', attendees: 'HR・人事部長、田中', content: 'タレントマネジメントシステム導入支援の人材ニーズ。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'HRテック専門家候補提出', due: '2025/3/22', assignee: '田中 花子' },
+    ],
+    jobs: [
+      { title: 'HRテック導入コンサルタント', count: 1, date: '2025/3/1', dept: 'PERM' },
+    ],
+  },
+  98: {
+    basicInfo: { company: '日立製作所', dept: 'AI&データサイエンス部', clientPerson: 'AI&DS部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
+    tree: { parent: null, current: 'AI&データサイエンス部 MLOps基盤構築', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/5', attendees: 'AI&DS部長、山本', content: 'MLOps基盤の構築支援依頼。Kubeflow/Vertex AIの経験者が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'MLOpsエンジニア候補提出', due: '2025/3/20', assignee: '山本 三郎' },
+    ],
+    jobs: [
+      { title: 'MLOpsエンジニア（Kubeflow）', count: 2, date: '2025/3/5', dept: 'DSL' },
+    ],
+  },
+  99: {
+    basicInfo: { company: 'リクルート', dept: 'インフラ運用部', clientPerson: 'インフラ運用部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
+    tree: { parent: null, current: 'インフラ運用部 クラウド移行支援PJ', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/1', attendees: 'インフラ運用部長、佐藤', content: 'オンプレミスからクラウドへの移行支援。AWS/GCP両対応が必要。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'クラウド移行エンジニア候補提出', due: '2025/3/18', assignee: '佐藤 次郎' },
+    ],
+    jobs: [
+      { title: 'クラウド移行エンジニア', count: 2, date: '2025/3/1', dept: 'ITSS' },
+    ],
+  },
+  100: {
+    basicInfo: { company: '楽天グループ', dept: 'グローバル開発部', clientPerson: 'グローバル開発部長', ourPerson: '伊藤 美咲', businessDept: 'FS', channel: 'toBマーケ', acquiredBy: '伊藤 美咲', status: '実施済' },
+    tree: { parent: null, current: 'グローバル開発部 オフショア開発体制構築', children: [] },
+    meetings: [
+      { round: 1, date: '2025/3/8', attendees: 'グローバル開発部長、伊藤', content: 'オフショア開発体制の構築支援。ブリッジSEの確保が急務。' },
+    ],
+    tasks: [
+      { status: 'pending', name: 'ブリッジSE候補提出', due: '2025/3/22', assignee: '伊藤 美咲' },
+    ],
+    jobs: [
+      { title: 'ブリッジSE（英語/日本語）', count: 2, date: '2025/3/8', dept: 'FS' },
+      { title: 'オフショアPM', count: 1, date: '2025/3/8', dept: 'FS' },
+    ],
+  },
 }
 
 export const TASKS = [
@@ -1220,6 +1904,93 @@ export const TASKS = [
   { id: 18, type: 'Task',     name: 'Sansan フロントエンドエンジニア候補提出', company: 'Sansan',     category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 43 },
   { id: 19, type: 'Task',     name: 'ノースサンド BPRコンサル候補提出',     company: 'ノースサンド',  category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 42 },
   { id: 20, type: 'Activity', name: 'FPGAエンジニア市場調査レポート作成',   company: 'トヨタ自動車',  category: '資料作成',       due: '2025/3/10', assignee: '鈴木 一郎', method: 'メール',  status: 'done',    dealId: 47 },
+  // 日立製作所
+  { id: 21, type: 'Task',     name: 'Javaアーキテクト候補3名提出',             company: '日立製作所',    category: '候補者ピック',   due: '2025/3/20', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 51 },
+  { id: 22, type: 'Task',     name: 'Kubernetesエンジニア候補提出',            company: '日立製作所',    category: '候補者ピック',   due: '2025/3/18', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 52 },
+  { id: 23, type: 'Task',     name: 'IoTエンジニア候補2名提出',                company: '日立製作所',    category: '候補者ピック',   due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 53 },
+  { id: 24, type: 'Task',     name: 'MLエンジニア候補提出（日立）',            company: '日立製作所',    category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 54 },
+  { id: 25, type: 'Task',     name: 'SREエンジニア候補提出（日立）',           company: '日立製作所',    category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 56 },
+  { id: 26, type: 'Task',     name: 'テックリード候補スカウト（日立）',        company: '日立製作所',    category: '候補者ピック',   due: '2025/3/22', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 57 },
+  { id: 27, type: 'Task',     name: 'CTO補佐候補リストアップ',                company: '日立製作所',    category: '候補者ピック',   due: '2025/3/25', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 58 },
+  { id: 28, type: 'Task',     name: 'AWS認定エンジニア候補提出',              company: '日立製作所',    category: '候補者ピック',   due: '2025/3/15', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 59 },
+  { id: 29, type: 'Task',     name: 'データエンジニア候補提出（日立Lumada）',  company: '日立製作所',    category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 60 },
+  { id: 30, type: 'Activity', name: '日立製作所 DevOps導入完了報告確認',       company: '日立製作所',    category: '資料作成',       due: '2025/3/5',  assignee: '佐藤 次郎', method: 'メール',  status: 'done',    dealId: 55 },
+  { id: 31, type: 'Task',     name: 'MLOpsエンジニア候補提出（日立AI&DS）',    company: '日立製作所',    category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 98 },
+  // リクルート
+  { id: 32, type: 'Task',     name: 'Goエンジニア追加候補提出（リクルート）',  company: 'リクルート',    category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 61 },
+  { id: 33, type: 'Task',     name: 'React/TS エンジニア候補提出',            company: 'リクルート',    category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 62 },
+  { id: 34, type: 'Task',     name: 'シニアエンジニア候補スカウト（リクルート）', company: 'リクルート', category: '候補者ピック',   due: '2025/3/22', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 64 },
+  { id: 35, type: 'Task',     name: 'VPoE候補リストアップ',                   company: 'リクルート',    category: '候補者ピック',   due: '2025/3/25', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 65 },
+  { id: 36, type: 'Task',     name: 'MLOpsエンジニア候補提出（リクルート）',   company: 'リクルート',    category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 66 },
+  { id: 37, type: 'Activity', name: 'リクルートSRE人材稼働確認',              company: 'リクルート',    category: 'アポ依頼',       due: '2025/3/5',  assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 63 },
+  { id: 38, type: 'Task',     name: 'クラウド移行エンジニア候補提出',         company: 'リクルート',    category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 99 },
+  // 楽天グループ
+  { id: 39, type: 'Task',     name: 'MSアーキテクト追加候補（楽天）',         company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 67 },
+  { id: 40, type: 'Task',     name: '負荷試験エンジニア候補提出',             company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 68 },
+  { id: 41, type: 'Task',     name: 'Go/gRPCエンジニア候補提出（楽天）',      company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/20', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 69 },
+  { id: 42, type: 'Task',     name: 'BCエンジニア候補提出',                   company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/22', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 70 },
+  { id: 43, type: 'Task',     name: '深層学習エンジニア候補提出（楽天AI）',   company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/18', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 72 },
+  { id: 44, type: 'Task',     name: 'テックリード候補リストアップ（楽天）',   company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/25', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 73 },
+  { id: 45, type: 'Task',     name: 'データパイプラインエンジニア候補提出',   company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 74 },
+  { id: 46, type: 'Activity', name: '楽天Flutter開発チーム稼働確認',          company: '楽天グループ',  category: 'アポ依頼',       due: '2025/3/1',  assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 71 },
+  { id: 47, type: 'Task',     name: 'ブリッジSE候補提出（楽天）',             company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/22', assignee: '伊藤 美咲', method: 'メール',  status: 'pending', dealId: 100 },
+  // KDDI
+  { id: 48, type: 'Task',     name: '5Gエンジニア候補追加提出',               company: 'KDDI',          category: '候補者ピック',   due: '2025/3/20', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 75 },
+  { id: 49, type: 'Task',     name: 'NW自動化エンジニア候補提出',             company: 'KDDI',          category: '候補者ピック',   due: '2025/3/15', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 76 },
+  { id: 50, type: 'Task',     name: 'エッジコンピューティングEng候補提出',    company: 'KDDI',          category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 77 },
+  { id: 51, type: 'Task',     name: '通信プロトコル研究者候補提出',           company: 'KDDI',          category: '候補者ピック',   due: '2025/3/22', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 78 },
+  { id: 52, type: 'Task',     name: 'データ基盤アーキテクト候補提出',         company: 'KDDI',          category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 79 },
+  { id: 53, type: 'Task',     name: 'APIエンジニア候補提出（KDDI）',          company: 'KDDI',          category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 81 },
+  { id: 54, type: 'Task',     name: 'SOCアナリスト候補提出',                  company: 'KDDI',          category: '候補者ピック',   due: '2025/3/22', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 82 },
+  { id: 55, type: 'Activity', name: 'KDDI データ分析基盤納品完了確認',        company: 'KDDI',          category: '資料作成',       due: '2025/2/15', assignee: '山本 三郎', method: 'メール',  status: 'done',    dealId: 80 },
+  // ソニーグループ
+  { id: 56, type: 'Task',     name: '画像処理エンジニア追加候補提出',         company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/25', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 83 },
+  { id: 57, type: 'Task',     name: '量子コンピューティング研究者候補提出',   company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/25', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 84 },
+  { id: 58, type: 'Task',     name: 'ゲームバックエンドEng候補提出',          company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 85 },
+  { id: 59, type: 'Task',     name: 'リアルタイム通信Eng候補提出',            company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 86 },
+  { id: 60, type: 'Task',     name: '検証自動化エンジニア候補提出',           company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 88 },
+  { id: 61, type: 'Task',     name: 'シニアEng候補スカウト（ソニー）',        company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/22', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 89 },
+  { id: 62, type: 'Task',     name: 'AI研究者候補リストアップ（ソニー）',     company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/25', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 90 },
+  { id: 63, type: 'Task',     name: 'ROS2エンジニア候補提出',                 company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/22', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 91 },
+  { id: 64, type: 'Task',     name: '3Dビジョン研究者候補提出',               company: 'ソニーグループ', category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 92 },
+  { id: 65, type: 'Activity', name: 'ソニー EDA設計Eng稼働確認',              company: 'ソニーグループ', category: 'アポ依頼',       due: '2025/2/25', assignee: '鈴木 一郎', method: '電話',    status: 'done',    dealId: 87 },
+  // 既存企業追加分
+  { id: 66, type: 'Task',     name: 'AI外観検査エンジニア候補提出',           company: 'NTTデータ',    category: '候補者ピック',   due: '2025/3/22', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 93 },
+  { id: 67, type: 'Task',     name: 'データメッシュ提案資料作成',             company: '富士通',        category: '資料作成',       due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 94 },
+  { id: 68, type: 'Task',     name: 'ITコンサルタント候補提出',               company: 'ノースサンド',  category: '候補者ピック',   due: '2025/3/18', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 95 },
+  { id: 69, type: 'Task',     name: '脆弱性診断エンジニア候補提出',           company: 'Sansan',        category: '候補者ピック',   due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 96 },
+  { id: 70, type: 'Task',     name: 'HRテック専門家候補提出',                 company: 'トヨタ自動車',  category: '候補者ピック',   due: '2025/3/22', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 97 },
+  // 追加の多様なTask/Activity
+  { id: 71, type: 'Activity', name: '日立 Lumada事業部 次回面談調整',         company: '日立製作所',    category: 'アポ依頼',       due: '2025/3/12', assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 53 },
+  { id: 72, type: 'Activity', name: '楽天 フィンテック部門 要件確認電話',     company: '楽天グループ',  category: '求人取得依頼',   due: '2025/3/8',  assignee: '鈴木 一郎', method: '電話',    status: 'done',    dealId: 69 },
+  { id: 73, type: 'Task',     name: 'KDDI ネットワーク本部 提案書作成',       company: 'KDDI',          category: '資料作成',       due: '2025/3/15', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 75 },
+  { id: 74, type: 'Activity', name: 'ソニー R&D本部 面談フォローアップ',      company: 'ソニーグループ', category: 'アポ依頼',       due: '2025/3/15', assignee: '佐藤 次郎', method: '電話',    status: 'pending', dealId: 83 },
+  { id: 75, type: 'Task',     name: 'NTTデータ AI外観検査 スキルシート準備',  company: 'NTTデータ',    category: '資料作成',       due: '2025/3/20', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 93 },
+  { id: 76, type: 'Activity', name: '楽天 人事本部 契約条件確認',             company: '楽天グループ',  category: '契約書取交し',   due: '2025/3/10', assignee: '田中 花子', method: 'メール',  status: 'done',    dealId: 73 },
+  { id: 77, type: 'Task',     name: '日立 クラウドサービス部 追加求人取得',   company: '日立製作所',    category: '求人取得依頼',   due: '2025/3/18', assignee: '鈴木 一郎', method: '電話',    status: 'pending', dealId: 59 },
+  { id: 78, type: 'Activity', name: 'KDDI DX推進本部 進捗報告送付',          company: 'KDDI',          category: '資料作成',       due: '2025/3/5',  assignee: '山本 三郎', method: 'メール',  status: 'done',    dealId: 79 },
+  { id: 79, type: 'Task',     name: 'リクルート DS部 面談前資料準備',         company: 'リクルート',    category: '資料作成',       due: '2025/3/15', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 66 },
+  { id: 80, type: 'Activity', name: 'ソニー 半導体事業部 追加ニーズ確認',     company: 'ソニーグループ', category: '求人取得依頼',   due: '2025/3/8',  assignee: '山本 三郎', method: '電話',    status: 'done',    dealId: 88 },
+  { id: 81, type: 'Task',     name: '日立 人財統括本部 契約書ドラフト作成',   company: '日立製作所',    category: '契約書取交し',   due: '2025/3/25', assignee: '田中 花子', method: 'その他',  status: 'pending', dealId: 57 },
+  { id: 82, type: 'Activity', name: '楽天 コマース開発 月次レビュー調整',     company: '楽天グループ',  category: 'アポ依頼',       due: '2025/3/12', assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 67 },
+  { id: 83, type: 'Task',     name: 'KDDI セキュリティ統括部 提案書送付',     company: 'KDDI',          category: '資料作成',       due: '2025/3/18', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 82 },
+  { id: 84, type: 'Activity', name: 'ソニー AIロボティクス 求人要件確認',     company: 'ソニーグループ', category: '求人取得依頼',   due: '2025/3/5',  assignee: '鈴木 一郎', method: '電話',    status: 'done',    dealId: 91 },
+  { id: 85, type: 'Task',     name: 'NTTデータ クラウド推進 契約更新準備',    company: 'NTTデータ',    category: '契約書取交し',   due: '2025/3/25', assignee: '鈴木 一郎', method: 'その他',  status: 'pending', dealId: 35 },
+  { id: 86, type: 'Activity', name: '富士通 HR部門 面談設定',                 company: '富士通',        category: 'アポ依頼',       due: '2025/3/14', assignee: '田中 花子', method: '電話',    status: 'pending', dealId: 10 },
+  { id: 87, type: 'Task',     name: 'ノースサンド PMO部門 候補者追加提出',    company: 'ノースサンド',  category: '候補者ピック',   due: '2025/3/20', assignee: '田中 花子', method: 'メール',  status: 'pending', dealId: 41 },
+  { id: 88, type: 'Activity', name: 'Sansan エンジニアリング本部 進捗確認',   company: 'Sansan',        category: 'アポ依頼',       due: '2025/3/10', assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 21 },
+  { id: 89, type: 'Task',     name: 'トヨタ 情報システム部 マイクロサービス提案', company: 'トヨタ自動車', category: '資料作成',      due: '2025/3/18', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 48 },
+  { id: 90, type: 'Task',     name: '日立 Lumada AI分析基盤 提案資料更新',    company: '日立製作所',    category: '資料作成',       due: '2025/3/22', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 54 },
+  { id: 91, type: 'Activity', name: 'リクルート 人事企画部 求人条件最終確認', company: 'リクルート',    category: '求人取得依頼',   due: '2025/3/12', assignee: '田中 花子', method: '電話',    status: 'done',    dealId: 64 },
+  { id: 92, type: 'Task',     name: '楽天 AI推進室 レコメンドEng選定',        company: '楽天グループ',  category: '候補者ピック',   due: '2025/3/20', assignee: '山本 三郎', method: 'メール',  status: 'pending', dealId: 72 },
+  { id: 93, type: 'Activity', name: 'KDDI 5G推進室 エッジ要件再確認',         company: 'KDDI',          category: '求人取得依頼',   due: '2025/3/10', assignee: '佐藤 次郎', method: '電話',    status: 'done',    dealId: 77 },
+  { id: 94, type: 'Task',     name: 'ソニー ゲーム部門 追加求人取得',         company: 'ソニーグループ', category: '求人取得依頼',   due: '2025/3/20', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 85 },
+  { id: 95, type: 'Task',     name: 'NTTデータ 金融部 API GW提案書更新',     company: 'NTTデータ',    category: '資料作成',       due: '2025/3/18', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 34 },
+  { id: 96, type: 'Activity', name: '富士通 デジタル推進部 DX人材要件確認',   company: '富士通',        category: '求人取得依頼',   due: '2025/3/15', assignee: '佐藤 次郎', method: '電話',    status: 'pending', dealId: 14 },
+  { id: 97, type: 'Task',     name: 'Sansan データ基盤部 候補者フォロー',     company: 'Sansan',        category: '候補者ピック',   due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 45 },
+  { id: 98, type: 'Activity', name: 'トヨタ コネクティッド部門 契約条件確認', company: 'トヨタ自動車',  category: '契約書取交し',   due: '2025/3/12', assignee: '鈴木 一郎', method: 'メール',  status: 'done',    dealId: 49 },
+  { id: 99, type: 'Task',     name: '日立 システム統括 Java移行進捗報告',     company: '日立製作所',    category: '資料作成',       due: '2025/3/20', assignee: '鈴木 一郎', method: 'メール',  status: 'pending', dealId: 51 },
+  { id: 100, type: 'Task',    name: 'KDDI プラットフォーム部 API設計レビュー', company: 'KDDI',         category: '資料作成',       due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 81 },
 ]
 
 // フィルター用定数（DEALSとTASKSから自動生成）
