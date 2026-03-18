@@ -18,7 +18,7 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-primary flex flex-col z-40">
       <div className="p-5 pt-6">
-        <h1 className="text-white text-xl font-bold tracking-tight">SalesCore</h1>
+        <h1 className="text-white text-xl font-bold tracking-tight">Power Ageless</h1>
         <p className="text-gray-400 text-xs mt-0.5">商談管理システム</p>
       </div>
 
