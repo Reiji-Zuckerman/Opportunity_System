@@ -2081,6 +2081,420 @@ export const MY_PAGE_DATA = {
   notification: 'NTTデータ との契約書取交しが完了しています。契約ステータスを更新してください。',
 }
 
+
+// Extended company data (new CRM fields)
+export const COMPANY_EXTENDED = {
+  1: {
+    itssAttention: 'A',
+    permAttention: 'A',
+    address: '東京都江東区豊洲3-3-3',
+    industry: [
+      'IT・通信',
+      '金融'
+    ],
+    businessDescription: 'システムインテグレーション、コンサルティング、ITインフラ構築を主軸とした総合ITサービス企業。官公庁・金融・製造業向けの大規模システム開発に強み。',
+    corporateNumber: '2010001008652',
+    frmc: 'NTTデータ向けは中堅以上のシニアエンジニアを中心にご提案。金融・製造領域の業務知識があると通りやすい。単価は65-85万/月。',
+    permNote: 'CA向け：大手志向の候補者に好まれる傾向。転職回数3回以内が望ましい。年収レンジ500-900万。',
+    cvNote: 'アシスタント用：CV送信前に必ず担当RAに確認。写真付き履歴書必須。',
+    sentPickNote: '金融知識・PM経験を重視。英語力あれば尚可。',
+    maxAge: 45,
+    blindSent: '可',
+    blindSentMethod: 'メール',
+    realNameChannel: '直接紹介',
+    permAts: 'HRMOS',
+    permAtsUrl: 'https://hrmos.co/nttdata',
+    hiringTypes: [
+      '正社員',
+      '契約社員',
+      'SES'
+    ],
+    hiringRoles: [
+      'エンジニア',
+      'PM',
+      'コンサルタント'
+    ],
+    keywords: [
+      'Java',
+      'AWS',
+      'PM',
+      '金融',
+      '製造'
+    ]
+  },
+  2: {
+    itssAttention: 'B',
+    permAttention: 'A',
+    address: '東京都港区東新橋1-5-2',
+    industry: [
+      'IT・通信',
+      '製造'
+    ],
+    businessDescription: 'ICTソリューション・プロダクト・サービスをグローバルに提供する総合ITベンダー。',
+    corporateNumber: '4010401052486',
+    frmc: '富士通向けはインフラ系エンジニアのニーズが高い。Linux/クラウド経験者優先。',
+    permNote: '新卒採用が多いためPERM中途は少ないが、専門職採用は積極的。',
+    cvNote: '職務経歴書フォーマット指定あり。担当RAに確認のこと。',
+    sentPickNote: 'インフラ・クラウド領域優先。',
+    maxAge: 40,
+    blindSent: '不可',
+    blindSentMethod: '—',
+    realNameChannel: 'エージェント経由',
+    permAts: 'タレントパレット',
+    permAtsUrl: 'https://tp.fujitsu.com',
+    hiringTypes: [
+      '正社員',
+      'SES'
+    ],
+    hiringRoles: [
+      'インフラエンジニア',
+      'SE',
+      'PM'
+    ],
+    keywords: [
+      'Linux',
+      'Azure',
+      'SAP'
+    ]
+  },
+  3: {
+    itssAttention: 'A',
+    permAttention: 'B',
+    address: '東京都中央区銀座4-12-15',
+    industry: [
+      'コンサルティング'
+    ],
+    businessDescription: 'IT・デジタル領域のコンサルティングファーム。DX支援、ERP導入、PMO支援に強み。',
+    corporateNumber: '6010001182345',
+    frmc: 'SAP/ERP経験者を最優先。PMO経験者も高ニーズ。',
+    permNote: 'コンサル経験者が望ましい。論理思考力重視。',
+    cvNote: '英語レジュメ不要。日本語のみでOK。',
+    sentPickNote: 'SAP認定資格保持者を優先。',
+    maxAge: 38,
+    blindSent: '可',
+    blindSentMethod: 'メール',
+    realNameChannel: '直接紹介',
+    permAts: '自社システム',
+    permAtsUrl: '',
+    hiringTypes: [
+      '正社員',
+      '業務委託'
+    ],
+    hiringRoles: [
+      'コンサルタント',
+      'PMO',
+      'SAP'
+    ],
+    keywords: [
+      'SAP',
+      'ERP',
+      'PMO',
+      'アジャイル'
+    ]
+  },
+  4: {
+    itssAttention: 'B',
+    permAttention: 'C',
+    address: '東京都渋谷区桜丘町1-1',
+    industry: [
+      'IT・通信',
+      'SaaS'
+    ],
+    businessDescription: 'クラウド名刺管理サービスを中心としたBtoBプラットフォーム企業。',
+    corporateNumber: '9011101062740',
+    frmc: 'フロントエンド・モバイル系エンジニアのニーズ。React/TypeScript経験者。',
+    permNote: 'スタートアップ志向の候補者向け。柔軟な働き方アピール。',
+    cvNote: 'ポートフォリオ添付推奨。',
+    sentPickNote: 'SaaS開発経験者優先。',
+    maxAge: 35,
+    blindSent: '可',
+    blindSentMethod: 'ATS経由',
+    realNameChannel: 'エージェント経由',
+    permAts: 'Greenhouse',
+    permAtsUrl: 'https://greenhouse.io/sansan',
+    hiringTypes: [
+      '正社員'
+    ],
+    hiringRoles: [
+      'エンジニア',
+      'デザイナー',
+      'PdM'
+    ],
+    keywords: [
+      'React',
+      'TypeScript',
+      'SaaS',
+      'モバイル'
+    ]
+  },
+  5: {
+    itssAttention: 'A',
+    permAttention: 'B',
+    address: '愛知県豊田市トヨタ町1',
+    industry: [
+      '自動車',
+      '製造'
+    ],
+    businessDescription: '世界最大級の自動車メーカー。近年はモビリティ・自動運転・EV領域のDX投資を加速。',
+    corporateNumber: '3180301018771',
+    frmc: '組込み系・車載ソフトウェアエンジニアが最優先。C/C++必須。',
+    permNote: 'メーカー志向の候補者向け。安定志向が多い。',
+    cvNote: '顔写真必須。学歴・職歴を時系列で記載。',
+    sentPickNote: '車載・組込み経験を重視。AUTOSAR知識あれば尚可。',
+    maxAge: 45,
+    blindSent: '不可',
+    blindSentMethod: '—',
+    realNameChannel: '直接紹介',
+    permAts: 'SAP SuccessFactors',
+    permAtsUrl: 'https://sf.toyota.co.jp',
+    hiringTypes: [
+      '正社員',
+      'SES'
+    ],
+    hiringRoles: [
+      '組込みエンジニア',
+      'AI研究者',
+      'PM'
+    ],
+    keywords: [
+      'C++',
+      '組込み',
+      '自動運転',
+      'AI'
+    ]
+  },
+  6: {
+    itssAttention: 'A',
+    permAttention: 'A',
+    address: '東京都千代田区丸の内1-6-6',
+    industry: [
+      'IT・通信',
+      '製造',
+      'インフラ'
+    ],
+    businessDescription: '総合電機メーカー。IT・エネルギー・社会インフラ・ヘルスケア等、幅広い事業を展開。',
+    corporateNumber: '4010001008788',
+    frmc: 'Lumada関連・IoT・AI案件が増加中。Pythonエンジニアのニーズ高い。',
+    permNote: '大手安定志向の候補者に最適。福利厚生充実をアピール。',
+    cvNote: '書類選考が厳しめ。経歴の一貫性を重視。',
+    sentPickNote: 'IoT・データ分析経験者優先。',
+    maxAge: 42,
+    blindSent: '可',
+    blindSentMethod: 'メール',
+    realNameChannel: '直接紹介',
+    permAts: 'HRMOS',
+    permAtsUrl: 'https://hrmos.co/hitachi',
+    hiringTypes: [
+      '正社員',
+      'SES',
+      '契約社員'
+    ],
+    hiringRoles: [
+      'エンジニア',
+      'データサイエンティスト',
+      'PM'
+    ],
+    keywords: [
+      'Python',
+      'IoT',
+      'AI',
+      'Lumada'
+    ]
+  },
+  7: {
+    itssAttention: 'B',
+    permAttention: 'A',
+    address: '東京都千代田区丸の内1-9-2',
+    industry: [
+      'IT・通信',
+      '人材',
+      'メディア'
+    ],
+    businessDescription: 'HRテック・SaaS・メディアを中心とした総合情報サービス企業。',
+    corporateNumber: '4010001008480',
+    frmc: 'SRE・バックエンド・データエンジニアのニーズ。Go/Kotlin経験者。',
+    permNote: '成長志向の候補者にマッチ。裁量の大きさをアピール。',
+    cvNote: 'GitHub/ポートフォリオ添付推奨。',
+    sentPickNote: 'SaaS開発・SRE経験者優先。',
+    maxAge: 38,
+    blindSent: '可',
+    blindSentMethod: 'ATS経由',
+    realNameChannel: 'エージェント経由',
+    permAts: 'Lever',
+    permAtsUrl: 'https://lever.co/recruit',
+    hiringTypes: [
+      '正社員'
+    ],
+    hiringRoles: [
+      'エンジニア',
+      'SRE',
+      'PdM'
+    ],
+    keywords: [
+      'Go',
+      'Kotlin',
+      'SRE',
+      'SaaS'
+    ]
+  },
+  8: {
+    itssAttention: 'A',
+    permAttention: 'B',
+    address: '東京都世田谷区玉川1-14-1',
+    industry: [
+      'IT・通信',
+      'EC',
+      '金融'
+    ],
+    businessDescription: 'EC・フィンテック・モバイル事業を展開する総合インターネット企業。',
+    corporateNumber: '9010001115545',
+    frmc: 'モバイル（Flutter/Swift）・フィンテック系のニーズ。大規模トラフィック経験者。',
+    permNote: '英語力重視（社内公用語）。TOEIC 800点以上推奨。',
+    cvNote: '英語レジュメ推奨。日本語のみでも可だが英語版併記がベター。',
+    sentPickNote: 'モバイル・決済系の経験者優先。',
+    maxAge: 40,
+    blindSent: '可',
+    blindSentMethod: 'メール',
+    realNameChannel: '直接紹介',
+    permAts: 'Workday',
+    permAtsUrl: 'https://workday.com/rakuten',
+    hiringTypes: [
+      '正社員',
+      'SES'
+    ],
+    hiringRoles: [
+      'モバイルエンジニア',
+      'フィンテック',
+      'SRE'
+    ],
+    keywords: [
+      'Flutter',
+      'Swift',
+      '決済',
+      '英語'
+    ]
+  },
+  9: {
+    itssAttention: 'A',
+    permAttention: 'C',
+    address: '東京都千代田区飯田橋3-10-10',
+    industry: [
+      '通信',
+      'IT・通信'
+    ],
+    businessDescription: '大手通信キャリア。5G・IoT・DX支援事業を積極展開。',
+    corporateNumber: '5010001016651',
+    frmc: 'ネットワーク・5G・クラウド系エンジニアが中心。Cisco/AWS経験者。',
+    permNote: '通信業界経験者が有利。未経験からの転職は難しい。',
+    cvNote: '技術資格（CCNA等）があれば明記。',
+    sentPickNote: 'ネットワーク・セキュリティ資格保持者優先。',
+    maxAge: 42,
+    blindSent: '不可',
+    blindSentMethod: '—',
+    realNameChannel: '直接紹介',
+    permAts: 'SAP SuccessFactors',
+    permAtsUrl: 'https://sf.kddi.com',
+    hiringTypes: [
+      '正社員',
+      'SES'
+    ],
+    hiringRoles: [
+      'ネットワークエンジニア',
+      'クラウド',
+      'セキュリティ'
+    ],
+    keywords: [
+      '5G',
+      'ネットワーク',
+      'AWS',
+      'セキュリティ'
+    ]
+  },
+  10: {
+    itssAttention: 'B',
+    permAttention: 'A',
+    address: '東京都港区港南1-7-1',
+    industry: [
+      '製造',
+      'エンタメ',
+      '金融'
+    ],
+    businessDescription: 'エレクトロニクス・エンタテインメント・金融等、多角的事業を展開するグローバル企業。',
+    corporateNumber: '7010001002634',
+    frmc: '半導体・EDA設計エンジニア。AI/ML関連も増加中。',
+    permNote: '技術力重視。論文や研究実績があれば優先。',
+    cvNote: '英語レジュメ推奨。技術スキルを詳細に記載。',
+    sentPickNote: '半導体・AI研究経験者優先。',
+    maxAge: 45,
+    blindSent: '可',
+    blindSentMethod: 'ATS経由',
+    realNameChannel: 'エージェント経由',
+    permAts: 'Workday',
+    permAtsUrl: 'https://workday.com/sony',
+    hiringTypes: [
+      '正社員',
+      '契約社員'
+    ],
+    hiringRoles: [
+      '半導体設計',
+      'AIエンジニア',
+      'PM'
+    ],
+    keywords: [
+      '半導体',
+      'EDA',
+      'AI',
+      'Python'
+    ]
+  }
+};
+
+// CV SENT dummy data
+export const CV_SENTS = [
+  { id: 1, companyId: 1, dept: 'ITSS', date: '2025/3/8', candidate: '中村 太郎', assignee: '鈴木 一郎', destination: 'NTTデータ 製造事業部', unitPrice: 750000, jobId: 2 },
+  { id: 2, companyId: 1, dept: 'ITSS', date: '2025/3/5', candidate: '木村 健太', assignee: '佐藤 次郎', destination: 'NTTデータ DX推進室', unitPrice: 800000, jobId: 4 },
+  { id: 3, companyId: 1, dept: 'PERM', date: '2025/3/3', candidate: '山口 美紀', assignee: '田中 花子', destination: 'NTTデータ 人事部', unitPrice: 6500000, jobId: 9 },
+  { id: 4, companyId: 1, dept: 'ITSS', date: '2025/2/28', candidate: '斎藤 勇気', assignee: '鈴木 一郎', destination: 'NTTデータ 金融ソリューション部', unitPrice: 700000, jobId: 8 },
+  { id: 5, companyId: 1, dept: 'PERM', date: '2025/2/25', candidate: '吉田 沙織', assignee: '田中 花子', destination: 'NTTデータ 人事部', unitPrice: 7200000, jobId: 9 },
+  { id: 6, companyId: 2, dept: 'ITSS', date: '2025/3/10', candidate: '高橋 誠一', assignee: '佐藤 次郎', destination: '富士通 ITインフラ部', unitPrice: 680000, jobId: 13 },
+  { id: 7, companyId: 2, dept: 'PERM', date: '2025/3/8', candidate: '田村 恵子', assignee: '田中 花子', destination: '富士通 HR部門', unitPrice: 5800000, jobId: 15 },
+  { id: 8, companyId: 3, dept: 'ITSS', date: '2025/2/20', candidate: '小林 浩二', assignee: '鈴木 一郎', destination: 'ノースサンド ERP推進部', unitPrice: 850000, jobId: 16 },
+  { id: 9, companyId: 4, dept: 'ITSS', date: '2025/3/1', candidate: '伊藤 大輔', assignee: '佐藤 次郎', destination: 'Sansan プロダクト開発部', unitPrice: 720000, jobId: 21 },
+  { id: 10, companyId: 5, dept: 'ITSS', date: '2025/2/25', candidate: '渡辺 啓太', assignee: '鈴木 一郎', destination: 'トヨタ 生産技術部', unitPrice: 780000, jobId: 26 },
+  { id: 11, companyId: 6, dept: 'ITSS', date: '2025/3/5', candidate: '加藤 裕也', assignee: '佐藤 次郎', destination: '日立 Lumada事業部', unitPrice: 750000, jobId: 51 },
+  { id: 12, companyId: 6, dept: 'PERM', date: '2025/3/3', candidate: '佐々木 愛', assignee: '田中 花子', destination: '日立 デジタルエンジニアリング部', unitPrice: 6800000, jobId: 55 },
+  { id: 13, companyId: 7, dept: 'ITSS', date: '2025/3/2', candidate: '松本 和也', assignee: '鈴木 一郎', destination: 'リクルート SaaS事業推進部', unitPrice: 800000, jobId: 61 },
+  { id: 14, companyId: 7, dept: 'PERM', date: '2025/2/28', candidate: '橋本 千春', assignee: '田中 花子', destination: 'リクルート HR Tech部', unitPrice: 7500000, jobId: 63 },
+  { id: 15, companyId: 8, dept: 'ITSS', date: '2025/3/8', candidate: '石田 翔太', assignee: '佐藤 次郎', destination: '楽天 モバイル事業部', unitPrice: 730000, jobId: 71 },
+  { id: 16, companyId: 9, dept: 'ITSS', date: '2025/3/1', candidate: '藤田 健', assignee: '鈴木 一郎', destination: 'KDDI DX推進本部', unitPrice: 760000, jobId: 80 },
+  { id: 17, companyId: 10, dept: 'ITSS', date: '2025/3/10', candidate: '前田 拓也', assignee: '佐藤 次郎', destination: 'ソニー 半導体事業部', unitPrice: 820000, jobId: 87 },
+  { id: 18, companyId: 10, dept: 'PERM', date: '2025/3/8', candidate: '村上 理恵', assignee: '田中 花子', destination: 'ソニー AI研究所', unitPrice: 8500000, jobId: 90 },
+];
+
+// Interview dummy data
+export const INTERVIEWS = [
+  { id: 1, companyId: 1, dept: 'ITSS', date: '2025/3/12', candidate: '中村 太郎', assignee: '鈴木 一郎', destination: 'NTTデータ 製造事業部', jobId: 2, personId: 'P001' },
+  { id: 2, companyId: 1, dept: 'PERM', date: '2025/3/10', candidate: '山口 美紀', assignee: '田中 花子', destination: 'NTTデータ 人事部', jobId: 9, personId: 'P003' },
+  { id: 3, companyId: 1, dept: 'ITSS', date: '2025/3/8', candidate: '斎藤 勇気', assignee: '鈴木 一郎', destination: 'NTTデータ 金融ソリューション部', jobId: 8, personId: 'P004' },
+  { id: 4, companyId: 2, dept: 'ITSS', date: '2025/3/15', candidate: '高橋 誠一', assignee: '佐藤 次郎', destination: '富士通 ITインフラ部', jobId: 13, personId: 'P006' },
+  { id: 5, companyId: 2, dept: 'PERM', date: '2025/3/12', candidate: '田村 恵子', assignee: '田中 花子', destination: '富士通 HR部門', jobId: 15, personId: 'P007' },
+  { id: 6, companyId: 5, dept: 'ITSS', date: '2025/3/5', candidate: '渡辺 啓太', assignee: '鈴木 一郎', destination: 'トヨタ 生産技術部', jobId: 26, personId: 'P010' },
+  { id: 7, companyId: 6, dept: 'ITSS', date: '2025/3/10', candidate: '加藤 裕也', assignee: '佐藤 次郎', destination: '日立 Lumada事業部', jobId: 51, personId: 'P011' },
+  { id: 8, companyId: 7, dept: 'PERM', date: '2025/3/5', candidate: '橋本 千春', assignee: '田中 花子', destination: 'リクルート HR Tech部', jobId: 63, personId: 'P014' },
+  { id: 9, companyId: 8, dept: 'ITSS', date: '2025/3/12', candidate: '石田 翔太', assignee: '佐藤 次郎', destination: '楽天 モバイル事業部', jobId: 71, personId: 'P015' },
+  { id: 10, companyId: 10, dept: 'PERM', date: '2025/3/15', candidate: '村上 理恵', assignee: '田中 花子', destination: 'ソニー AI研究所', jobId: 90, personId: 'P018' },
+];
+
+// Oral agreement dummy data
+export const ORAL_AGREEMENTS = [
+  { id: 1, companyId: 1, dept: 'ITSS', date: '2025/3/15', candidate: '中村 太郎', assignee: '鈴木 一郎', destination: 'NTTデータ 製造事業部', jobId: 2, personId: 'P001' },
+  { id: 2, companyId: 1, dept: 'PERM', date: '2025/3/13', candidate: '山口 美紀', assignee: '田中 花子', destination: 'NTTデータ 人事部', jobId: 9, personId: 'P003' },
+  { id: 3, companyId: 2, dept: 'PERM', date: '2025/3/16', candidate: '田村 恵子', assignee: '田中 花子', destination: '富士通 HR部門', jobId: 15, personId: 'P007' },
+  { id: 4, companyId: 5, dept: 'ITSS', date: '2025/3/10', candidate: '渡辺 啓太', assignee: '鈴木 一郎', destination: 'トヨタ 生産技術部', jobId: 26, personId: 'P010' },
+  { id: 5, companyId: 6, dept: 'ITSS', date: '2025/3/14', candidate: '加藤 裕也', assignee: '佐藤 次郎', destination: '日立 Lumada事業部', jobId: 51, personId: 'P011' },
+  { id: 6, companyId: 10, dept: 'PERM', date: '2025/3/18', candidate: '村上 理恵', assignee: '田中 花子', destination: 'ソニー AI研究所', jobId: 90, personId: 'P018' },
+];
+
 // Auto-generated JOBS array with unique IDs
 export const JOBS = (() => {
   const jobs = [];
