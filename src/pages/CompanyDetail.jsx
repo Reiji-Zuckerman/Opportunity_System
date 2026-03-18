@@ -50,6 +50,37 @@ export default function CompanyDetail() {
   const companyInterviews = useMemo(() => INTERVIEWS.filter(i => i.companyId === Number(id)), [id]);
   const companyOralAgreements = useMemo(() => ORAL_AGREEMENTS.filter(o => o.companyId === Number(id)), [id]);
 
+  // 最終商談者: derive 4 most recent unique ourPerson from deals
+  const lastDealPersons = useMemo(() => {
+    const companyDeals = DEALS.filter(d => d.companyId === Number(id));
+    const dealsByDate = companyDeals
+      .map(deal => {
+        const detail = DEAL_DETAILS[deal.id];
+        if (!detail) return null;
+        const lastMeetingDate = detail.meetings?.length > 0
+          ? detail.meetings.reduce((latest, m) => new Date(m.date) > new Date(latest.date) ? m : latest).date
+          : deal.lastMeeting || '1970/1/1';
+        return { ourPerson: detail.basicInfo.ourPerson, date: lastMeetingDate, dept: detail.basicInfo.businessDept };
+      })
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const seen = new Set();
+    const result = [];
+    for (const entry of dealsByDate) {
+      const names = entry.ourPerson.split('、');
+      for (const name of names) {
+        const trimmed = name.trim();
+        if (!seen.has(trimmed)) {
+          seen.add(trimmed);
+          result.push({ name: trimmed, dept: entry.dept, date: entry.date });
+        }
+      }
+      if (result.length >= 4) break;
+    }
+    return result.slice(0, 4);
+  }, [id]);
+
   if (!company) {
     return (
       <div className="text-center py-20 text-gray-400">
@@ -233,16 +264,18 @@ export default function CompanyDetail() {
             <div className="bg-white rounded-xl shadow-sm p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-4 h-4 text-gray-500" />
-                <h2 className="font-semibold text-gray-900 text-sm">担当者</h2>
+                <h2 className="font-semibold text-gray-900 text-sm">最終商談者</h2>
               </div>
               <div className="space-y-1.5">
-                {company.assignees.map((person, idx) => (
+                {lastDealPersons.length > 0 ? lastDealPersons.map((person, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-medium shrink-0">{person.name.charAt(0)}</div>
                     <span className="text-xs text-gray-900">{person.name}</span>
-                    <span className="text-xs text-gray-400">{person.role}</span>
+                    <span className="text-xs text-gray-400">{person.dept} / {person.date}</span>
                   </div>
-                ))}
+                )) : (
+                  <p className="text-xs text-gray-400">商談履歴がありません</p>
+                )}
               </div>
             </div>
           </div>
