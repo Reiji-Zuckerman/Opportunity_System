@@ -22,7 +22,7 @@ export default function Sidebar() {
         <p className="text-gray-400 text-xs mt-0.5">商談管理システム</p>
       </div>
 
-      <nav className="flex-1 mt-2 px-3 space-y-0.5 overflow-y-auto">
+      <nav className="mt-2 px-3 space-y-0.5">
         {navItems.map((item, idx) => {
           if (item.disabled) {
             return (
@@ -52,10 +52,12 @@ export default function Sidebar() {
             </NavLink>
           );
         })}
-        <p className="text-gray-500 text-[11px] leading-relaxed mt-3 px-3">
+        <p className="text-gray-400 text-xs leading-relaxed mt-4 px-3">
           ※プロトタイプのため<br />企業/商談/Task/求人だけ<br />動的に動きます
         </p>
       </nav>
+
+      <div className="flex-1" />
 
       <div className="p-4 border-t border-white/10">
         <div className="flex items-center gap-3">
