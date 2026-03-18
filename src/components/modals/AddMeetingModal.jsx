@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
-import { MEMBERS } from '../../data/dummy';
+import { useData } from '../../contexts/DataContext';
 
 export default function AddMeetingModal({ isOpen, onClose, dealName, meetingCount }) {
+  const { MEMBERS } = useData();
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
   const [clientAttendees, setClientAttendees] = useState(['']);

@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter } from 'lucide-react';
 import Badge from '../components/Badge';
-import { JOBS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 
 export default function JobList() {
   const navigate = useNavigate();
+  const { JOBS } = useData();
   const [search, setSearch] = useState('');
   const [deptFilter, setDeptFilter] = useState('');
 

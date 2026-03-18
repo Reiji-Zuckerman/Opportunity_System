@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, FormSelect, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
-import { MEMBERS, DIVISIONS, DEAL_ROUTES } from '../../data/dummy';
+import { useData } from '../../contexts/DataContext';
 
 export default function NewDealModal({ isOpen, onClose }) {
+  const { MEMBERS, DIVISIONS, DEAL_ROUTES } = useData();
   const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');

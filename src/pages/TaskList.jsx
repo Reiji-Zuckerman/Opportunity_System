@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, Plus, Filter, ChevronDown } from 'lucide-react';
 import Badge from '../components/Badge';
-import { TASKS, MEMBERS, TASK_CATEGORIES } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 import TaskModal from '../components/modals/TaskModal';
 import ActivityModal from '../components/modals/ActivityModal';
 
@@ -39,6 +39,7 @@ const STATUS_COLORS = {
 };
 
 export default function TaskList() {
+  const { TASKS, MEMBERS, TASK_CATEGORIES, updateTaskStatus } = useData();
   const [search, setSearch] = useState('');
   const [memberFilter, setMemberFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');

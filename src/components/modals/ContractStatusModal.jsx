@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormTextarea, ToggleGroup, NoteBox } from '../Modal.jsx';
-import { CONTRACT_STATUSES } from '../../data/dummy.js';
+import { useData } from '../../contexts/DataContext';
 
 export default function ContractStatusModal({ isOpen, onClose, companyName, currentStatus }) {
+  const { CONTRACT_STATUSES } = useData();
   const [itss, setItss] = useState(currentStatus?.itss || '未接触');
   const [perm, setPerm] = useState(currentStatus?.perm || '未接触');
   const [dsl, setDsl] = useState(currentStatus?.dsl || '未接触');

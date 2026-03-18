@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText } from 'lucide-react';
 import Badge from '../components/Badge';
 import DealTree from '../components/DealTree';
-import { DEALS, DEAL_DETAILS, TASKS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
 import TaskModal from '../components/modals/TaskModal';
@@ -45,6 +45,7 @@ const DEAL_DESCRIPTION = `【商談概要】
 
 export default function DealDetail() {
   const { id } = useParams();
+  const { DEALS, DEAL_DETAILS } = useData();
   const detail = DEAL_DETAILS[id];
   const dealSummary = DEALS.find(d => d.id === Number(id));
 

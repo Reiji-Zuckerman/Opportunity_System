@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormSelect, FormTextarea, ToggleGroup, ChipSelect } from '../Modal';
-import { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS } from '../../data/dummy';
+import { useData } from '../../contexts/DataContext';
 
 export default function TaskModal({ isOpen, onClose, dealName }) {
+  const { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS } = useData();
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState('未実施');
   const [categories, setCategories] = useState([]);

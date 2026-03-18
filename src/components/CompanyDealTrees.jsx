@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { DEAL_DETAILS, DEALS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 
-function buildNameToIdMap() {
+function buildNameToIdMap(DEAL_DETAILS) {
   const map = {};
   Object.entries(DEAL_DETAILS).forEach(([id, detail]) => {
     map[detail.tree.current] = Number(id);
@@ -10,7 +10,7 @@ function buildNameToIdMap() {
   return map;
 }
 
-function findRoot(dealId, nameToId) {
+function findRoot(dealId, nameToId, DEAL_DETAILS) {
   let current = dealId;
   const visited = new Set();
   while (DEAL_DETAILS[current]?.tree.parent) {
@@ -23,7 +23,7 @@ function findRoot(dealId, nameToId) {
   return current;
 }
 
-function buildNode(id, nameToId) {
+function buildNode(id, nameToId, DEAL_DETAILS) {
   const detail = DEAL_DETAILS[id];
   if (!detail) return null;
   return {
@@ -32,7 +32,7 @@ function buildNode(id, nameToId) {
     children: (detail.tree.children || [])
       .map(n => nameToId[n])
       .filter(cid => cid && DEAL_DETAILS[cid])
-      .map(cid => buildNode(cid, nameToId))
+      .map(cid => buildNode(cid, nameToId, DEAL_DETAILS))
       .filter(Boolean),
   };
 }
@@ -58,26 +58,25 @@ function flattenToGrid(node) {
 }
 
 export default function CompanyDealTrees({ companyId }) {
+  const { DEALS, DEAL_DETAILS } = useData();
+
   const trees = useMemo(() => {
-    const nameToId = buildNameToIdMap();
-    // Find all deals for this company
+    const nameToId = buildNameToIdMap(DEAL_DETAILS);
     const companyDeals = DEALS.filter(d => d.companyId === Number(companyId));
-    // Find unique root deal IDs
     const rootIds = new Set();
     companyDeals.forEach(d => {
       if (DEAL_DETAILS[d.id]) {
-        rootIds.add(findRoot(d.id, nameToId));
+        rootIds.add(findRoot(d.id, nameToId, DEAL_DETAILS));
       }
     });
-    // Build trees for each root
     return [...rootIds]
       .map(rootId => {
-        const tree = buildNode(rootId, nameToId);
+        const tree = buildNode(rootId, nameToId, DEAL_DETAILS);
         if (!tree) return null;
         return { rootId, grid: flattenToGrid(tree) };
       })
       .filter(Boolean);
-  }, [companyId]);
+  }, [companyId, DEALS, DEAL_DETAILS]);
 
   if (trees.length === 0) return <p className="text-sm text-gray-400 text-center py-4">商談ツリーがありません</p>;
 

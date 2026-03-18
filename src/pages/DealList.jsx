@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus, Filter } from 'lucide-react';
 import Badge from '../components/Badge';
-import { DEALS, DEAL_DETAILS, DIVISIONS, MEMBERS, DEAL_ROUTES } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 import NewDealModal from '../components/modals/NewDealModal';
 
 export default function DealList() {
   const navigate = useNavigate();
+  const { DEALS, DEAL_DETAILS, DIVISIONS, MEMBERS, DEAL_ROUTES } = useData();
   const [search, setSearch] = useState('');
   const [divisionFilter, setDivisionFilter] = useState('');
   const [memberFilter, setMemberFilter] = useState('');

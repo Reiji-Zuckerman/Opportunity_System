@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
-import { MEMBERS, DIVISIONS } from '../../data/dummy';
+import { useData } from '../../contexts/DataContext';
 
 export default function BranchModal({ isOpen, onClose, parentDeal }) {
+  const { MEMBERS, DIVISIONS } = useData();
   const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');

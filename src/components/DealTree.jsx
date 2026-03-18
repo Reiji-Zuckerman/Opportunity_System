@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { DEAL_DETAILS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 
-function buildNameToIdMap() {
+function buildNameToIdMap(DEAL_DETAILS) {
   const map = {};
   Object.entries(DEAL_DETAILS).forEach(([id, detail]) => {
     map[detail.tree.current] = Number(id);
@@ -10,7 +10,7 @@ function buildNameToIdMap() {
   return map;
 }
 
-function findRoot(dealId, nameToId) {
+function findRoot(dealId, nameToId, DEAL_DETAILS) {
   let current = dealId;
   const visited = new Set();
   while (DEAL_DETAILS[current]?.tree.parent) {
@@ -23,7 +23,7 @@ function findRoot(dealId, nameToId) {
   return current;
 }
 
-function buildNode(id, nameToId) {
+function buildNode(id, nameToId, DEAL_DETAILS) {
   const detail = DEAL_DETAILS[id];
   if (!detail) return null;
   return {
@@ -32,7 +32,7 @@ function buildNode(id, nameToId) {
     children: (detail.tree.children || [])
       .map(n => nameToId[n])
       .filter(cid => cid && DEAL_DETAILS[cid])
-      .map(cid => buildNode(cid, nameToId))
+      .map(cid => buildNode(cid, nameToId, DEAL_DETAILS))
       .filter(Boolean),
   };
 }
@@ -62,13 +62,15 @@ function flattenToGrid(node) {
 }
 
 export default function DealTree({ currentDealId }) {
+  const { DEAL_DETAILS } = useData();
+
   const grid = useMemo(() => {
-    const nameToId = buildNameToIdMap();
-    const rootId = findRoot(Number(currentDealId), nameToId);
-    const tree = buildNode(rootId, nameToId);
+    const nameToId = buildNameToIdMap(DEAL_DETAILS);
+    const rootId = findRoot(Number(currentDealId), nameToId, DEAL_DETAILS);
+    const tree = buildNode(rootId, nameToId, DEAL_DETAILS);
     if (!tree) return [];
     return flattenToGrid(tree);
-  }, [currentDealId]);
+  }, [currentDealId, DEAL_DETAILS]);
 
   if (grid.length === 0) return null;
 

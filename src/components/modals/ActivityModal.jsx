@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormSelect, FormTextarea, ToggleGroup, ChipSelect } from '../Modal';
-import { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS } from '../../data/dummy';
+import { useData } from '../../contexts/DataContext';
 
 export default function ActivityModal({ isOpen, onClose, dealName }) {
+  const { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS } = useData();
   const today = new Date().toISOString().split('T')[0];
   const [date, setDate] = useState(today);
   const [status, setStatus] = useState('完了');

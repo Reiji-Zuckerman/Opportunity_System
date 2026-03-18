@@ -53,7 +53,7 @@ export default function Sidebar() {
           );
         })}
         <p className="text-gray-400 text-xs leading-relaxed mt-4 px-3">
-          ※プロトタイプのため<br />企業/商談/Task/求人だけ<br />動的に動きます
+          ※プロトタイプのため企業/商談/Task/求人だけ動的に動きます
         </p>
       </nav>
 

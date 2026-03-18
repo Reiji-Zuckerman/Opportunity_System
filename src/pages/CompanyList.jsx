@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter } from 'lucide-react';
 import Badge from '../components/Badge';
-import { COMPANIES } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 
 const CONTRACT_STATUS_OPTIONS = ['未接触', '商談中', '契約中', '契約終了'];
 
@@ -17,6 +17,7 @@ function isExpired(dateStr) {
 
 export default function CompanyList() {
   const navigate = useNavigate();
+  const { COMPANIES } = useData();
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState('');
   const [classificationFilter, setClassificationFilter] = useState('');

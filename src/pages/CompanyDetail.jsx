@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown, Send, UserCheck, Handshake } from 'lucide-react';
 import Badge from '../components/Badge';
 import CompanyDealTrees from '../components/CompanyDealTrees';
-import { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
@@ -19,6 +19,7 @@ const ATTENTION_COLORS = { A: 'bg-red-100 text-red-700', B: 'bg-yellow-100 text-
 
 export default function CompanyDetail() {
   const { id } = useParams();
+  const { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS } = useData();
   const company = COMPANY_DETAILS[id];
   const companySummary = COMPANIES.find(c => c.id === Number(id));
   const ext = COMPANY_EXTENDED[id] || {};

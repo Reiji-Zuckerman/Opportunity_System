@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Briefcase, Building2, Users, Calendar, Tag, FileText } from 'lucide-react';
 import Badge from '../components/Badge';
-import { JOBS, DEALS, DEAL_DETAILS } from '../data/dummy';
+import { useData } from '../contexts/DataContext';
 
 const JOB_DESCRIPTION = `【業務内容】
 クライアント企業のプロジェクトにおいて、要件定義・基本設計・詳細設計・実装・テスト・運用保守まで一連の工程をご担当いただきます。チームメンバーと協力しながら、品質の高いシステム開発を推進していただくポジションです。
@@ -30,6 +30,7 @@ const JOB_DESCRIPTION = `【業務内容】
 
 export default function JobDetail() {
   const { id } = useParams();
+  const { JOBS, DEALS, DEAL_DETAILS } = useData();
   const job = JOBS.find(j => j.id === Number(id));
 
   if (!job) {
