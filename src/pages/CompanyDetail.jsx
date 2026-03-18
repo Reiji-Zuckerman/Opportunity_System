@@ -203,118 +203,107 @@ export default function CompanyDetail() {
 
       {/* ===== COMMON SECTIONS (◯ = always visible) ===== */}
       {showCommon && (
-        <div className="grid grid-cols-[320px_1fr] gap-6 mb-6">
-          {/* Left column - Basic info */}
-          <div className="flex flex-col gap-6">
-            <div className="bg-white rounded-xl shadow-sm p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <Building2 className="w-4 h-4 text-gray-500" />
-                <h2 className="font-semibold text-gray-900">基本情報</h2>
+        <div className="grid grid-cols-3 gap-4 mb-4">
+          {/* 基本情報 */}
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Building2 className="w-4 h-4 text-gray-500" />
+              <h2 className="font-semibold text-gray-900 text-sm">基本情報</h2>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center justify-between"><span className="text-gray-500">種別</span><Badge label={info.category} /></div>
+              <div className="flex items-center justify-between"><span className="text-gray-500">Tier</span><Badge label={info.tier} /></div>
+              <div><span className="text-gray-500">本社所在地</span><p className="font-medium text-gray-900 text-xs mt-0.5">{ext.address || '—'}</p></div>
+              <div>
+                <span className="text-gray-500">業界</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">{(ext.industry || []).map((tag, i) => <Badge key={i} label={tag} />)}</div>
               </div>
-              <div className="space-y-3 text-sm">
-                <div><span className="text-gray-500">種別</span><div className="mt-0.5"><Badge label={info.category} /></div></div>
-                <div><span className="text-gray-500">Tier</span><div className="mt-0.5"><Badge label={info.tier} /></div></div>
-                <div><span className="text-gray-500">本社所在地</span><p className="font-medium text-gray-900 mt-0.5">{ext.address || '—'}</p></div>
-                <div>
-                  <span className="text-gray-500">業界</span>
-                  <div className="flex flex-wrap gap-1 mt-0.5">
-                    {(ext.industry || []).map((tag, i) => <Badge key={i} label={tag} />)}
+              <div className="flex items-center justify-between"><span className="text-gray-500">法人番号</span><span className="font-medium text-gray-900 text-xs">{ext.corporateNumber || '—'}</span></div>
+              <div className="flex items-center justify-between"><span className="text-gray-500">累計粗利</span><span className="font-medium text-gray-900">{info.grossProfit.toLocaleString()}円</span></div>
+              <div className="flex items-center justify-between"><span className="text-gray-500">最終商談日</span><span className="font-medium text-gray-900">{info.lastDealDate}</span></div>
+            </div>
+          </div>
+
+          {/* 事業内容 + 担当者 */}
+          <div className="flex flex-col gap-4">
+            <div className="bg-white rounded-xl shadow-sm p-4 flex-1">
+              <h2 className="font-semibold text-gray-900 text-sm mb-2">事業内容</h2>
+              <p className="text-xs text-gray-700 leading-relaxed line-clamp-5">{ext.businessDescription || '—'}</p>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="w-4 h-4 text-gray-500" />
+                <h2 className="font-semibold text-gray-900 text-sm">担当者</h2>
+              </div>
+              <div className="space-y-1.5">
+                {company.assignees.map((person, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-medium shrink-0">{person.name.charAt(0)}</div>
+                    <span className="text-xs text-gray-900">{person.name}</span>
+                    <span className="text-xs text-gray-400">{person.role}</span>
                   </div>
-                </div>
-                <div><span className="text-gray-500">法人番号</span><p className="font-medium text-gray-900 mt-0.5">{ext.corporateNumber || '—'}</p></div>
-                <div><span className="text-gray-500">累計粗利</span><p className="font-medium text-gray-900 mt-0.5">{info.grossProfit.toLocaleString()}円</p></div>
-                <div><span className="text-gray-500">最終商談日</span><p className="font-medium text-gray-900 mt-0.5">{info.lastDealDate}</p></div>
-              </div>
-            </div>
-
-            {/* 事業内容 */}
-            <div className="bg-white rounded-xl shadow-sm p-5">
-              <h2 className="font-semibold text-gray-900 mb-3">基本情報 / 事業内容</h2>
-              <p className="text-sm text-gray-700 leading-relaxed">{ext.businessDescription || '—'}</p>
-            </div>
-
-            {/* 採用形態 / 採用職種 / キーワード */}
-            <div className="bg-white rounded-xl shadow-sm p-5">
-              <h2 className="font-semibold text-gray-900 mb-3">採用タグ</h2>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <span className="text-gray-500">採用形態</span>
-                  <div className="flex flex-wrap gap-1 mt-1">{(ext.hiringTypes || []).map((t, i) => <Badge key={i} label={t} />)}</div>
-                </div>
-                <div>
-                  <span className="text-gray-500">採用職種</span>
-                  <div className="flex flex-wrap gap-1 mt-1">{(ext.hiringRoles || []).map((r, i) => <Badge key={i} label={r} />)}</div>
-                </div>
-                <div>
-                  <span className="text-gray-500">キーワード</span>
-                  <div className="flex flex-wrap gap-1 mt-1">{(ext.keywords || []).map((k, i) => <Badge key={i} label={k} />)}</div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Right column - Contract status + 90 day actions + Assignees */}
-          <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-6">
-              {/* 契約ステータス */}
-              <div className="bg-white rounded-xl shadow-sm p-5">
-                <h2 className="font-semibold text-gray-900 mb-4">事業部別契約ステータス</h2>
-                <div className="space-y-3">
-                  {Object.entries(company.contractStatus).map(([key, status]) => (
-                    <div key={key} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">{key.toUpperCase()}</span>
-                      <Badge label={status} />
-                    </div>
-                  ))}
-                </div>
+          {/* 採用タグ */}
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <h2 className="font-semibold text-gray-900 text-sm mb-3">採用タグ</h2>
+            <div className="space-y-2.5 text-sm">
+              <div>
+                <span className="text-gray-500 text-xs">採用形態</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">{(ext.hiringTypes || []).map((t, i) => <Badge key={i} label={t} />)}</div>
               </div>
-
-              {/* 担当者 */}
-              <div className="bg-white rounded-xl shadow-sm p-5">
-                <div className="flex items-center gap-2 mb-4">
-                  <Users className="w-4 h-4 text-gray-500" />
-                  <h2 className="font-semibold text-gray-900">担当者</h2>
-                </div>
-                <div className="space-y-2">
-                  {company.assignees.map((person, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-medium shrink-0">
-                        {person.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{person.name}</p>
-                        <p className="text-xs text-gray-500">{person.role}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div>
+                <span className="text-gray-500 text-xs">採用職種</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">{(ext.hiringRoles || []).map((r, i) => <Badge key={i} label={r} />)}</div>
+              </div>
+              <div>
+                <span className="text-gray-500 text-xs">キーワード</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">{(ext.keywords || []).map((k, i) => <Badge key={i} label={k} />)}</div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
 
-            {/* 90日アクション状況 */}
-            <div className="bg-white rounded-xl shadow-sm p-5">
-              <h2 className="font-semibold text-gray-900 mb-4">各事業部90日アクション状況</h2>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="text-left py-2 font-medium text-gray-500">事業部</th>
-                    <th className="text-left py-2 font-medium text-gray-500">商談数</th>
-                    <th className="text-left py-2 font-medium text-gray-500">求人取得数</th>
-                    <th className="text-left py-2 font-medium text-gray-500">最終接触日</th>
+      {/* 契約ステータス + 90日アクション (全体/SFAタブのみ) */}
+      {(activeTab === 'all' || activeTab === 'sfa') && (
+        <div className="grid grid-cols-[1fr_2fr] gap-4 mb-4">
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <h2 className="font-semibold text-gray-900 text-sm mb-3">事業部別契約ステータス</h2>
+            <div className="space-y-2">
+              {Object.entries(company.contractStatus).map(([key, status]) => (
+                <div key={key} className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700">{key.toUpperCase()}</span>
+                  <Badge label={status} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <h2 className="font-semibold text-gray-900 text-sm mb-3">各事業部90日アクション状況</h2>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-1.5 font-medium text-gray-500">事業部</th>
+                  <th className="text-left py-1.5 font-medium text-gray-500">商談数</th>
+                  <th className="text-left py-1.5 font-medium text-gray-500">求人取得数</th>
+                  <th className="text-left py-1.5 font-medium text-gray-500">最終接触日</th>
+                </tr>
+              </thead>
+              <tbody>
+                {company.deptActivity.map((action) => (
+                  <tr key={action.dept} className="border-b border-gray-50">
+                    <td className="py-1.5 font-medium text-gray-700">{action.dept}</td>
+                    <td className="py-1.5 text-gray-600">{action.deals}</td>
+                    <td className="py-1.5 text-gray-600">{action.jobs}</td>
+                    <td className="py-1.5 text-gray-600">{action.lastContact}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {company.deptActivity.map((action) => (
-                    <tr key={action.dept} className="border-b border-gray-50">
-                      <td className="py-2 font-medium text-gray-700">{action.dept}</td>
-                      <td className="py-2 text-gray-600">{action.deals}</td>
-                      <td className="py-2 text-gray-600">{action.jobs}</td>
-                      <td className="py-2 text-gray-600">{action.lastContact}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
