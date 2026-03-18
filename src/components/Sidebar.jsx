@@ -28,7 +28,7 @@ export default function Sidebar() {
             return (
               <div
                 key={idx}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 cursor-not-allowed"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-400"
               >
                 <item.icon size={18} />
                 {item.label}
@@ -52,13 +52,10 @@ export default function Sidebar() {
             </NavLink>
           );
         })}
-      </nav>
-
-      <div className="px-4 pb-2">
-        <p className="text-gray-600 text-[10px] leading-tight">
-          ※プロトタイプのため企業/商談/Task/求人だけ動的に動きます
+        <p className="text-gray-500 text-[11px] leading-relaxed mt-3 px-3">
+          ※プロトタイプのため<br />企業/商談/Task/求人だけ<br />動的に動きます
         </p>
-      </div>
+      </nav>
 
       <div className="p-4 border-t border-white/10">
         <div className="flex items-center gap-3">
