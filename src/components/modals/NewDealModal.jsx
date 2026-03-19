@@ -3,12 +3,10 @@ import Modal, { FormField, FormInput, FormTextarea, FormSelect, ToggleGroup, Chi
 import { useData } from '../../contexts/DataContext';
 
 export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
-  const { MEMBERS, DIVISIONS, DEAL_ROUTES, COMPANIES, COMPANY_DETAILS } = useData();
+  const { MEMBERS, DIVISIONS, DEAL_ROUTES, COMPANIES, COMPANY_DETAILS, upsertDeal } = useData();
 
-  // Build option lists from existing data
   const companyOptions = useMemo(() => COMPANIES.map(c => c.name), [COMPANIES]);
 
-  // When company is selected, derive department and person options from whitelist
   const [companyName, setCompanyName] = useState(() => {
     if (presetCompanyId) {
       const c = COMPANIES.find(co => co.id === Number(presetCompanyId));
@@ -43,12 +41,10 @@ export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
 
   const handleCompanyChange = (val) => {
     setCompanyName(val);
-    // Reset dept/person when company changes
     setDepartmentName('');
     setPersonName('');
   };
 
-  // When department is selected, filter person options to that department
   const filteredPersonOptions = useMemo(() => {
     if (!departmentName) return personOptions;
     const matched = COMPANIES.find(c => c.name === companyName);
@@ -58,11 +54,49 @@ export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
     const dept = (detail.whitelist || []).find(w => w.dept === departmentName);
     if (!dept) return personOptions;
     const deptPersons = (dept.contacts || []).map(c => c.name);
-    // Show dept persons first, then others
     return [...new Set([...deptPersons, ...personOptions])];
   }, [departmentName, personOptions, companyName, COMPANIES, COMPANY_DETAILS]);
 
   const handleSubmit = () => {
+    if (!name) return;
+    const matchedCompany = COMPANIES.find(c => c.name === companyName);
+    const today = new Date().toLocaleDateString('ja-JP');
+
+    const deal = {
+      companyId: matchedCompany?.id || null,
+      name,
+      company: companyName,
+      assignee: dealers.join('、') || acquirer,
+      dept: divisions[0] || '',
+      lastMeeting: datetime ? new Date(datetime).toLocaleDateString('ja-JP') : today,
+      status,
+    };
+
+    const dealDetail = {
+      basicInfo: {
+        company: companyName,
+        dept: departmentName,
+        clientPerson: personName,
+        ourPerson: dealers.join('、'),
+        businessDept: divisions.join('、'),
+        channel: route,
+        acquiredBy: acquirer,
+        status,
+      },
+      tree: { parent: null, current: name, children: [] },
+      meetings: datetime ? [{
+        date: new Date(datetime).toLocaleDateString('ja-JP'),
+        round: 1,
+        attendees: personName,
+        content: content || '',
+      }] : [],
+      tasks: [],
+      jobs: [],
+    };
+
+    upsertDeal(deal, dealDetail);
+
+    // Reset form
     setName('');
     setDatetime('');
     setStatus('予定');

@@ -1,29 +1,75 @@
-import { useState } from 'react';
-import Modal, { FormField, FormInput, FormSelect, FormTextarea, ToggleGroup, ChipSelect } from '../Modal';
+import { useState, useMemo } from 'react';
+import Modal, { FormField, FormInput, FormSelect, ToggleGroup, ChipSelect, ComboBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
-export default function ActivityModal({ isOpen, onClose, dealName }) {
-  const { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS } = useData();
+export default function ActivityModal({ isOpen, onClose, dealName, dealId, companyId }) {
+  const { MEMBERS, TASK_CATEGORIES, CONTACT_METHODS, COMPANIES, COMPANY_DETAILS, DEALS, upsertTask } = useData();
+
+  const companyOptions = useMemo(() => COMPANIES.map(c => c.name), [COMPANIES]);
+  const dealOptions = useMemo(() => DEALS.map(d => d.name), [DEALS]);
+
+  // Pre-fill company name from companyId prop
+  const presetCompanyName = useMemo(() => {
+    if (companyId) {
+      const c = COMPANIES.find(co => co.id === Number(companyId));
+      return c?.name || '';
+    }
+    return '';
+  }, [companyId, COMPANIES]);
+
   const today = new Date().toISOString().split('T')[0];
   const [date, setDate] = useState(today);
   const [status, setStatus] = useState('完了');
   const [categories, setCategories] = useState([]);
   const [contactMethod, setContactMethod] = useState('メール');
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState(presetCompanyName);
   const [departmentName, setDepartmentName] = useState('');
   const [personName, setPersonName] = useState('');
-  const [dealLink, setDealLink] = useState('');
+  const [dealLink, setDealLink] = useState(dealName || '');
   const [assignee, setAssignee] = useState('');
 
+  const { deptOptions, personOptions } = useMemo(() => {
+    const matched = COMPANIES.find(c => c.name === companyName);
+    if (!matched) return { deptOptions: [], personOptions: [] };
+    const detail = COMPANY_DETAILS[matched.id];
+    if (!detail) return { deptOptions: [], personOptions: [] };
+    const depts = (detail.whitelist || []).map(w => w.dept);
+    const persons = (detail.whitelist || []).flatMap(w => (w.contacts || []).map(c => c.name));
+    return { deptOptions: [...new Set(depts)], personOptions: [...new Set(persons)] };
+  }, [companyName, COMPANIES, COMPANY_DETAILS]);
+
+  const handleCompanyChange = (val) => {
+    setCompanyName(val);
+    setDepartmentName('');
+    setPersonName('');
+  };
+
   const handleSubmit = () => {
+    const matchedDeal = DEALS.find(d => d.name === dealLink);
+    const task = {
+      id: Date.now(),
+      type: 'Activity',
+      name: `${categories.join('・') || 'Activity'} - ${companyName || '未設定'}`,
+      company: companyName,
+      category: categories[0] || '',
+      due: date,
+      assignee,
+      method: contactMethod,
+      status: status === '完了' ? 'done' : status === '実施中' ? 'in_progress' : 'pending',
+      dealId: dealId || matchedDeal?.id || null,
+    };
+
+    upsertTask(task);
+
+    // Reset
     setDate(today);
     setStatus('完了');
     setCategories([]);
     setContactMethod('メール');
-    setCompanyName('');
+    if (!companyId) setCompanyName('');
     setDepartmentName('');
     setPersonName('');
-    setDealLink('');
+    if (!dealName) setDealLink('');
     setAssignee('');
   };
 
@@ -46,15 +92,30 @@ export default function ActivityModal({ isOpen, onClose, dealName }) {
       </FormField>
 
       <FormField label="企業名">
-        <FormInput value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="企業名を入力" />
+        <ComboBox
+          options={companyOptions}
+          value={companyName}
+          onChange={handleCompanyChange}
+          placeholder="企業名を選択または新規入力"
+        />
       </FormField>
 
       <FormField label="事業部名">
-        <FormInput value={departmentName} onChange={(e) => setDepartmentName(e.target.value)} placeholder="事業部名を入力" />
+        <ComboBox
+          options={deptOptions}
+          value={departmentName}
+          onChange={setDepartmentName}
+          placeholder={companyName ? '事業部を選択または新規入力' : '先に企業を選択してください'}
+        />
       </FormField>
 
       <FormField label="人物名">
-        <FormInput value={personName} onChange={(e) => setPersonName(e.target.value)} placeholder="人物名を入力" />
+        <ComboBox
+          options={personOptions}
+          value={personName}
+          onChange={setPersonName}
+          placeholder={companyName ? '人物を選択または新規入力' : '先に企業を選択してください'}
+        />
       </FormField>
 
       <FormField label="商談紐づけ">
@@ -63,7 +124,12 @@ export default function ActivityModal({ isOpen, onClose, dealName }) {
             {dealName}
           </div>
         ) : (
-          <FormInput value={dealLink} onChange={(e) => setDealLink(e.target.value)} placeholder="商談名を入力" />
+          <ComboBox
+            options={dealOptions}
+            value={dealLink}
+            onChange={setDealLink}
+            placeholder="商談を選択"
+          />
         )}
       </FormField>
 

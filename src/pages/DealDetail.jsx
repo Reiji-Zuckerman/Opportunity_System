@@ -346,10 +346,10 @@ export default function DealDetail() {
       </div>
 
       {/* Modals */}
-      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} meetingCount={detail.meetings.length} />
-      <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} />
-      <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} />
-      <JobModal isOpen={showJob} onClose={() => setShowJob(false)} />
+      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} dealId={Number(id)} meetingCount={detail.meetings.length} />
+      <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />
+      <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />
+      <JobModal isOpen={showJob} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
     </div>
   );
 }

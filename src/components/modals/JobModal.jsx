@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, NoteBox } from '../Modal';
+import { useData } from '../../contexts/DataContext';
 
-export default function JobModal({ isOpen, onClose, dealName }) {
+export default function JobModal({ isOpen, onClose, dealName, dealId, companyName, companyId, dept }) {
+  const { upsertJob } = useData();
   const [jobs, setJobs] = useState([{ title: '', count: '', detail: '' }]);
 
   const addJob = () => {
@@ -15,13 +17,31 @@ export default function JobModal({ isOpen, onClose, dealName }) {
   };
 
   const handleSubmit = () => {
+    const today = new Date().toLocaleDateString('ja-JP');
+    jobs.forEach((job) => {
+      if (!job.title) return;
+      upsertJob({
+        id: Date.now() + Math.random(),
+        dealId: dealId || null,
+        companyId: companyId || null,
+        title: job.title,
+        dept: dept || '',
+        count: Number(job.count) || 1,
+        date: today,
+        company: companyName || '',
+        businessDept: dept || '',
+        dealName: dealName || '',
+        status: '予定',
+      });
+    });
+
     setJobs([{ title: '', count: '', detail: '' }]);
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="求人登録" onSubmit={handleSubmit}>
       <div className="text-sm text-gray-700">
-        <span className="font-medium">紐づく商談:</span> {dealName}
+        <span className="font-medium">紐づく商談:</span> {dealName || '未設定'}
       </div>
 
       {jobs.map((job, i) => (

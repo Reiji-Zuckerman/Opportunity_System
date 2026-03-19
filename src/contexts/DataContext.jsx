@@ -252,19 +252,43 @@ export function DataProvider({ children }) {
     }
   }, [source]);
 
-  const upsertDeal = useCallback(async (deal) => {
+  const upsertDeal = useCallback(async (deal, dealDetail) => {
+    const id = deal.id || Date.now();
+    const row = { ...deal, id };
     setData(prev => {
-      const exists = prev.DEALS.find(d => d.id === deal.id);
+      const exists = prev.DEALS.find(d => d.id === id);
+      const listItem = {
+        id,
+        companyId: row.companyId || null,
+        name: row.name,
+        company: row.company || '',
+        assignee: row.assignee || '',
+        dept: row.dept || '',
+        lastMeeting: row.lastMeeting || new Date().toLocaleDateString('ja-JP'),
+        status: row.status || '予定',
+      };
+      const newDetails = dealDetail ? {
+        ...prev.DEAL_DETAILS,
+        [id]: {
+          basicInfo: dealDetail.basicInfo || { company: row.company, dept: '', clientPerson: '', ourPerson: row.assignee, businessDept: row.dept, channel: '', acquiredBy: '', status: row.status },
+          tree: dealDetail.tree || { parent: null, current: row.name, children: [] },
+          meetings: dealDetail.meetings || [],
+          tasks: dealDetail.tasks || [],
+          jobs: dealDetail.jobs || [],
+        },
+      } : prev.DEAL_DETAILS;
       return {
         ...prev,
         DEALS: exists
-          ? prev.DEALS.map(d => d.id === deal.id ? { ...d, ...deal } : d)
-          : [...prev.DEALS, deal],
+          ? prev.DEALS.map(d => d.id === id ? { ...d, ...listItem } : d)
+          : [...prev.DEALS, listItem],
+        DEAL_DETAILS: newDetails,
       };
     });
     if (source === 'api') {
-      try { await upsertRow('DEALS', deal); } catch { /* silent */ }
+      try { await upsertRow('DEALS', row); } catch { /* silent */ }
     }
+    return id;
   }, [source]);
 
   const upsertCompany = useCallback(async (company) => {
@@ -294,6 +318,44 @@ export function DataProvider({ children }) {
     return id;
   }, [source]);
 
+  const upsertJob = useCallback(async (job) => {
+    const id = job.id || Date.now();
+    const row = { ...job, id };
+    setData(prev => {
+      const exists = prev.JOBS.find(j => j.id === id);
+      return {
+        ...prev,
+        JOBS: exists
+          ? prev.JOBS.map(j => j.id === id ? { ...j, ...row } : j)
+          : [...prev.JOBS, row],
+      };
+    });
+    if (source === 'api') {
+      try { await upsertRow('JOBS', row); } catch { /* silent */ }
+    }
+    return id;
+  }, [source]);
+
+  const addMeeting = useCallback(async (dealId, meeting) => {
+    setData(prev => {
+      const detail = prev.DEAL_DETAILS[dealId];
+      if (!detail) return prev;
+      return {
+        ...prev,
+        DEAL_DETAILS: {
+          ...prev.DEAL_DETAILS,
+          [dealId]: {
+            ...detail,
+            meetings: [...detail.meetings, meeting],
+          },
+        },
+      };
+    });
+    if (source === 'api') {
+      try { await upsertRow('MEETINGS', { dealId, ...meeting }); } catch { /* silent */ }
+    }
+  }, [source]);
+
   const value = {
     ...data,
     loading,
@@ -304,6 +366,8 @@ export function DataProvider({ children }) {
     upsertTask,
     upsertDeal,
     upsertCompany,
+    upsertJob,
+    addMeeting,
     // Derived constants
     DIVISIONS: data ? [...new Set(data.DEALS.map(d => d.dept))] : [],
     MEMBERS: data ? [...new Set(data.DEALS.map(d => d.assignee))] : [],

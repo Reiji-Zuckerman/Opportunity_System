@@ -1,9 +1,24 @@
-import { useState } from 'react';
-import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
+import { useState, useMemo } from 'react';
+import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox, ComboBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
-export default function BranchModal({ isOpen, onClose, parentDeal }) {
-  const { MEMBERS, DIVISIONS } = useData();
+export default function BranchModal({ isOpen, onClose, parentDeal, dealId }) {
+  const { MEMBERS, DIVISIONS, COMPANIES, COMPANY_DETAILS, DEAL_DETAILS, upsertDeal } = useData();
+
+  // Get parent deal info for company context
+  const parentDetail = dealId ? DEAL_DETAILS[dealId] : null;
+  const parentCompanyName = parentDetail?.basicInfo?.company || parentDeal?.company || '';
+
+  const { deptOptions, personOptions } = useMemo(() => {
+    const matched = COMPANIES.find(c => c.name === parentCompanyName);
+    if (!matched) return { deptOptions: [], personOptions: [] };
+    const detail = COMPANY_DETAILS[matched.id];
+    if (!detail) return { deptOptions: [], personOptions: [] };
+    const depts = (detail.whitelist || []).map(w => w.dept);
+    const persons = (detail.whitelist || []).flatMap(w => (w.contacts || []).map(c => c.name));
+    return { deptOptions: [...new Set(depts)], personOptions: [...new Set(persons)] };
+  }, [parentCompanyName, COMPANIES, COMPANY_DETAILS]);
+
   const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
@@ -14,6 +29,45 @@ export default function BranchModal({ isOpen, onClose, parentDeal }) {
   const [content, setContent] = useState('');
 
   const handleSubmit = () => {
+    if (!name) return;
+    const matchedCompany = COMPANIES.find(c => c.name === parentCompanyName);
+    const today = new Date().toLocaleDateString('ja-JP');
+
+    const deal = {
+      companyId: matchedCompany?.id || parentDeal?.companyId || null,
+      name,
+      company: parentCompanyName,
+      assignee: dealers.join('、'),
+      dept: divisions[0] || '',
+      lastMeeting: datetime ? new Date(datetime).toLocaleDateString('ja-JP') : today,
+      status,
+    };
+
+    const dealDetail = {
+      basicInfo: {
+        company: parentCompanyName,
+        dept: departmentName,
+        clientPerson: personName,
+        ourPerson: dealers.join('、'),
+        businessDept: divisions.join('、'),
+        channel: '',
+        acquiredBy: '',
+        status,
+      },
+      tree: { parent: parentDeal?.name || null, current: name, children: [] },
+      meetings: datetime ? [{
+        date: new Date(datetime).toLocaleDateString('ja-JP'),
+        round: 1,
+        attendees: personName,
+        content: content || '',
+      }] : [],
+      tasks: [],
+      jobs: [],
+    };
+
+    upsertDeal(deal, dealDetail);
+
+    // Reset
     setName('');
     setDatetime('');
     setStatus('予定');
@@ -53,18 +107,28 @@ export default function BranchModal({ isOpen, onClose, parentDeal }) {
       </FormField>
 
       <FormField label="事業部名">
-        <FormInput value={departmentName} onChange={(e) => setDepartmentName(e.target.value)} placeholder="事業部名を入力" />
+        <ComboBox
+          options={deptOptions}
+          value={departmentName}
+          onChange={setDepartmentName}
+          placeholder="事業部を選択または新規入力"
+        />
       </FormField>
 
       <FormField label="人物名">
-        <FormInput value={personName} onChange={(e) => setPersonName(e.target.value)} placeholder="人物名を入力" />
+        <ComboBox
+          options={personOptions}
+          value={personName}
+          onChange={setPersonName}
+          placeholder="人物を選択または新規入力"
+        />
       </FormField>
 
       <FormField label="商談内容">
         <FormTextarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="商談内容を入力" />
       </FormField>
 
-      <div className="text-xs text-gray-500">企業名は親商談から自動引き継ぎ</div>
+      <div className="text-xs text-gray-500">企業名は親商談から自動引き継ぎ: {parentCompanyName}</div>
     </Modal>
   );
 }

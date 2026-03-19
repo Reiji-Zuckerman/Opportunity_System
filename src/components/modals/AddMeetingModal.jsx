@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
-export default function AddMeetingModal({ isOpen, onClose, dealName, meetingCount }) {
-  const { MEMBERS } = useData();
+export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, meetingCount }) {
+  const { MEMBERS, addMeeting, upsertJob } = useData();
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
   const [clientAttendees, setClientAttendees] = useState(['']);
@@ -21,6 +21,33 @@ export default function AddMeetingModal({ isOpen, onClose, dealName, meetingCoun
   };
 
   const handleSubmit = () => {
+    if (!dealId) return;
+    const round = (meetingCount || 0) + 1;
+    const attendeeNames = clientAttendees.filter(a => a.trim());
+
+    const meeting = {
+      date: datetime ? new Date(datetime).toLocaleDateString('ja-JP') : new Date().toLocaleDateString('ja-JP'),
+      round,
+      attendees: [...attendeeNames, ...ownAttendees].join('、'),
+      content: content || '',
+    };
+
+    addMeeting(dealId, meeting);
+
+    // If job was added inline
+    if (showJobs && jobTitle) {
+      upsertJob({
+        id: Date.now(),
+        dealId,
+        title: jobTitle,
+        count: Number(jobCount) || 1,
+        date: new Date().toLocaleDateString('ja-JP'),
+        dealName: dealName || '',
+        status: '予定',
+      });
+    }
+
+    // Reset
     setDatetime('');
     setStatus('予定');
     setClientAttendees(['']);
@@ -34,7 +61,7 @@ export default function AddMeetingModal({ isOpen, onClose, dealName, meetingCoun
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="面談追記" onSubmit={handleSubmit}>
       <div className="text-sm font-medium text-gray-900">
-        {dealName} <span className="text-accent">(第{meetingCount + 1}回)</span>
+        {dealName} <span className="text-accent">(第{(meetingCount || 0) + 1}回)</span>
       </div>
 
       <FormField label="面談日時">
