@@ -30,6 +30,8 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_GAS_URL: https://script.google.com/macros/s/AKfycbzXN-IJ_abXI5fQDZMphU-SUM6w3lpMO0TI8y-xq9ql1BAPsmdF9Bou_tWreF-QfIId/exec
 
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
