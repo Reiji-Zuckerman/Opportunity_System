@@ -267,16 +267,39 @@ export function DataProvider({ children }) {
         lastMeeting: row.lastMeeting || new Date().toLocaleDateString('ja-JP'),
         status: row.status || '予定',
       };
-      const newDetails = dealDetail ? {
-        ...prev.DEAL_DETAILS,
-        [id]: {
-          basicInfo: dealDetail.basicInfo || { company: row.company, dept: '', clientPerson: '', ourPerson: row.assignee, businessDept: row.dept, channel: '', acquiredBy: '', status: row.status },
-          tree: dealDetail.tree || { parent: null, current: row.name, children: [] },
-          meetings: dealDetail.meetings || [],
-          tasks: dealDetail.tasks || [],
-          jobs: dealDetail.jobs || [],
-        },
-      } : prev.DEAL_DETAILS;
+      let newDetails = prev.DEAL_DETAILS;
+      if (dealDetail) {
+        const tree = dealDetail.tree || { parent: null, current: row.name, children: [] };
+        newDetails = {
+          ...newDetails,
+          [id]: {
+            basicInfo: dealDetail.basicInfo || { company: row.company, dept: '', clientPerson: '', ourPerson: row.assignee, businessDept: row.dept, channel: '', acquiredBy: '', status: row.status },
+            tree,
+            meetings: dealDetail.meetings || [],
+            tasks: dealDetail.tasks || [],
+            jobs: dealDetail.jobs || [],
+          },
+        };
+        // 親商談の tree.children に子商談名を追加
+        if (tree.parent) {
+          const parentId = Object.keys(newDetails).find(
+            key => newDetails[key]?.tree?.current === tree.parent
+          );
+          if (parentId && newDetails[parentId]) {
+            const parentDetail = newDetails[parentId];
+            const children = parentDetail.tree.children || [];
+            if (!children.includes(row.name)) {
+              newDetails = {
+                ...newDetails,
+                [parentId]: {
+                  ...parentDetail,
+                  tree: { ...parentDetail.tree, children: [...children, row.name] },
+                },
+              };
+            }
+          }
+        }
+      }
       return {
         ...prev,
         DEALS: exists
