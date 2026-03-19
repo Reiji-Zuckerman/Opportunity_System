@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText, Trash2 } from 'lucide-react';
 import Badge from '../components/Badge';
+import { ConfirmDialog } from '../components/Modal';
 import DealTree from '../components/DealTree';
 import { useData } from '../contexts/DataContext';
 import AddMeetingModal from '../components/modals/AddMeetingModal';
@@ -45,7 +46,9 @@ const DEAL_DESCRIPTION = `【商談概要】
 
 export default function DealDetail() {
   const { id } = useParams();
-  const { DEALS, DEAL_DETAILS } = useData();
+  const navigate = useNavigate();
+  const { DEALS, DEAL_DETAILS, deleteDeal } = useData();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const detail = DEAL_DETAILS[id];
   const dealSummary = DEALS.find(d => d.id === Number(id));
 
@@ -121,6 +124,13 @@ export default function DealDetail() {
             className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
           >
             担当分岐
+          </button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="px-4 py-2 bg-white border border-red-300 text-red-600 text-sm rounded-lg hover:bg-red-50 transition-colors"
+          >
+            <Trash2 className="w-4 h-4 inline mr-1" />
+            削除
           </button>
         </div>
       </div>
@@ -350,6 +360,12 @@ export default function DealDetail() {
       <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />
       <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />
       <JobModal isOpen={showJob} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => { deleteDeal(Number(id)); navigate('/deals'); }}
+        message={`商談「${dealName}」を削除しますか？`}
+      />
     </div>
   );
 }

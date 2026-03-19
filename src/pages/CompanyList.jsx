@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Plus } from 'lucide-react';
+import { Search, Filter, Plus, Trash2 } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
+import { ConfirmDialog } from '../components/Modal';
 import NewCompanyModal from '../components/modals/NewCompanyModal';
 
 const CONTRACT_STATUS_OPTIONS = ['未接触', '商談中', '契約中', '契約終了'];
@@ -18,7 +19,8 @@ function isExpired(dateStr) {
 
 export default function CompanyList() {
   const navigate = useNavigate();
-  const { COMPANIES, upsertCompany } = useData();
+  const { COMPANIES, upsertCompany, deleteCompany } = useData();
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [showNewCompany, setShowNewCompany] = useState(false);
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState('');
@@ -167,6 +169,7 @@ export default function CompanyList() {
               <th className="text-left px-5 py-3 font-medium text-gray-500">PERM</th>
               <th className="text-left px-5 py-3 font-medium text-gray-500">DSL</th>
               <th className="text-left px-5 py-3 font-medium text-gray-500">最終商談日</th>
+              <th className="w-10"></th>
             </tr>
           </thead>
           <tbody>
@@ -191,12 +194,21 @@ export default function CompanyList() {
                       <span className="text-gray-700">{company.lastDealDate}</span>
                     )}
                   </td>
+                  <td className="px-2 py-3">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDeleteTarget(company); }}
+                      className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      title="削除"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-5 py-8 text-center text-gray-400">
+                <td colSpan={8} className="px-5 py-8 text-center text-gray-400">
                   該当する企業が見つかりません
                 </td>
               </tr>
@@ -212,6 +224,12 @@ export default function CompanyList() {
           const id = await upsertCompany(company);
           navigate(`/companies/${id}`);
         }}
+      />
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={() => deleteCompany(deleteTarget.id)}
+        message={`企業「${deleteTarget?.name}」を削除しますか？関連する商談・求人は削除されません。`}
       />
     </div>
   );

@@ -172,6 +172,41 @@ export function ComboBox({ options, value, onChange, placeholder = '選択また
   );
 }
 
+export function ConfirmDialog({ isOpen, onClose, onConfirm, title = '削除確認', message }) {
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 animate-modal-in">
+        <div className="flex items-center justify-between p-5 border-b">
+          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
+            <X size={20} className="text-gray-500" />
+          </button>
+        </div>
+        <div className="p-5">
+          <p className="text-sm text-gray-700">{message}</p>
+        </div>
+        <div className="flex justify-end gap-3 p-5 border-t">
+          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+            キャンセル
+          </button>
+          <button onClick={() => { onConfirm(); onClose(); }} className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+            削除
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function NoteBox({ children, color = 'blue' }) {
   const colors = {
     blue: 'bg-blue-50 border-blue-200 text-blue-700',

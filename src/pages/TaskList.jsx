@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Search, Plus, Filter, ChevronDown } from 'lucide-react';
+import { Search, Plus, Filter, ChevronDown, Trash2 } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
+import { ConfirmDialog } from '../components/Modal';
 import TaskModal from '../components/modals/TaskModal';
 import ActivityModal from '../components/modals/ActivityModal';
 
@@ -39,7 +40,7 @@ const STATUS_COLORS = {
 };
 
 export default function TaskList() {
-  const { TASKS, MEMBERS, TASK_CATEGORIES, updateTaskStatus } = useData();
+  const { TASKS, MEMBERS, TASK_CATEGORIES, updateTaskStatus, deleteTask } = useData();
   const [search, setSearch] = useState('');
   const [memberFilter, setMemberFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -55,6 +56,7 @@ export default function TaskList() {
     return map;
   });
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleStatusChange = (taskId, newStatus) => {
     setTaskStatuses(prev => ({ ...prev, [taskId]: newStatus }));
@@ -210,6 +212,7 @@ export default function TaskList() {
               <th className="text-left px-5 py-3 font-medium text-gray-600">期日</th>
               <th className="text-left px-5 py-3 font-medium text-gray-600">担当者</th>
               <th className="text-left px-5 py-3 font-medium text-gray-600">ステータス</th>
+              <th className="w-10"></th>
             </tr>
           </thead>
           <tbody>
@@ -266,12 +269,21 @@ export default function TaskList() {
                       )}
                     </div>
                   </td>
+                  <td className="px-2 py-3.5">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDeleteTarget(task); }}
+                      className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      title="削除"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-5 py-8 text-center text-gray-400">
+                <td colSpan={8} className="px-5 py-8 text-center text-gray-400">
                   該当するタスクがありません
                 </td>
               </tr>
@@ -282,6 +294,12 @@ export default function TaskList() {
 
       <TaskModal isOpen={showTaskModal} onClose={() => setShowTaskModal(false)} />
       <ActivityModal isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={() => deleteTask(deleteTarget.id)}
+        message={`「${deleteTarget?.name}」を削除しますか？`}
+      />
     </div>
   );
 }

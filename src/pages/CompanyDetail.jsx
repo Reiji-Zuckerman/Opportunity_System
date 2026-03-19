@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown, Send, UserCheck, Handshake } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown, Send, UserCheck, Handshake, Trash2 } from 'lucide-react';
 import Badge from '../components/Badge';
 import CompanyDealTrees from '../components/CompanyDealTrees';
 import { useData } from '../contexts/DataContext';
@@ -8,6 +8,7 @@ import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
 import NewDealModal from '../components/modals/NewDealModal';
+import { ConfirmDialog } from '../components/Modal';
 
 const TABS = [
   { key: 'all', label: '全体' },
@@ -20,7 +21,9 @@ const ATTENTION_COLORS = { A: 'bg-red-100 text-red-700', B: 'bg-yellow-100 text-
 
 export default function CompanyDetail() {
   const { id } = useParams();
-  const { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS } = useData();
+  const navigate = useNavigate();
+  const { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS, deleteCompany } = useData();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const company = COMPANY_DETAILS[id];
   const companySummary = COMPANIES.find(c => c.id === Number(id));
   const ext = COMPANY_EXTENDED[id] || {};
@@ -191,6 +194,13 @@ export default function CompanyDetail() {
           <button onClick={() => setShowActivityModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Activity</button>
           <button onClick={() => setShowTaskModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Task</button>
           <button onClick={() => setShowContractModal(true)} className="px-4 py-2 bg-white border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">契約ステータス更新</button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="px-4 py-2 bg-white border border-red-300 text-red-600 text-sm rounded-lg hover:bg-red-50 transition-colors"
+          >
+            <Trash2 className="w-4 h-4 inline mr-1" />
+            削除
+          </button>
         </div>
       </div>
 
@@ -642,6 +652,12 @@ export default function CompanyDetail() {
       {showTaskModal && <TaskModal isOpen={true} onClose={() => setShowTaskModal(false)} companyId={Number(id)} />}
       {showContractModal && <ContractStatusModal onClose={() => setShowContractModal(false)} companyName={companyName} currentStatus={company.contractStatus} />}
       {showNewDealModal && <NewDealModal isOpen={true} onClose={() => setShowNewDealModal(false)} presetCompanyId={Number(id)} />}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => { deleteCompany(Number(id)); navigate('/companies'); }}
+        message={`企業「${companyName}」を削除しますか？`}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { fetchAll, upsertRow, updateField as apiUpdateField } from '../data/api';
+import { fetchAll, upsertRow, deleteRow as apiDeleteRow, updateField as apiUpdateField } from '../data/api';
 import * as dummy from '../data/dummy';
 
 const DataContext = createContext(null);
@@ -379,6 +379,56 @@ export function DataProvider({ children }) {
     }
   }, [source]);
 
+  const deleteDeal = useCallback(async (dealId) => {
+    setData(prev => {
+      const { [dealId]: _, [String(dealId)]: __, ...restDetails } = prev.DEAL_DETAILS;
+      return {
+        ...prev,
+        DEALS: prev.DEALS.filter(d => d.id !== dealId),
+        DEAL_DETAILS: restDetails,
+      };
+    });
+    if (source === 'api') {
+      try { await apiDeleteRow('DEALS', dealId); } catch { /* silent */ }
+    }
+  }, [source]);
+
+  const deleteCompany = useCallback(async (companyId) => {
+    setData(prev => {
+      const { [companyId]: _, [String(companyId)]: __, ...restDetails } = prev.COMPANY_DETAILS;
+      const { [companyId]: _e, [String(companyId)]: __e, ...restExtended } = prev.COMPANY_EXTENDED;
+      return {
+        ...prev,
+        COMPANIES: prev.COMPANIES.filter(c => c.id !== companyId),
+        COMPANY_DETAILS: restDetails,
+        COMPANY_EXTENDED: restExtended,
+      };
+    });
+    if (source === 'api') {
+      try { await apiDeleteRow('COMPANIES', companyId); } catch { /* silent */ }
+    }
+  }, [source]);
+
+  const deleteTask = useCallback(async (taskId) => {
+    setData(prev => ({
+      ...prev,
+      TASKS: prev.TASKS.filter(t => t.id !== taskId),
+    }));
+    if (source === 'api') {
+      try { await apiDeleteRow('TASKS', taskId); } catch { /* silent */ }
+    }
+  }, [source]);
+
+  const deleteJob = useCallback(async (jobId) => {
+    setData(prev => ({
+      ...prev,
+      JOBS: prev.JOBS.filter(j => j.id !== jobId),
+    }));
+    if (source === 'api') {
+      try { await apiDeleteRow('JOBS', jobId); } catch { /* silent */ }
+    }
+  }, [source]);
+
   const value = {
     ...data,
     loading,
@@ -391,6 +441,10 @@ export function DataProvider({ children }) {
     upsertCompany,
     upsertJob,
     addMeeting,
+    deleteDeal,
+    deleteCompany,
+    deleteTask,
+    deleteJob,
     // Derived constants
     DIVISIONS: data ? [...new Set(data.DEALS.map(d => d.dept))] : [],
     MEMBERS: data ? [...new Set(data.DEALS.map(d => d.assignee))] : [],

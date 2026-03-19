@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Trash2 } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
+import { ConfirmDialog } from '../components/Modal';
 
 export default function JobList() {
   const navigate = useNavigate();
-  const { JOBS } = useData();
+  const { JOBS, deleteJob } = useData();
   const [search, setSearch] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [deptFilter, setDeptFilter] = useState('');
 
   const departments = [...new Set(JOBS.map(j => j.businessDept).filter(Boolean))];
@@ -62,6 +64,7 @@ export default function JobList() {
               <th className="text-left px-5 py-3 font-medium text-gray-600">事業部</th>
               <th className="text-left px-5 py-3 font-medium text-gray-600">募集人数</th>
               <th className="text-left px-5 py-3 font-medium text-gray-600">作成日</th>
+              <th className="w-10"></th>
             </tr>
           </thead>
           <tbody>
@@ -76,11 +79,20 @@ export default function JobList() {
                 <td className="px-5 py-3.5"><Badge label={job.businessDept} /></td>
                 <td className="px-5 py-3.5 text-gray-600">{job.count}名</td>
                 <td className="px-5 py-3.5 text-gray-600">{job.date}</td>
+                <td className="px-2 py-3.5">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setDeleteTarget(job); }}
+                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    title="削除"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-5 py-8 text-center text-gray-400">
                   該当する求人がありません
                 </td>
               </tr>
@@ -88,6 +100,12 @@ export default function JobList() {
           </tbody>
         </table>
       </div>
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={() => deleteJob(deleteTarget.id)}
+        message={`求人「${deleteTarget?.title}」を削除しますか？`}
+      />
     </div>
   );
 }
