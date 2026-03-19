@@ -267,6 +267,33 @@ export function DataProvider({ children }) {
     }
   }, [source]);
 
+  const upsertCompany = useCallback(async (company) => {
+    const id = company.id || Date.now();
+    const row = { ...company, id };
+    setData(prev => {
+      const exists = prev.COMPANIES.find(c => c.id === id);
+      const listItem = { id, name: row.name, tier: row.tier, category: row.category, itss: row.itss || '未接触', perm: row.perm || '未接触', dsl: row.dsl || '未接触', lastDealDate: row.lastDealDate || '' };
+      return {
+        ...prev,
+        COMPANIES: exists
+          ? prev.COMPANIES.map(c => c.id === id ? { ...c, ...listItem } : c)
+          : [...prev.COMPANIES, listItem],
+        COMPANY_DETAILS: {
+          ...prev.COMPANY_DETAILS,
+          [id]: prev.COMPANY_DETAILS[id] || { info: { tier: row.tier, category: row.category, grossProfit: 0, lastDealDate: '' }, contractStatus: {}, deptActivity: [], whitelist: [], deals: [], assignees: [] },
+        },
+        COMPANY_EXTENDED: {
+          ...prev.COMPANY_EXTENDED,
+          [id]: prev.COMPANY_EXTENDED[id] || { itssAttention: '', permAttention: '', address: row.address || '', industry: [], corporateNumber: '', businessDescription: '', frmc: '', permNote: '', cvNote: '', sentPickNote: '', maxAge: null, blindSent: '', blindSentMethod: '', realNameChannel: '', permAts: '', permAtsUrl: '', hiringTypes: [], hiringRoles: [], keywords: [] },
+        },
+      };
+    });
+    if (source === 'api') {
+      try { await upsertRow('COMPANIES', row); } catch { /* silent */ }
+    }
+    return id;
+  }, [source]);
+
   const value = {
     ...data,
     loading,
@@ -276,6 +303,7 @@ export function DataProvider({ children }) {
     updateTaskStatus,
     upsertTask,
     upsertDeal,
+    upsertCompany,
     // Derived constants
     DIVISIONS: data ? [...new Set(data.DEALS.map(d => d.dept))] : [],
     MEMBERS: data ? [...new Set(data.DEALS.map(d => d.assignee))] : [],

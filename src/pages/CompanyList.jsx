@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Plus } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
+import NewCompanyModal from '../components/modals/NewCompanyModal';
 
 const CONTRACT_STATUS_OPTIONS = ['未接触', '商談中', '契約中', '契約終了'];
 
@@ -17,7 +18,8 @@ function isExpired(dateStr) {
 
 export default function CompanyList() {
   const navigate = useNavigate();
-  const { COMPANIES } = useData();
+  const { COMPANIES, upsertCompany } = useData();
+  const [showNewCompany, setShowNewCompany] = useState(false);
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState('');
   const [classificationFilter, setClassificationFilter] = useState('');
@@ -46,7 +48,16 @@ export default function CompanyList() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">企業一覧</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">企業一覧</h1>
+        <button
+          onClick={() => setShowNewCompany(true)}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-accent rounded-lg hover:opacity-90 transition-colors"
+        >
+          <Plus size={16} />
+          新規企業追加
+        </button>
+      </div>
 
       {/* Search bar */}
       <div className="relative mb-4">
@@ -193,6 +204,15 @@ export default function CompanyList() {
           </tbody>
         </table>
       </div>
+
+      <NewCompanyModal
+        isOpen={showNewCompany}
+        onClose={() => setShowNewCompany(false)}
+        onSubmit={async (company) => {
+          const id = await upsertCompany(company);
+          navigate(`/companies/${id}`);
+        }}
+      />
     </div>
   );
 }
