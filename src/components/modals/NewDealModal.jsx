@@ -1,9 +1,32 @@
-import { useState } from 'react';
-import Modal, { FormField, FormInput, FormTextarea, FormSelect, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
+import { useState, useMemo } from 'react';
+import Modal, { FormField, FormInput, FormTextarea, FormSelect, ToggleGroup, ChipSelect, NoteBox, ComboBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
-export default function NewDealModal({ isOpen, onClose }) {
-  const { MEMBERS, DIVISIONS, DEAL_ROUTES } = useData();
+export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
+  const { MEMBERS, DIVISIONS, DEAL_ROUTES, COMPANIES, COMPANY_DETAILS } = useData();
+
+  // Build option lists from existing data
+  const companyOptions = useMemo(() => COMPANIES.map(c => c.name), [COMPANIES]);
+
+  // When company is selected, derive department and person options from whitelist
+  const [companyName, setCompanyName] = useState(() => {
+    if (presetCompanyId) {
+      const c = COMPANIES.find(co => co.id === Number(presetCompanyId));
+      return c?.name || '';
+    }
+    return '';
+  });
+
+  const { deptOptions, personOptions } = useMemo(() => {
+    const matched = COMPANIES.find(c => c.name === companyName);
+    if (!matched) return { deptOptions: [], personOptions: [] };
+    const detail = COMPANY_DETAILS[matched.id];
+    if (!detail) return { deptOptions: [], personOptions: [] };
+    const depts = (detail.whitelist || []).map(w => w.dept);
+    const persons = (detail.whitelist || []).flatMap(w => (w.contacts || []).map(c => c.name));
+    return { deptOptions: [...new Set(depts)], personOptions: [...new Set(persons)] };
+  }, [companyName, COMPANIES, COMPANY_DETAILS]);
+
   const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
@@ -11,13 +34,33 @@ export default function NewDealModal({ isOpen, onClose }) {
   const [dealers, setDealers] = useState([]);
   const [acquirer, setAcquirer] = useState('');
   const [route, setRoute] = useState('');
-  const [companyName, setCompanyName] = useState('');
   const [departmentName, setDepartmentName] = useState('');
   const [personName, setPersonName] = useState('');
   const [content, setContent] = useState('');
   const [showJobs, setShowJobs] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
   const [jobCount, setJobCount] = useState('');
+
+  const handleCompanyChange = (val) => {
+    setCompanyName(val);
+    // Reset dept/person when company changes
+    setDepartmentName('');
+    setPersonName('');
+  };
+
+  // When department is selected, filter person options to that department
+  const filteredPersonOptions = useMemo(() => {
+    if (!departmentName) return personOptions;
+    const matched = COMPANIES.find(c => c.name === companyName);
+    if (!matched) return personOptions;
+    const detail = COMPANY_DETAILS[matched.id];
+    if (!detail) return personOptions;
+    const dept = (detail.whitelist || []).find(w => w.dept === departmentName);
+    if (!dept) return personOptions;
+    const deptPersons = (dept.contacts || []).map(c => c.name);
+    // Show dept persons first, then others
+    return [...new Set([...deptPersons, ...personOptions])];
+  }, [departmentName, personOptions, companyName, COMPANIES, COMPANY_DETAILS]);
 
   const handleSubmit = () => {
     setName('');
@@ -27,7 +70,7 @@ export default function NewDealModal({ isOpen, onClose }) {
     setDealers([]);
     setAcquirer('');
     setRoute('');
-    setCompanyName('');
+    if (!presetCompanyId) setCompanyName('');
     setDepartmentName('');
     setPersonName('');
     setContent('');
@@ -69,15 +112,30 @@ export default function NewDealModal({ isOpen, onClose }) {
       <NoteBox color="blue">商談獲得者・商談経路は初回商談のみ入力</NoteBox>
 
       <FormField label="企業名">
-        <FormInput value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="企業名を入力（新規作成可）" />
+        <ComboBox
+          options={companyOptions}
+          value={companyName}
+          onChange={handleCompanyChange}
+          placeholder="企業名を選択または新規入力"
+        />
       </FormField>
 
       <FormField label="事業部名">
-        <FormInput value={departmentName} onChange={(e) => setDepartmentName(e.target.value)} placeholder="事業部名を入力" />
+        <ComboBox
+          options={deptOptions}
+          value={departmentName}
+          onChange={setDepartmentName}
+          placeholder={companyName ? '事業部を選択または新規入力' : '先に企業を選択してください'}
+        />
       </FormField>
 
       <FormField label="人物名">
-        <FormInput value={personName} onChange={(e) => setPersonName(e.target.value)} placeholder="人物名を入力" />
+        <ComboBox
+          options={filteredPersonOptions}
+          value={personName}
+          onChange={setPersonName}
+          placeholder={companyName ? '人物を選択または新規入力' : '先に企業を選択してください'}
+        />
       </FormField>
 
       <FormField label="商談内容">

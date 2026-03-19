@@ -7,6 +7,7 @@ import { useData } from '../contexts/DataContext';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
+import NewDealModal from '../components/modals/NewDealModal';
 
 const TABS = [
   { key: 'all', label: '全体' },
@@ -28,6 +29,7 @@ export default function CompanyDetail() {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showContractModal, setShowContractModal] = useState(false);
+  const [showNewDealModal, setShowNewDealModal] = useState(false);
   const [treeView, setTreeView] = useState(true);
   const [jobDisplayCount, setJobDisplayCount] = useState(10);
   const [whiteListFilter, setWhiteListFilter] = useState('all');
@@ -185,6 +187,7 @@ export default function CompanyDetail() {
           企業一覧
         </Link>
         <div className="flex items-center gap-3">
+          <button onClick={() => setShowNewDealModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ 商談</button>
           <button onClick={() => setShowActivityModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Activity</button>
           <button onClick={() => setShowTaskModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Task</button>
           <button onClick={() => setShowContractModal(true)} className="px-4 py-2 bg-white border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">契約ステータス更新</button>
@@ -638,6 +641,7 @@ export default function CompanyDetail() {
       {showActivityModal && <ActivityModal onClose={() => setShowActivityModal(false)} companyId={Number(id)} />}
       {showTaskModal && <TaskModal onClose={() => setShowTaskModal(false)} companyId={Number(id)} />}
       {showContractModal && <ContractStatusModal onClose={() => setShowContractModal(false)} companyName={companyName} currentStatus={company.contractStatus} />}
+      {showNewDealModal && <NewDealModal isOpen={true} onClose={() => setShowNewDealModal(false)} presetCompanyId={Number(id)} />}
     </div>
   );
 }
