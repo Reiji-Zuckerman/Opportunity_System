@@ -81,10 +81,10 @@ function transformDeals(rows) {
         status: r.status,
       },
       tree: (() => {
-        // Support both old format (children) and new format (next/branches)
-        const children = Array.isArray(r.treeChildren) ? r.treeChildren :
-                         (r.tree?.children ? r.tree.children : []);
-        // If new format fields exist, use them directly
+        // Support nested tree object (dummy data) and flat columns (GAS API)
+        // Priority: nested tree object > flat treeXxx columns > defaults
+
+        // 1. If nested tree object has next/branches, use it directly (dummy data format)
         if (r.tree?.next !== undefined || r.tree?.branches !== undefined) {
           return {
             parent: r.tree?.parent || r.treeParent || null,
@@ -93,13 +93,30 @@ function transformDeals(rows) {
             branches: Array.isArray(r.tree?.branches) ? r.tree.branches : [],
           };
         }
-        // Convert old format: all children become branches (not next)
-        // Only 商談追記 creates next (horizontal chain), 担当分岐 creates branches
+
+        // 2. Read from flat columns (GAS API format)
+        // treeBranches may be a JSON string from GAS or already parsed array
+        let branches = [];
+        if (r.treeBranches) {
+          if (Array.isArray(r.treeBranches)) {
+            branches = r.treeBranches;
+          } else if (typeof r.treeBranches === 'string') {
+            try { branches = JSON.parse(r.treeBranches); } catch { branches = []; }
+          }
+        }
+        // Fallback: old treeChildren column
+        if (branches.length === 0) {
+          const children = Array.isArray(r.treeChildren) ? r.treeChildren :
+                           (typeof r.treeChildren === 'string' && r.treeChildren ?
+                             (() => { try { return JSON.parse(r.treeChildren); } catch { return []; } })() : []);
+          branches = children;
+        }
+
         return {
           parent: r.treeParent || null,
           current: r.treeCurrent || r.name,
-          next: null,
-          branches: children,
+          next: r.treeNext || null,
+          branches,
         };
       })(),
       meetings: Array.isArray(r.meetings) ? r.meetings : [],
@@ -305,6 +322,7 @@ export function DataProvider({ children }) {
   const upsertDeal = useCallback(async (deal, dealDetail) => {
     const id = deal.id || Date.now();
     const row = { ...deal, id };
+    let parentIdToSync = null; // Track parent that needs API sync
     setData(prev => {
       const exists = prev.DEALS.find(d => d.id === id);
       const listItem = {
@@ -323,6 +341,25 @@ export function DataProvider({ children }) {
         // Ensure new format
         if (!('next' in tree)) { tree.next = null; }
         if (!('branches' in tree)) { tree.branches = []; }
+
+        // Flatten tree fields into row for API persistence
+        row.treeParent = tree.parent || '';
+        row.treeCurrent = tree.current || row.name;
+        row.treeNext = tree.next || '';
+        row.treeBranches = JSON.stringify(tree.branches || []);
+
+        // Also flatten basicInfo fields for API
+        const bi = dealDetail.basicInfo || {};
+        row.clientDept = bi.dept || '';
+        row.clientPerson = bi.clientPerson || '';
+        row.ourPerson = bi.ourPerson || row.assignee;
+        row.businessDept = bi.businessDept || row.dept;
+        row.channel = bi.channel || '';
+        row.acquiredBy = bi.acquiredBy || '';
+        row.meetings = JSON.stringify(dealDetail.meetings || []);
+        row.tasks = JSON.stringify(dealDetail.tasks || []);
+        row.jobs = JSON.stringify(dealDetail.jobs || []);
+
         newDetails = {
           ...newDetails,
           [id]: {
@@ -335,22 +372,23 @@ export function DataProvider({ children }) {
         };
         // Update parent deal's tree to link to this child
         if (tree.parent) {
-          const parentId = Object.keys(newDetails).find(
+          const pId = Object.keys(newDetails).find(
             key => newDetails[key]?.tree?.current === tree.parent
           );
-          if (parentId && newDetails[parentId]) {
-            const parentDetail = newDetails[parentId];
+          if (pId && newDetails[pId]) {
+            const parentDetail = newDetails[pId];
             const linkType = dealDetail._linkType || 'branch'; // 'next' or 'branch'
             if (linkType === 'next') {
               // Set as continuation (horizontal chain)
               if (!parentDetail.tree.next) {
                 newDetails = {
                   ...newDetails,
-                  [parentId]: {
+                  [pId]: {
                     ...parentDetail,
                     tree: { ...parentDetail.tree, next: row.name },
                   },
                 };
+                parentIdToSync = Number(pId);
               }
             } else {
               // Add as branch
@@ -358,11 +396,12 @@ export function DataProvider({ children }) {
               if (!branches.includes(row.name)) {
                 newDetails = {
                   ...newDetails,
-                  [parentId]: {
+                  [pId]: {
                     ...parentDetail,
                     tree: { ...parentDetail.tree, branches: [...branches, row.name] },
                   },
                 };
+                parentIdToSync = Number(pId);
               }
             }
           }
@@ -378,6 +417,29 @@ export function DataProvider({ children }) {
     });
     if (source === 'api') {
       try { await upsertRow('DEALS', row); } catch { /* silent */ }
+      // Sync parent's updated tree to API
+      if (parentIdToSync != null) {
+        try {
+          // Read latest parent tree from state after update
+          setData(prev => {
+            const parentDetail = prev.DEAL_DETAILS[parentIdToSync];
+            if (parentDetail?.tree) {
+              const parentDeal = prev.DEALS.find(d => d.id === parentIdToSync);
+              if (parentDeal) {
+                const parentRow = {
+                  ...parentDeal,
+                  treeParent: parentDetail.tree.parent || '',
+                  treeCurrent: parentDetail.tree.current || parentDeal.name,
+                  treeNext: parentDetail.tree.next || '',
+                  treeBranches: JSON.stringify(parentDetail.tree.branches || []),
+                };
+                upsertRow('DEALS', parentRow).catch(() => {});
+              }
+            }
+            return prev; // No state change, just reading
+          });
+        } catch { /* silent */ }
+      }
     }
     return id;
   }, [source]);

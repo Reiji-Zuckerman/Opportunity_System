@@ -223,7 +223,7 @@ function seedFromDummyData() {
   // Companies, Deals, Tasks, Jobs, CvSents, InterviewsOral のヘッダーだけ作成
   var sheets = [
     { name: SHEET.COMPANIES, headers: ['id','name','tier','category','itss','perm','dsl','lastDealDate','grossProfit','address','industry','corporateNumber','businessDescription','itssAttention','permAttention','frmc','permNote','cvNote','sentPickNote','maxAge','blindSent','blindSentMethod','realNameChannel','permAts','permAtsUrl','hiringTypes','hiringRoles','keywords','contractStatus','deptActivity','whitelist','deals','assignees'] },
-    { name: SHEET.DEALS, headers: ['id','companyId','name','company','assignee','dept','lastMeeting','status','clientDept','clientPerson','ourPerson','businessDept','channel','acquiredBy','treeParent','treeCurrent','treeChildren','meetings','tasks','jobs'] },
+    { name: SHEET.DEALS, headers: ['id','companyId','name','company','assignee','dept','lastMeeting','status','clientDept','clientPerson','ourPerson','businessDept','channel','acquiredBy','treeParent','treeCurrent','treeNext','treeBranches','treeChildren','meetings','tasks','jobs'] },
     { name: SHEET.TASKS, headers: ['id','type','name','company','category','due','assignee','method','status','dealId'] },
     { name: SHEET.JOBS, headers: ['id','dealId','companyId','title','dept','count','date','company','businessDept','dealName','status'] },
     { name: SHEET.CV_SENTS, headers: ['id','companyId','date','candidate','assignee','destination','unitPrice','jobId','dept'] },
