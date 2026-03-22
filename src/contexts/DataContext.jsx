@@ -359,8 +359,35 @@ export function DataProvider({ children }) {
 
   const upsertDeal = useCallback(async (deal, dealDetail) => {
     const id = deal.id || Date.now();
-    const row = { ...deal, id };
-    let parentIdToSync = null; // Track parent that needs API sync
+
+    // --- 1. APIに送るrowを先に完全に構築する（state updater外） ---
+    const tree = dealDetail?.tree || { parent: null, current: deal.name, next: null, branches: [] };
+    if (!('next' in tree)) tree.next = null;
+    if (!('branches' in tree)) tree.branches = [];
+    const bi = dealDetail?.basicInfo || {};
+
+    const row = {
+      ...deal,
+      id,
+      // tree フィールド（フラットカラム）
+      treeParent: tree.parent || '',
+      treeCurrent: tree.current || deal.name,
+      treeNext: tree.next || '',
+      treeBranches: JSON.stringify(tree.branches || []),
+      // basicInfo フィールド
+      clientDept: bi.dept || '',
+      clientPerson: bi.clientPerson || '',
+      ourPerson: bi.ourPerson || deal.assignee || '',
+      businessDept: bi.businessDept || deal.dept || '',
+      channel: bi.channel || '',
+      acquiredBy: bi.acquiredBy || '',
+      meetings: JSON.stringify(dealDetail?.meetings || []),
+      tasks: JSON.stringify(dealDetail?.tasks || []),
+      jobs: JSON.stringify(dealDetail?.jobs || []),
+    };
+
+    // --- 2. 親商談のtree更新を計算し、親のAPI rowも構築する ---
+    let parentRow = null;
     setDataAndPersist(prev => {
       const exists = prev.DEALS.find(d => d.id === id);
       const listItem = {
@@ -375,29 +402,6 @@ export function DataProvider({ children }) {
       };
       let newDetails = prev.DEAL_DETAILS;
       if (dealDetail) {
-        const tree = dealDetail.tree || { parent: null, current: row.name, next: null, branches: [] };
-        // Ensure new format
-        if (!('next' in tree)) { tree.next = null; }
-        if (!('branches' in tree)) { tree.branches = []; }
-
-        // Flatten tree fields into row for API persistence
-        row.treeParent = tree.parent || '';
-        row.treeCurrent = tree.current || row.name;
-        row.treeNext = tree.next || '';
-        row.treeBranches = JSON.stringify(tree.branches || []);
-
-        // Also flatten basicInfo fields for API
-        const bi = dealDetail.basicInfo || {};
-        row.clientDept = bi.dept || '';
-        row.clientPerson = bi.clientPerson || '';
-        row.ourPerson = bi.ourPerson || row.assignee;
-        row.businessDept = bi.businessDept || row.dept;
-        row.channel = bi.channel || '';
-        row.acquiredBy = bi.acquiredBy || '';
-        row.meetings = JSON.stringify(dealDetail.meetings || []);
-        row.tasks = JSON.stringify(dealDetail.tasks || []);
-        row.jobs = JSON.stringify(dealDetail.jobs || []);
-
         newDetails = {
           ...newDetails,
           [id]: {
@@ -415,31 +419,31 @@ export function DataProvider({ children }) {
           );
           if (pId && newDetails[pId]) {
             const parentDetail = newDetails[pId];
-            const linkType = dealDetail._linkType || 'branch'; // 'next' or 'branch'
-            if (linkType === 'next') {
-              // Set as continuation (horizontal chain)
-              if (!parentDetail.tree.next) {
-                newDetails = {
-                  ...newDetails,
-                  [pId]: {
-                    ...parentDetail,
-                    tree: { ...parentDetail.tree, next: row.name },
-                  },
-                };
-                parentIdToSync = Number(pId);
-              }
-            } else {
-              // Add as branch
+            const linkType = dealDetail._linkType || 'branch';
+            let updatedParentTree = null;
+            if (linkType === 'next' && !parentDetail.tree.next) {
+              updatedParentTree = { ...parentDetail.tree, next: row.name };
+            } else if (linkType !== 'next') {
               const branches = parentDetail.tree.branches || [];
               if (!branches.includes(row.name)) {
-                newDetails = {
-                  ...newDetails,
-                  [pId]: {
-                    ...parentDetail,
-                    tree: { ...parentDetail.tree, branches: [...branches, row.name] },
-                  },
+                updatedParentTree = { ...parentDetail.tree, branches: [...branches, row.name] };
+              }
+            }
+            if (updatedParentTree) {
+              newDetails = {
+                ...newDetails,
+                [pId]: { ...parentDetail, tree: updatedParentTree },
+              };
+              // 親のAPI row を構築
+              const parentDealItem = prev.DEALS.find(d => d.id === Number(pId));
+              if (parentDealItem) {
+                parentRow = {
+                  ...parentDealItem,
+                  treeParent: updatedParentTree.parent || '',
+                  treeCurrent: updatedParentTree.current || parentDealItem.name,
+                  treeNext: updatedParentTree.next || '',
+                  treeBranches: JSON.stringify(updatedParentTree.branches || []),
                 };
-                parentIdToSync = Number(pId);
               }
             }
           }
@@ -453,29 +457,12 @@ export function DataProvider({ children }) {
         DEAL_DETAILS: newDetails,
       };
     });
+
+    // --- 3. GAS APIに送信 ---
     if (source === 'api') {
       try { await upsertRow('DEALS', row); } catch { /* silent */ }
-      // Sync parent's updated tree to API
-      if (parentIdToSync != null) {
-        try {
-          setData(prev => {
-            const parentDetail = prev.DEAL_DETAILS[parentIdToSync];
-            if (parentDetail?.tree) {
-              const parentDeal = prev.DEALS.find(d => d.id === parentIdToSync);
-              if (parentDeal) {
-                const parentRow = {
-                  ...parentDeal,
-                  treeParent: parentDetail.tree.parent || '',
-                  treeCurrent: parentDetail.tree.current || parentDeal.name,
-                  treeNext: parentDetail.tree.next || '',
-                  treeBranches: JSON.stringify(parentDetail.tree.branches || []),
-                };
-                upsertRow('DEALS', parentRow).catch(() => {});
-              }
-            }
-            return prev; // No state change, just reading
-          });
-        } catch { /* silent */ }
+      if (parentRow) {
+        try { await upsertRow('DEALS', parentRow); } catch { /* silent */ }
       }
     }
     return id;
