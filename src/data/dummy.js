@@ -2037,12 +2037,12 @@ export const TASKS = [
   { id: 100, type: 'Task',    name: 'KDDI プラットフォーム部 API設計レビュー', company: 'KDDI',         category: '資料作成',       due: '2025/3/22', assignee: '佐藤 次郎', method: 'メール',  status: 'pending', dealId: 81 },
 ]
 
-// フィルター用定数（DEALSとTASKSから自動生成）
-export const DIVISIONS = [...new Set(DEALS.map(d => d.dept))];
-export const MEMBERS = [...new Set(DEALS.map(d => d.assignee))];
+// フィルター用定数
+export const DIVISIONS = ['ITSS', 'PERM', 'DSL', 'FS'];
+export const MEMBERS = USERS.map(u => u.name);
 export const DEAL_ROUTES = ['IS', '営業顧問', 'toBマーケ', '展示会', '紹介'];
-export const TASK_CATEGORIES = [...new Set(TASKS.map(t => t.category))];
-export const CONTACT_METHODS = [...new Set(TASKS.map(t => t.method))];
+export const TASK_CATEGORIES = ['候補者ピック', '資料作成', 'アポ依頼', '契約書取交し', '求人取得依頼', 'フォローアップ', '面談設定', '契約更新'];
+export const CONTACT_METHODS = ['電話', 'メール', 'Teams', '対面', 'その他'];
 export const CONTRACT_STATUSES = ['未接触', '商談中', '契約中', '完了'];
 
 export const MY_PAGE_DATA = {

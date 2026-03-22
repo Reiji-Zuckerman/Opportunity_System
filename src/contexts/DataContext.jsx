@@ -518,12 +518,12 @@ export function DataProvider({ children }) {
     deleteTask,
     deleteJob,
     updateContractStatus,
-    // Derived constants
-    DIVISIONS: data ? [...new Set(data.DEALS.map(d => d.dept))] : [],
-    MEMBERS: data ? [...new Set(data.DEALS.map(d => d.assignee))] : [],
+    // Constants (predefined, not dynamically derived)
+    DIVISIONS: dummy.DIVISIONS,
+    MEMBERS: dummy.MEMBERS,
     DEAL_ROUTES: dummy.DEAL_ROUTES,
-    TASK_CATEGORIES: data ? [...new Set(data.TASKS.map(t => t.category))] : [],
-    CONTACT_METHODS: data ? [...new Set(data.TASKS.map(t => t.method))] : [],
+    TASK_CATEGORIES: dummy.TASK_CATEGORIES,
+    CONTACT_METHODS: dummy.CONTACT_METHODS,
     CONTRACT_STATUSES: dummy.CONTRACT_STATUSES,
   };
 

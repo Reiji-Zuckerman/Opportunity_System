@@ -89,7 +89,7 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
       </FormField>
 
       <FormField label="種別">
-        <ChipSelect options={TASK_CATEGORIES} selected={categories} onChange={setCategories} />
+        <ChipSelect options={TASK_CATEGORIES} selected={categories} onChange={setCategories} allowCustom />
       </FormField>
 
       <FormField label="連絡方法">

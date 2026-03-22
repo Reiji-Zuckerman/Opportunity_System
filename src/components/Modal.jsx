@@ -89,7 +89,8 @@ export function ToggleGroup({ options, value, onChange }) {
   );
 }
 
-export function ChipSelect({ options, selected, onChange }) {
+export function ChipSelect({ options, selected, onChange, allowCustom = false }) {
+  const [customInput, setCustomInput] = useState('');
   const toggle = (opt) => {
     if (selected.includes(opt)) {
       onChange(selected.filter(s => s !== opt));
@@ -97,18 +98,47 @@ export function ChipSelect({ options, selected, onChange }) {
       onChange([...selected, opt]);
     }
   };
+  const addCustom = () => {
+    const trimmed = customInput.trim();
+    if (trimmed && !selected.includes(trimmed)) {
+      onChange([...selected, trimmed]);
+    }
+    setCustomInput('');
+  };
+  // Show all options + any selected values that aren't in options (custom values)
+  const allOptions = [...options, ...selected.filter(s => !options.includes(s))];
   return (
-    <div className="flex flex-wrap gap-2">
-      {options.map(opt => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => toggle(opt)}
-          className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${selected.includes(opt) ? 'bg-accent text-white border-accent' : 'bg-white text-gray-600 border-gray-300 hover:border-accent'}`}
-        >
-          {opt}
-        </button>
-      ))}
+    <div>
+      <div className="flex flex-wrap gap-2">
+        {allOptions.map(opt => (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => toggle(opt)}
+            className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${selected.includes(opt) ? 'bg-accent text-white border-accent' : 'bg-white text-gray-600 border-gray-300 hover:border-accent'}`}
+          >
+            {opt}
+          </button>
+        ))}
+      </div>
+      {allowCustom && (
+        <div className="flex items-center gap-2 mt-2">
+          <input
+            className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
+            value={customInput}
+            onChange={e => setCustomInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }}
+            placeholder="新しい項目を入力"
+          />
+          <button
+            type="button"
+            onClick={addCustom}
+            className="px-3 py-1.5 text-sm font-medium text-accent border border-accent rounded-lg hover:bg-accent/5 transition-colors"
+          >
+            追加
+          </button>
+        </div>
+      )}
     </div>
   );
 }

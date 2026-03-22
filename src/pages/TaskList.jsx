@@ -50,27 +50,36 @@ export default function TaskList() {
   const [typeFilter, setTypeFilter] = useState('すべて');
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
-  const [taskStatuses, setTaskStatuses] = useState(() => {
-    const map = {};
-    TASKS.forEach(t => { map[t.id] = t.status; });
-    return map;
-  });
   const [openDropdown, setOpenDropdown] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleStatusChange = (taskId, newStatus) => {
-    setTaskStatuses(prev => ({ ...prev, [taskId]: newStatus }));
+    updateTaskStatus(taskId, newStatus);
     setOpenDropdown(null);
   };
 
   const filtered = TASKS.filter((task) => {
-    const currentStatus = taskStatuses[task.id];
     if (search && !task.company.toLowerCase().includes(search.toLowerCase())) return false;
     if (memberFilter && task.assignee !== memberFilter) return false;
     if (categoryFilter && task.category !== categoryFilter) return false;
-    if (statusFilter && currentStatus !== statusFilter) return false;
     if (companyFilter && !task.company.toLowerCase().includes(companyFilter.toLowerCase())) return false;
     if (typeFilter !== 'すべて' && task.type !== typeFilter) return false;
+
+    // Status filter with support for virtual statuses (today, overdue)
+    if (statusFilter) {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      const taskDate = new Date(task.due);
+      taskDate.setHours(0, 0, 0, 0);
+
+      if (statusFilter === 'today') {
+        if (taskDate.getTime() !== now.getTime() || task.status === 'done') return false;
+      } else if (statusFilter === 'overdue') {
+        if (taskDate >= now || task.status === 'done') return false;
+      } else if (task.status !== statusFilter) {
+        return false;
+      }
+    }
 
     if (deadlineFilter) {
       const taskDate = new Date(task.due);
@@ -217,7 +226,7 @@ export default function TaskList() {
           </thead>
           <tbody>
             {filtered.map((task) => {
-              const currentStatus = taskStatuses[task.id];
+              const currentStatus = task.status;
               return (
                 <tr
                   key={task.id}
