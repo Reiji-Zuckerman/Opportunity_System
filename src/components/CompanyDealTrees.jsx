@@ -5,7 +5,7 @@ import { useData } from '../contexts/DataContext';
 function buildNameToIdMap(DEAL_DETAILS) {
   const map = {};
   Object.entries(DEAL_DETAILS).forEach(([id, detail]) => {
-    map[detail.tree.current] = Number(id);
+    if (detail?.tree?.current) map[detail.tree.current] = Number(id);
   });
   return map;
 }
@@ -13,7 +13,7 @@ function buildNameToIdMap(DEAL_DETAILS) {
 function findRoot(dealId, nameToId, DEAL_DETAILS) {
   let current = dealId;
   const visited = new Set();
-  while (DEAL_DETAILS[current]?.tree.parent) {
+  while (DEAL_DETAILS[current]?.tree?.parent) {
     if (visited.has(current)) break;
     visited.add(current);
     const parentId = nameToId[DEAL_DETAILS[current].tree.parent];
@@ -23,38 +23,72 @@ function findRoot(dealId, nameToId, DEAL_DETAILS) {
   return current;
 }
 
-function buildNode(id, nameToId, DEAL_DETAILS) {
+function buildNode(id, nameToId, DEAL_DETAILS, visited = new Set()) {
+  if (visited.has(id)) return null;
+  visited.add(id);
   const detail = DEAL_DETAILS[id];
   if (!detail) return null;
+  const tree = detail.tree || {};
+  const nextId = tree.next ? nameToId[tree.next] : null;
+  const branchIds = (tree.branches || [])
+    .map(n => nameToId[n])
+    .filter(bid => bid !== undefined && DEAL_DETAILS[bid]);
+
   return {
-    id,
-    name: detail.tree.current,
-    children: (detail.tree.children || [])
-      .map(n => nameToId[n])
-      .filter(cid => cid && DEAL_DETAILS[cid])
-      .map(cid => buildNode(cid, nameToId, DEAL_DETAILS))
-      .filter(Boolean),
+    id: Number(id),
+    name: tree.current || '',
+    next: nextId ? buildNode(nextId, nameToId, DEAL_DETAILS, visited) : null,
+    branches: branchIds.map(bid => buildNode(bid, nameToId, DEAL_DETAILS, visited)).filter(Boolean),
   };
 }
 
-function flattenToGrid(node) {
-  const rows = [];
-  function place(node, depth, rowIdx) {
-    while (rows.length <= rowIdx) rows.push({});
-    rows[rowIdx][depth * 2] = { type: 'node', id: node.id, name: node.name };
-    if (node.children.length > 0) {
-      rows[rowIdx][depth * 2 + 1] = { type: 'arrow' };
-      place(node.children[0], depth + 1, rowIdx);
-      for (let i = 1; i < node.children.length; i++) {
-        const newRow = rows.length;
-        while (rows.length <= newRow) rows.push({});
-        rows[newRow][depth * 2 + 1] = { type: 'branch' };
-        place(node.children[i], depth + 1, newRow);
-      }
-    }
+/* ChainRow: horizontal chain + recursive branches (same logic as DealTree) */
+function ChainRow({ node, indent = 0, isBranch = false }) {
+  const chain = [];
+  let cur = node;
+  while (cur) {
+    chain.push(cur);
+    cur = cur.next;
   }
-  place(node, 0, 0);
-  return rows;
+
+  return (
+    <>
+      <div className="flex items-center min-h-[32px]">
+        {indent > 0 && (
+          <div style={{ minWidth: indent * 40 }} className="shrink-0" />
+        )}
+        {isBranch && (
+          <span className="text-gray-400 font-mono text-sm select-none mr-1 shrink-0">└</span>
+        )}
+        {chain.map((n, idx) => (
+          <div key={n.id} className="flex items-center shrink-0">
+            {idx > 0 && (
+              <span className="text-gray-300 select-none mx-1 shrink-0">—</span>
+            )}
+            <Link
+              to={`/deals/${n.id}`}
+              className="block px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-blue-600 hover:bg-gray-100 hover:underline whitespace-nowrap transition-colors"
+            >
+              {n.name}
+            </Link>
+          </div>
+        ))}
+      </div>
+
+      {chain.map((n, chainIdx) => {
+        if (!n.branches || n.branches.length === 0) return null;
+        const branchIndent = indent + chainIdx;
+        return n.branches.map((branch) => (
+          <ChainRow
+            key={branch.id}
+            node={branch}
+            indent={branchIndent}
+            isBranch={true}
+          />
+        ));
+      })}
+    </>
+  );
 }
 
 export default function CompanyDealTrees({ companyId }) {
@@ -70,55 +104,19 @@ export default function CompanyDealTrees({ companyId }) {
       }
     });
     return [...rootIds]
-      .map(rootId => {
-        const tree = buildNode(rootId, nameToId, DEAL_DETAILS);
-        if (!tree) return null;
-        return { rootId, grid: flattenToGrid(tree) };
-      })
+      .map(rootId => buildNode(rootId, nameToId, DEAL_DETAILS))
       .filter(Boolean);
   }, [companyId, DEALS, DEAL_DETAILS]);
 
   if (trees.length === 0) return <p className="text-sm text-gray-400 text-center py-4">商談ツリーがありません</p>;
 
   return (
-    <div className="space-y-4">
-      {trees.map(({ rootId, grid }) => {
-        const maxCol = Math.max(...grid.map(row => Math.max(...Object.keys(row).map(Number), 0)));
-        return (
-          <div key={rootId} className="overflow-x-auto">
-            <table className="border-collapse">
-              <tbody>
-                {grid.map((row, rowIdx) => (
-                  <tr key={rowIdx}>
-                    {Array.from({ length: maxCol + 1 }, (_, colIdx) => {
-                      const cell = row[colIdx];
-                      if (!cell) {
-                        return <td key={colIdx} className={colIdx % 2 === 0 ? 'min-w-0' : 'w-6'} />;
-                      }
-                      if (cell.type === 'arrow') {
-                        return <td key={colIdx} className="text-gray-300 text-center align-middle w-6 select-none">—</td>;
-                      }
-                      if (cell.type === 'branch') {
-                        return <td key={colIdx} className="text-gray-300 text-center align-middle w-6 select-none">└</td>;
-                      }
-                      return (
-                        <td key={colIdx} className="py-1">
-                          <Link
-                            to={`/deals/${cell.id}`}
-                            className="block px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-blue-600 hover:bg-gray-100 hover:underline whitespace-nowrap transition-colors"
-                          >
-                            {cell.name}
-                          </Link>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        );
-      })}
+    <div className="space-y-2">
+      {trees.map((root) => (
+        <div key={root.id} className="overflow-x-auto">
+          <ChainRow node={root} />
+        </div>
+      ))}
     </div>
   );
 }
