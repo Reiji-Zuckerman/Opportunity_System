@@ -132,6 +132,7 @@ function doPost(e) {
 }
 
 // --- UPSERT: id で既存行を更新、なければ追加 ---
+// ※ row に既存ヘッダーにないキーがあれば、カラムを自動追加する
 function upsertRows(sheetName, rows) {
   var sheet = getSpreadsheet().getSheetByName(sheetName);
   if (!sheet) {
@@ -139,7 +140,31 @@ function upsertRows(sheetName, rows) {
     return;
   }
   var data = sheet.getDataRange().getValues();
-  var headers = data[0];
+  var headers = data[0].slice(); // コピー
+
+  // --- 新しいカラムを自動追加 ---
+  var newCols = [];
+  rows.forEach(function(row) {
+    Object.keys(row).forEach(function(key) {
+      if (headers.indexOf(key) === -1 && newCols.indexOf(key) === -1) {
+        newCols.push(key);
+      }
+    });
+  });
+  if (newCols.length > 0) {
+    // ヘッダー行に新カラムを追加
+    var startCol = headers.length + 1;
+    sheet.getRange(1, startCol, 1, newCols.length).setValues([newCols]);
+    // 既存データ行にも空セルを埋める（getDataRangeが正しく動くように）
+    if (data.length > 1) {
+      var emptyFill = data.slice(1).map(function() { return newCols.map(function() { return ''; }); });
+      sheet.getRange(2, startCol, emptyFill.length, newCols.length).setValues(emptyFill);
+    }
+    headers = headers.concat(newCols);
+    // data も再取得（新カラム分を含む）
+    data = sheet.getDataRange().getValues();
+  }
+
   var idCol = headers.indexOf('id');
   if (idCol === -1) throw new Error('No id column in ' + sheetName);
 
