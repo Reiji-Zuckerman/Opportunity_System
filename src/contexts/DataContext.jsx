@@ -225,29 +225,13 @@ export function DataProvider({ children }) {
   }, []);
 
   function useDummy() {
-    // Transform dummy DEAL_DETAILS to convert old tree format (children) to new format (next/branches)
-    const transformedDealDetails = {};
-    Object.entries(dummy.DEAL_DETAILS).forEach(([id, detail]) => {
-      const tree = detail.tree || {};
-      const children = Array.isArray(tree.children) ? tree.children : [];
-      transformedDealDetails[id] = {
-        ...detail,
-        tree: {
-          parent: tree.parent || null,
-          current: tree.current || '',
-          next: tree.next || null,
-          branches: tree.branches || children, // old children → branches
-        },
-      };
-    });
-
     setData({
       USERS: dummy.USERS,
       COMPANIES: dummy.COMPANIES,
       COMPANY_DETAILS: dummy.COMPANY_DETAILS,
       COMPANY_EXTENDED: dummy.COMPANY_EXTENDED,
       DEALS: dummy.DEALS,
-      DEAL_DETAILS: transformedDealDetails,
+      DEAL_DETAILS: dummy.DEAL_DETAILS,
       TASKS: dummy.TASKS,
       JOBS: dummy.JOBS,
       CV_SENTS: dummy.CV_SENTS,

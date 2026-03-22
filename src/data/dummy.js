@@ -485,7 +485,7 @@ export const DEALS = [
 export const DEAL_DETAILS = {
   1: {
     basicInfo: { company: 'NTTデータ', dept: '（全社）', clientPerson: '佐々木 代表取締役社長、山田 人事部長', ourPerson: '伊藤 美咲', businessDept: 'FS', channel: 'toBマーケ', acquiredBy: '伊藤 美咲', status: '完了' },
-    tree: { parent: null, current: '初回商談（社長・人事部長）', children: ['製造事業部 レガシーマイグレーションPJ', 'DX推進室 スマートファクトリーPJ', '金融ソリューション部 基幹刷新', '人事部 採用DX支援', 'クラウド推進本部 マルチクラウド戦略支援'] },
+    tree: { parent: null, current: '初回商談（社長・人事部長）', next: null, branches: ['製造事業部 レガシーマイグレーションPJ', 'DX推進室 スマートファクトリーPJ', '金融ソリューション部 基幹刷新', '人事部 採用DX支援', 'クラウド推進本部 マルチクラウド戦略支援'] },
     meetings: [
       { round: 2, date: '2024/10/5',  attendees: '佐々木社長、山田部長、伊藤', content: '経営課題の深掘り。製造・金融・HR各領域でのDX推進ニーズを確認。各部門責任者への紹介を取り付ける。' },
       { round: 1, date: '2024/9/15',  attendees: '佐々木社長、伊藤',           content: 'toBマーケ経由の初訪問。2030年問題に向けたレガシー刷新と人材確保が最優先課題。' },
@@ -500,7 +500,7 @@ export const DEAL_DETAILS = {
 
   2: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部', clientPerson: '山田 康介 部長', ourPerson: '鈴木 一郎、田中 花子', businessDept: 'ITSS', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: '初回商談（社長・人事部長）', current: '製造事業部 レガシーマイグレーションPJ', children: ['製造事業部 フェーズ2 クラウド移行', '製造事業部 IoTプラットフォーム構築'] },
+    tree: { parent: '初回商談（社長・人事部長）', current: '製造事業部 レガシーマイグレーションPJ', next: null, branches: ['製造事業部 フェーズ2 クラウド移行', '製造事業部 IoTプラットフォーム構築'] },
     meetings: [
       { round: 4, date: '2025/3/10',  attendees: '山田部長、佐藤課長、鈴木、田中', content: 'PoC結果報告。移行成功率98%確認。フェーズ2への移行を正式承認。COBOLエンジニア3名の継続稼働が決定。' },
       { round: 3, date: '2025/2/10',  attendees: '山田部長、鈴木',               content: 'PoC中間報告。COBOLからJavaへの変換精度を確認。業務ロジックの複雑な部分の扱いを議論。' },
@@ -519,7 +519,7 @@ export const DEAL_DETAILS = {
 
   3: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部', clientPerson: '山田 康介 部長、佐藤 技術課長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: '製造事業部 レガシーマイグレーションPJ', current: '製造事業部 フェーズ2 クラウド移行', children: [] },
+    tree: { parent: '製造事業部 レガシーマイグレーションPJ', current: '製造事業部 フェーズ2 クラウド移行', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2025/2/28', attendees: '山田部長、佐藤課長、鈴木', content: 'AWSアーキテクチャ設計書レビュー。マイクロサービス化の優先順位確定。4月からの本格移行に合意。' },
       { round: 2, date: '2025/2/5',  attendees: '山田部長、鈴木',           content: 'クラウド移行ロードマップ提示。コンテナ化対応が必須と判明。' },
@@ -538,7 +538,7 @@ export const DEAL_DETAILS = {
 
   4: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部 IoT推進チーム', clientPerson: '山田 康介 部長、木村 IoTリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: '製造事業部 レガシーマイグレーションPJ', current: '製造事業部 IoTプラットフォーム構築', children: ['IoT基盤 セキュリティ強化PJ', 'IoT基盤 監視・運用自動化PJ'] },
+    tree: { parent: '製造事業部 レガシーマイグレーションPJ', current: '製造事業部 IoTプラットフォーム構築', next: null, branches: ['IoT基盤 セキュリティ強化PJ', 'IoT基盤 監視・運用自動化PJ'] },
     meetings: [
       { round: 3, date: '2025/1/20', attendees: '木村リーダー、佐藤', content: 'IoTプラットフォーム要件確定。Python/RustエンジニアとAWS IoT専門家の組み合わせが必要。3名体制で4月稼働。' },
       { round: 2, date: '2024/12/20', attendees: '木村リーダー、佐藤', content: '技術スタック確認。AWSベースのIoTプラットフォームにRustで高速処理を実装する方針確定。' },
@@ -555,7 +555,7 @@ export const DEAL_DETAILS = {
 
   5: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部 セキュリティチーム', clientPerson: '木村 IoTリーダー、高木 セキュリティ担当', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: '製造事業部 IoTプラットフォーム構築', current: 'IoT基盤 セキュリティ強化PJ', children: [] },
+    tree: { parent: '製造事業部 IoTプラットフォーム構築', current: 'IoT基盤 セキュリティ強化PJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/5',  attendees: '高木担当、佐藤', content: 'ゼロトラスト対応のセキュリティエンジニアが必要。CISSP保有者が望ましい。' },
       { round: 1, date: '2025/2/15', attendees: '木村リーダー、高木担当、佐藤', content: 'IoTプラットフォーム稼働後のセキュリティ強化ニーズ。専門家の追加支援を依頼される。' },
@@ -571,7 +571,7 @@ export const DEAL_DETAILS = {
 
   32: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部 運用チーム', clientPerson: '木村 IoTリーダー、岡本 運用担当', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: '製造事業部 IoTプラットフォーム構築', current: 'IoT基盤 監視・運用自動化PJ', children: [] },
+    tree: { parent: '製造事業部 IoTプラットフォーム構築', current: 'IoT基盤 監視・運用自動化PJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/8',  attendees: '岡本担当、佐藤', content: 'Prometheus/Grafanaによる監視基盤構築の要件確認。SREエンジニア2名での対応を提案。' },
       { round: 1, date: '2025/2/25', attendees: '木村リーダー、岡本、佐藤', content: 'セキュリティ強化PJから派生。IoT基盤の監視・運用自動化ニーズを確認。' },
@@ -586,7 +586,7 @@ export const DEAL_DETAILS = {
 
   6: {
     basicInfo: { company: 'NTTデータ', dept: 'DX推進室', clientPerson: '石田 隆 室長', ourPerson: '鈴木 一郎', businessDept: 'FS', channel: 'IS', acquiredBy: '伊藤 美咲', status: '実施済' },
-    tree: { parent: '初回商談（社長・人事部長）', current: 'DX推進室 スマートファクトリーPJ', children: ['DX推進室 AI品質検査PJ', 'DX推進室 デジタルツイン基盤'] },
+    tree: { parent: '初回商談（社長・人事部長）', current: 'DX推進室 スマートファクトリーPJ', next: null, branches: ['DX推進室 AI品質検査PJ', 'DX推進室 デジタルツイン基盤'] },
     meetings: [
       { round: 3, date: '2025/3/8',  attendees: '石田室長、鈴木', content: 'IoT/Pythonエンジニア2名の参画内定。4月より要件定義フェーズ開始。AI品質検査の追加ニーズも相談受ける。' },
       { round: 2, date: '2025/2/12', attendees: '石田室長、鈴木', content: 'スマートファクトリー向け人材要件の詳細確認。Python/TensorFlowの経験者が必須。' },
@@ -603,7 +603,7 @@ export const DEAL_DETAILS = {
 
   7: {
     basicInfo: { company: 'NTTデータ', dept: 'DX推進室 AI推進チーム', clientPerson: '石田 隆 室長、西村 AIリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'DX推進室 スマートファクトリーPJ', current: 'DX推進室 AI品質検査PJ', children: [] },
+    tree: { parent: 'DX推進室 スマートファクトリーPJ', current: 'DX推進室 AI品質検査PJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/15', attendees: '西村リーダー、山本', content: 'AI品質検査システムの要件確認。画像認識とリアルタイム処理の専門家が必要。コンサル上流支援も求められる。' },
       { round: 1, date: '2025/1/30', attendees: '石田室長、西村リーダー、山本', content: 'スマートファクトリーPJから派生。AI活用による品質検査自動化のコンサルニーズをヒアリング。' },
@@ -620,7 +620,7 @@ export const DEAL_DETAILS = {
 
   33: {
     basicInfo: { company: 'NTTデータ', dept: 'DX推進室 デジタルイノベーションチーム', clientPerson: '石田 室長、中西 DXリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'DX推進室 スマートファクトリーPJ', current: 'DX推進室 デジタルツイン基盤', children: [] },
+    tree: { parent: 'DX推進室 スマートファクトリーPJ', current: 'DX推進室 デジタルツイン基盤', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/3',  attendees: '中西リーダー、山本', content: 'デジタルツイン構築のためのシミュレーションエンジニアとUnityエンジニアが必要。工場の3Dモデル化が目標。' },
       { round: 1, date: '2025/2/18', attendees: '石田室長、中西リーダー、山本', content: 'AI品質検査PJから派生した追加商談。製造ラインのデジタルツイン化構想をヒアリング。' },
@@ -637,7 +637,7 @@ export const DEAL_DETAILS = {
 
   8: {
     basicInfo: { company: 'NTTデータ', dept: '金融ソリューション部', clientPerson: '中川 部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: '初回商談（社長・人事部長）', current: '金融ソリューション部 基幹刷新', children: ['金融ソリューション部 APIゲートウェイ構築'] },
+    tree: { parent: '初回商談（社長・人事部長）', current: '金融ソリューション部 基幹刷新', next: null, branches: ['金融ソリューション部 APIゲートウェイ構築'] },
     meetings: [
       { round: 4, date: '2025/1/30',  attendees: '中川部長、鈴木', content: '成約。COBOLエンジニア2名・Javaエンジニア3名の参画確定。2月より稼働開始。' },
       { round: 3, date: '2025/1/10',  attendees: '中川部長、鈴木', content: 'スキルシートレビュー完了。3名を先方に推薦。最終面接を調整中。' },
@@ -655,7 +655,7 @@ export const DEAL_DETAILS = {
 
   34: {
     basicInfo: { company: 'NTTデータ', dept: '金融ソリューション部 API推進チーム', clientPerson: '中川 部長、村田 APIリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: '金融ソリューション部 基幹刷新', current: '金融ソリューション部 APIゲートウェイ構築', children: [] },
+    tree: { parent: '金融ソリューション部 基幹刷新', current: '金融ソリューション部 APIゲートウェイ構築', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '村田リーダー、佐藤', content: 'APIゲートウェイの設計要件確認。Kong/AWS API GatewayのいずれかでOpen Banking対応が必要。' },
       { round: 1, date: '2025/2/5',  attendees: '中川部長、村田リーダー、佐藤', content: '基幹刷新PJ完了に伴う追加案件。Open Banking対応のAPIゲートウェイ構築の人材ニーズを確認。' },
@@ -670,7 +670,7 @@ export const DEAL_DETAILS = {
 
   9: {
     basicInfo: { company: 'NTTデータ', dept: '人事部', clientPerson: '山田 人事部長、林 採用担当', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: '初回商談（社長・人事部長）', current: '人事部 採用DX支援', children: [] },
+    tree: { parent: '初回商談（社長・人事部長）', current: '人事部 採用DX支援', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2025/3/5',  attendees: '林採用担当、田中', content: 'クラウドエンジニア・AIエンジニアを正社員で5名採用したいとのこと。スカウト媒体の活用も提案。' },
       { round: 2, date: '2025/2/18', attendees: '山田部長、林担当、田中', content: 'PERM採用DX支援の方向性確認。エンジニア採用に特化したサービスの提案を受け入れてもらえた。' },
@@ -687,7 +687,7 @@ export const DEAL_DETAILS = {
 
   35: {
     basicInfo: { company: 'NTTデータ', dept: 'クラウド推進本部', clientPerson: '前田 本部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: '初回商談（社長・人事部長）', current: 'クラウド推進本部 マルチクラウド戦略支援', children: [] },
+    tree: { parent: '初回商談（社長・人事部長）', current: 'クラウド推進本部 マルチクラウド戦略支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/25', attendees: '前田本部長、鈴木', content: 'AWS/Azure/GCPを横断するマルチクラウドアーキテクト2名の参画が必要。FinOps経験者も求めている。' },
       { round: 1, date: '2025/2/10', attendees: '前田本部長',       content: '山田部長の紹介で初訪問。マルチクラウド戦略推進のための専門人材が不足。' },
@@ -703,7 +703,7 @@ export const DEAL_DETAILS = {
 
   36: {
     basicInfo: { company: 'NTTデータ', dept: 'IT推進部', clientPerson: '橋本 IT推進部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'IT推進部 DevOps推進PJ', children: [] },
+    tree: { parent: null, current: 'IT推進部 DevOps推進PJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/10', attendees: '橋本部長、佐藤', content: 'DevOps推進のためのSRE・DevOpsエンジニア2名の参画が必要。CI/CDパイプライン構築経験者が必須。' },
       { round: 1, date: '2025/1/28', attendees: '橋本部長',       content: '前田本部長の紹介で訪問。開発と運用の分断が課題でDevOps文化の浸透を推進したい。' },
@@ -718,7 +718,7 @@ export const DEAL_DETAILS = {
 
   10: {
     basicInfo: { company: '富士通', dept: 'HR部門', clientPerson: '中村 由美 部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: '営業顧問', acquiredBy: '田中 花子', status: '予定' },
-    tree: { parent: null, current: 'HR部門 採用強化PJ', children: ['HR部門 エグゼクティブ採用', 'HR部門 新卒採用強化', 'HR部門 グローバル人材採用'] },
+    tree: { parent: null, current: 'HR部門 採用強化PJ', next: null, branches: ['HR部門 エグゼクティブ採用', 'HR部門 新卒採用強化', 'HR部門 グローバル人材採用'] },
     meetings: [
       { round: 1, date: '2025/3/12', attendees: '中村部長、田中', content: '初回商談予定。エンジニア採用強化施策について議論予定。クラウド・AI人材の採用が急務。' },
     ],
@@ -733,7 +733,7 @@ export const DEAL_DETAILS = {
 
   11: {
     basicInfo: { company: '富士通', dept: 'HR部門 エグゼクティブ採用チーム', clientPerson: '中村 由美 部長、橋本 HRビジネスパートナー', ourPerson: '田中 花子', businessDept: 'PERM', channel: '営業顧問', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 エグゼクティブ採用', children: [] },
+    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 エグゼクティブ採用', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '橋本HRBp、田中', content: 'CTO・CDO候補の要件確認。外資IT経験者が望ましく英語力必須。年収1,500万以上の案件。' },
       { round: 1, date: '2025/2/5',  attendees: '中村部長、橋本、田中', content: '経営幹部クラスのIT人材不足。CTO・CDO候補を紹介経由で進めたいとの相談。' },
@@ -750,7 +750,7 @@ export const DEAL_DETAILS = {
 
   15: {
     basicInfo: { company: '富士通', dept: 'HR部門 新卒採用チーム', clientPerson: '中村 由美 部長、田所 新卒採用リーダー', ourPerson: '田中 花子', businessDept: 'PERM', channel: '営業顧問', acquiredBy: '田中 花子', status: '完了' },
-    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 新卒採用強化', children: [] },
+    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 新卒採用強化', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/1/15', attendees: '田所リーダー、田中', content: '成約。理系大学院生エンジニア職を中心に20名の採用支援確定。2月より候補者紹介開始。' },
       { round: 1, date: '2024/12/20', attendees: '中村部長、田所、田中', content: '新卒採用強化について相談。AI・クラウド専攻の学生採用が課題。' },
@@ -765,7 +765,7 @@ export const DEAL_DETAILS = {
 
   37: {
     basicInfo: { company: '富士通', dept: 'HR部門 グローバル採用チーム', clientPerson: '中村 部長、谷口 グローバルHR', ourPerson: '田中 花子', businessDept: 'PERM', channel: '営業顧問', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 グローバル人材採用', children: [] },
+    tree: { parent: 'HR部門 採用強化PJ', current: 'HR部門 グローバル人材採用', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '谷口グローバルHR、田中', content: 'グローバル拠点向けのITエンジニア採用。日英バイリンガルのクラウドエンジニアが5名必要。' },
       { round: 1, date: '2025/2/12', attendees: '中村部長、谷口、田中', content: 'グローバル事業拡大に伴う海外拠点でのエンジニア採用ニーズが浮上。' },
@@ -781,7 +781,7 @@ export const DEAL_DETAILS = {
 
   12: {
     basicInfo: { company: '富士通', dept: 'ITインフラ部', clientPerson: '高橋 豊 部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '伊藤 美咲', status: '実施済' },
-    tree: { parent: null, current: 'ITインフラ部 基盤刷新支援', children: ['ITインフラ部 クラウドリフト', 'デジタル推進部 DX人材支援'] },
+    tree: { parent: null, current: 'ITインフラ部 基盤刷新支援', next: null, branches: ['ITインフラ部 クラウドリフト', 'デジタル推進部 DX人材支援'] },
     meetings: [
       { round: 3, date: '2025/2/25', attendees: '高橋部長、佐藤', content: 'Kubernetes専門家3名の参画内定。4月より6ヶ月間のプロジェクト参画開始。' },
       { round: 2, date: '2025/2/5',  attendees: '高橋部長、佐藤', content: 'Docker/Kubernetesの実務3年以上が必須。AWSの経験も求められる。' },
@@ -798,7 +798,7 @@ export const DEAL_DETAILS = {
 
   13: {
     basicInfo: { company: '富士通', dept: 'ITインフラ部', clientPerson: '松本 健一 課長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '伊藤 美咲', status: '完了' },
-    tree: { parent: 'ITインフラ部 基盤刷新支援', current: 'ITインフラ部 クラウドリフト', children: [] },
+    tree: { parent: 'ITインフラ部 基盤刷新支援', current: 'ITインフラ部 クラウドリフト', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2025/3/5',  attendees: '松本課長、佐藤', content: '成約。AWSインフラエンジニア2名の参画確定。4月稼働開始。契約書取交し完了。' },
       { round: 2, date: '2025/2/10', attendees: '松本課長、佐藤', content: 'AWSとTerraformの経験者が必須。Infrastructure as Code対応が求められる。' },
@@ -814,7 +814,7 @@ export const DEAL_DETAILS = {
 
   14: {
     basicInfo: { company: '富士通', dept: 'デジタル推進部', clientPerson: '大西 デジタル推進部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'ITインフラ部 基盤刷新支援', current: 'デジタル推進部 DX人材支援', children: ['デジタル推進部 AI/MLエンジニア支援'] },
+    tree: { parent: 'ITインフラ部 基盤刷新支援', current: 'デジタル推進部 DX人材支援', next: null, branches: ['デジタル推進部 AI/MLエンジニア支援'] },
     meetings: [
       { round: 2, date: '2025/3/12', attendees: '大西部長、佐藤', content: 'マイクロサービス設計経験者とデータエンジニアが必要。DXプロジェクトの中核人材。' },
       { round: 1, date: '2025/2/20', attendees: '大西部長',       content: '高橋部長の紹介で訪問。DX推進PJの中核人材が不足。複数名の追加支援を求められた。' },
@@ -831,7 +831,7 @@ export const DEAL_DETAILS = {
 
   38: {
     basicInfo: { company: '富士通', dept: 'デジタル推進部 AIチーム', clientPerson: '大西 部長、小川 AIリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'デジタル推進部 DX人材支援', current: 'デジタル推進部 AI/MLエンジニア支援', children: [] },
+    tree: { parent: 'デジタル推進部 DX人材支援', current: 'デジタル推進部 AI/MLエンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/1',  attendees: '小川リーダー、佐藤', content: 'LLM/RAGシステムの構築経験者が必要。PyTorchとLangChainの実務経験者を優先。' },
       { round: 1, date: '2025/2/15', attendees: '大西部長、小川、佐藤', content: 'DX支援から派生した追加商談。生成AI活用のR&D強化のため、ML専門家の補強が必要。' },
@@ -846,7 +846,7 @@ export const DEAL_DETAILS = {
 
   39: {
     basicInfo: { company: '富士通', dept: 'サービス事業部', clientPerson: '岩田 サービス事業部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'サービス事業部 SREエンジニア支援', children: [] },
+    tree: { parent: null, current: 'サービス事業部 SREエンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/15', attendees: '岩田部長、佐藤', content: 'SREエンジニア2名の参画が必要。可用性99.99%のサービス運用経験者を求めている。' },
       { round: 1, date: '2025/2/1',  attendees: '岩田部長',       content: '高橋部長の紹介で訪問。クラウドサービスの信頼性向上のためSRE専門家が必要。' },
@@ -861,7 +861,7 @@ export const DEAL_DETAILS = {
 
   16: {
     basicInfo: { company: 'ノースサンド', dept: 'ERP推進部', clientPerson: '小林 拓也 部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: '紹介', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: null, current: 'ERP推進部 SAP人材支援', children: ['ERP推進部 SAP追加支援', 'ERP推進部 SAP BTP対応支援', 'PMO部門 PJ管理人材', 'SAP専門チーム ABAP開発者追加'] },
+    tree: { parent: null, current: 'ERP推進部 SAP人材支援', next: null, branches: ['ERP推進部 SAP追加支援', 'ERP推進部 SAP BTP対応支援', 'PMO部門 PJ管理人材', 'SAP専門チーム ABAP開発者追加'] },
     meetings: [
       { round: 2, date: '2024/12/10', attendees: '小林部長、鈴木', content: '成約。SAP ABAPエンジニア1名の参画確定。1月より稼働。追加の人材ニーズについても話し合い。' },
       { round: 1, date: '2024/11/15', attendees: '小林部長',       content: 'NTTデータからの紹介で初訪問。SAP ABAPの開発者不足。複数PJで同時に人材が必要な状況。' },
@@ -873,7 +873,7 @@ export const DEAL_DETAILS = {
 
   17: {
     basicInfo: { company: 'ノースサンド', dept: 'ERP推進部', clientPerson: '小林 部長、村山 SAP主任', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: '紹介', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: 'ERP推進部 SAP人材支援', current: 'ERP推進部 SAP追加支援', children: [] },
+    tree: { parent: 'ERP推進部 SAP人材支援', current: 'ERP推進部 SAP追加支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2024/11/20', attendees: '村山主任、鈴木', content: '成約。SAP FI/COコンサルタント2名の追加参画確定。12月より稼働。' },
       { round: 1, date: '2024/11/5',  attendees: '小林部長、村山主任、鈴木', content: 'FI/CO領域の追加ニーズが浮上。2名体制での支援を依頼。' },
@@ -885,7 +885,7 @@ export const DEAL_DETAILS = {
 
   40: {
     basicInfo: { company: 'ノースサンド', dept: 'ERP推進部 クラウドチーム', clientPerson: '小林 部長、田村 BTPリーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: '紹介', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: 'ERP推進部 SAP人材支援', current: 'ERP推進部 SAP BTP対応支援', children: [] },
+    tree: { parent: 'ERP推進部 SAP人材支援', current: 'ERP推進部 SAP BTP対応支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/1/15', attendees: '田村リーダー、鈴木', content: '成約。SAP BTP専門家1名の参画確定。SAP S/4HANAとBTPの統合プロジェクトに参画。' },
       { round: 1, date: '2025/1/5',  attendees: '小林部長、田村リーダー、鈴木', content: 'SAP追加支援から派生。クラウドプラットフォームであるBTPへの移行専門家が必要。' },
@@ -897,7 +897,7 @@ export const DEAL_DETAILS = {
 
   18: {
     basicInfo: { company: 'ノースサンド', dept: 'PMO部門', clientPerson: '加藤 真理 マネージャー', ourPerson: '田中 花子', businessDept: 'PERM', channel: '紹介', acquiredBy: '田中 花子', status: '完了' },
-    tree: { parent: 'ERP推進部 SAP人材支援', current: 'PMO部門 PJ管理人材', children: ['PMO部門 シニアPM採用', 'PMO部門 アジャイルコーチ採用'] },
+    tree: { parent: 'ERP推進部 SAP人材支援', current: 'PMO部門 PJ管理人材', next: null, branches: ['PMO部門 シニアPM採用', 'PMO部門 アジャイルコーチ採用'] },
     meetings: [
       { round: 2, date: '2024/11/28', attendees: '加藤マネージャー、田中', content: '成約。PMP保有のPMO人材1名の紹介確定。12月入社予定。' },
       { round: 1, date: '2024/11/5',  attendees: '加藤マネージャー',       content: '小林部長紹介でPMO部門を訪問。PMP保有者の中途採用ニーズ。' },
@@ -909,7 +909,7 @@ export const DEAL_DETAILS = {
 
   19: {
     basicInfo: { company: 'ノースサンド', dept: 'PMO部門', clientPerson: '加藤 マネージャー、高田 PMOシニア', ourPerson: '田中 花子', businessDept: 'PERM', channel: '紹介', acquiredBy: '田中 花子', status: '完了' },
-    tree: { parent: 'PMO部門 PJ管理人材', current: 'PMO部門 シニアPM採用', children: [] },
+    tree: { parent: 'PMO部門 PJ管理人材', current: 'PMO部門 シニアPM採用', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2024/10/15', attendees: '高田シニア、田中', content: '成約。PgMP保有のシニアPM1名採用。事業拡大に伴う大型PJ対応のため即戦力が必要。' },
       { round: 1, date: '2024/10/1',  attendees: '加藤マネージャー、高田、田中', content: 'PMO初回採用成功後の追加依頼。シニアクラスのPMが必要。' },
@@ -921,7 +921,7 @@ export const DEAL_DETAILS = {
 
   41: {
     basicInfo: { company: 'ノースサンド', dept: 'PMO部門 アジャイル推進チーム', clientPerson: '加藤 マネージャー、安井 アジャイルリーダー', ourPerson: '田中 花子', businessDept: 'PERM', channel: '紹介', acquiredBy: '田中 花子', status: '完了' },
-    tree: { parent: 'PMO部門 PJ管理人材', current: 'PMO部門 アジャイルコーチ採用', children: [] },
+    tree: { parent: 'PMO部門 PJ管理人材', current: 'PMO部門 アジャイルコーチ採用', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/1/10', attendees: '安井リーダー、田中', content: '成約。CSP/CSM保有のアジャイルコーチ1名の採用確定。Scrum導入の旗振り役として即戦力が必要。' },
       { round: 1, date: '2024/12/20', attendees: '加藤マネージャー、安井、田中', content: '組織全体のアジャイル移行推進のため、専門コーチの採用が急務とのこと。' },
@@ -933,7 +933,7 @@ export const DEAL_DETAILS = {
 
   20: {
     basicInfo: { company: 'ノースサンド', dept: 'SAP専門チーム', clientPerson: '村山 SAP主任、三浦 ABAP専門家', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: '紹介', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: 'ERP推進部 SAP人材支援', current: 'SAP専門チーム ABAP開発者追加', children: [] },
+    tree: { parent: 'ERP推進部 SAP人材支援', current: 'SAP専門チーム ABAP開発者追加', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2024/12/5',  attendees: '三浦専門家、鈴木', content: '成約。ABAP開発者をさらに1名追加。計2名体制でSAP拡張開発PJを進める。' },
       { round: 1, date: '2024/11/20', attendees: '村山主任、三浦、鈴木', content: 'SAP追加支援の流れで、ABAP専門チームにも人材ニーズを確認。' },
@@ -945,7 +945,7 @@ export const DEAL_DETAILS = {
 
   42: {
     basicInfo: { company: 'ノースサンド', dept: 'BPR推進部', clientPerson: '松田 BPR部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: '紹介', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: 'BPR推進部 業務改革コンサル支援', children: [] },
+    tree: { parent: null, current: 'BPR推進部 業務改革コンサル支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/1/10', attendees: '松田部長、山本', content: 'BPR推進のためのITコンサルタント1名の参画が必要。業務フロー設計とシステム導入支援の両方ができる人材を求めている。' },
       { round: 1, date: '2024/12/25', attendees: '松田部長',      content: '小林部長の紹介で訪問。業務改革推進のためのコンサル人材が不足していることを確認。' },
@@ -958,7 +958,7 @@ export const DEAL_DETAILS = {
 
   21: {
     basicInfo: { company: 'Sansan', dept: 'エンジニアリング本部', clientPerson: '中島 健太 VP of Engineering', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '伊藤 美咲', status: '実施済' },
-    tree: { parent: null, current: 'エンジニアリング本部 開発人材支援', children: ['エンジニアリング本部 Goエンジニア追加', 'エンジニアリング本部 フロントエンド強化', 'プロダクト部門 PdM人材支援'] },
+    tree: { parent: null, current: 'エンジニアリング本部 開発人材支援', next: null, branches: ['エンジニアリング本部 Goエンジニア追加', 'エンジニアリング本部 フロントエンド強化', 'プロダクト部門 PdM人材支援'] },
     meetings: [
       { round: 3, date: '2025/2/20', attendees: '中島VP、佐藤', content: 'バックエンドエンジニアの要件詳細確認。Go言語とgRPCの経験者が必須。マイクロサービス設計の経験者を優先。' },
       { round: 2, date: '2025/2/5',  attendees: '中島VP、佐藤', content: 'プロダクト開発加速のため、複数領域での人材補強が必要と判明。Go/React/PdMの3領域。' },
@@ -973,7 +973,7 @@ export const DEAL_DETAILS = {
 
   22: {
     basicInfo: { company: 'Sansan', dept: 'エンジニアリング本部 インフラチーム', clientPerson: '中島 VP、森田 インフラリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'エンジニアリング本部 Goエンジニア追加', children: [] },
+    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'エンジニアリング本部 Goエンジニア追加', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/5',  attendees: '森田リーダー、佐藤', content: 'Kubernetes/Go専門のSREエンジニアが必要。可用性99.99%のシステム運用経験者を求めている。' },
       { round: 1, date: '2025/1/20', attendees: '中島VP、森田リーダー、佐藤', content: 'インフラチームのGoエンジニア不足が深刻。SRE領域での追加支援ニーズを確認。' },
@@ -986,7 +986,7 @@ export const DEAL_DETAILS = {
 
   43: {
     basicInfo: { company: 'Sansan', dept: 'エンジニアリング本部 フロントエンドチーム', clientPerson: '中島 VP、藤本 フロントリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'エンジニアリング本部 フロントエンド強化', children: [] },
+    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'エンジニアリング本部 フロントエンド強化', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/1',  attendees: '藤本リーダー、佐藤', content: 'React/TypeScript専門のフロントエンドエンジニア2名が必要。パフォーマンス最適化の経験者を優先。' },
       { round: 1, date: '2025/2/15', attendees: '中島VP、藤本リーダー、佐藤', content: 'フロントエンドの品質向上のため専門エンジニアの補強が必要。TypeScript移行も急いでいる。' },
@@ -999,7 +999,7 @@ export const DEAL_DETAILS = {
 
   23: {
     basicInfo: { company: 'Sansan', dept: 'プロダクト部門', clientPerson: '大坪 プロダクト責任者', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'プロダクト部門 PdM人材支援', children: ['プロダクト部門 デザインエンジニア採用'] },
+    tree: { parent: 'エンジニアリング本部 開発人材支援', current: 'プロダクト部門 PdM人材支援', next: null, branches: ['プロダクト部門 デザインエンジニア採用'] },
     meetings: [
       { round: 2, date: '2025/1/20', attendees: '大坪責任者、佐藤', content: 'PdMの要件確認。B2BSaaSプロダクトのロードマップ策定経験者が必要。英語力もあると望ましい。' },
       { round: 1, date: '2025/1/8',  attendees: '大坪責任者',       content: '中島VPの紹介でプロダクト部門を訪問。PdM不足で新機能開発が遅延している状況。' },
@@ -1012,7 +1012,7 @@ export const DEAL_DETAILS = {
 
   44: {
     basicInfo: { company: 'Sansan', dept: 'プロダクト部門 デザインチーム', clientPerson: '大坪 責任者、内田 デザインリーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'プロダクト部門 PdM人材支援', current: 'プロダクト部門 デザインエンジニア採用', children: [] },
+    tree: { parent: 'プロダクト部門 PdM人材支援', current: 'プロダクト部門 デザインエンジニア採用', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/10', attendees: '内田リーダー、佐藤', content: 'デザインエンジニアの要件確認。FigmaとReactの両方が使えるエンジニアが必要。デザインシステム構築の経験者を優先。' },
       { round: 1, date: '2025/1/28', attendees: '大坪責任者、内田リーダー、佐藤', content: 'PdM採用商談から派生。デザインとエンジニアリングを橋渡しできる人材の採用ニーズが浮上。' },
@@ -1025,7 +1025,7 @@ export const DEAL_DETAILS = {
 
   45: {
     basicInfo: { company: 'Sansan', dept: 'データ基盤部', clientPerson: '松井 データ基盤部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: '展示会', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'データ基盤部 データエンジニア支援', children: [] },
+    tree: { parent: null, current: 'データ基盤部 データエンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/25', attendees: '松井部長、佐藤', content: 'BigQuery/dbtを使ったデータパイプライン構築の専門家が必要。データカタログの整備も課題。' },
       { round: 1, date: '2025/2/10', attendees: '松井部長',       content: '中島VPの紹介でデータ基盤部を訪問。データエンジニアリングの専門化が急務。' },
@@ -1038,7 +1038,7 @@ export const DEAL_DETAILS = {
 
   24: {
     basicInfo: { company: 'トヨタ自動車', dept: 'デジタル推進本部', clientPerson: '渡辺 誠 本部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: 'デジタル推進本部 基幹刷新', children: ['デジタル推進本部 SAP移行フェーズ2', 'デジタル推進本部 データ基盤構築', 'デジタル推進本部 グローバルERP展開', '生産技術部 組込みエンジニア支援', '情報システム部 レガシー移行支援'] },
+    tree: { parent: null, current: 'デジタル推進本部 基幹刷新', next: null, branches: ['デジタル推進本部 SAP移行フェーズ2', 'デジタル推進本部 データ基盤構築', 'デジタル推進本部 グローバルERP展開', '生産技術部 組込みエンジニア支援', '情報システム部 レガシー移行支援'] },
     meetings: [
       { round: 4, date: '2025/2/28', attendees: '渡辺本部長、山本', content: 'ITコンサルタント2名のアサイン内定。3月より要件定義フェーズ開始。フェーズ2のSAP移行についても追加相談あり。' },
       { round: 3, date: '2025/2/10', attendees: '渡辺本部長、山本', content: 'SAP S/4HANA移行プロジェクトの体制案を提示。フェーズ分けでの進行を提案。' },
@@ -1054,7 +1054,7 @@ export const DEAL_DETAILS = {
 
   25: {
     basicInfo: { company: 'トヨタ自動車', dept: 'デジタル推進本部 SAP推進チーム', clientPerson: '渡辺 本部長、川田 SAPリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 SAP移行フェーズ2', children: [] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 SAP移行フェーズ2', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2025/2/10', attendees: '川田リーダー、山本', content: 'フェーズ2の追加人材要件確認。SAP S/4HANAのMM/SD領域専門家が必要。6名体制での推進に合意。' },
       { round: 2, date: '2025/1/25', attendees: '渡辺本部長、川田、山本', content: 'フェーズ1の進捗確認とフェーズ2計画を議論。グローバル展開を見据えた体制構築が必要。' },
@@ -1071,7 +1071,7 @@ export const DEAL_DETAILS = {
 
   26: {
     basicInfo: { company: 'トヨタ自動車', dept: 'デジタル推進本部 データ戦略チーム', clientPerson: '渡辺 本部長、中田 データ戦略リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '完了' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 データ基盤構築', children: [] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 データ基盤構築', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2025/1/25', attendees: '中田リーダー、山本', content: '成約。データアーキテクト1名・データエンジニア3名の参画確定。2月より稼働開始。' },
       { round: 2, date: '2025/1/10', attendees: '中田リーダー、山本', content: 'データレイク構築の要件確認。Snowflake/BigQueryとPython/Sparkエンジニアが必要。' },
@@ -1088,7 +1088,7 @@ export const DEAL_DETAILS = {
 
   46: {
     basicInfo: { company: 'トヨタ自動車', dept: 'デジタル推進本部 グローバルIT推進チーム', clientPerson: '渡辺 本部長、鈴田 グローバルITリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 グローバルERP展開', children: [] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'デジタル推進本部 グローバルERP展開', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '鈴田リーダー、山本', content: 'グローバル20拠点へのSAP展開プロジェクト。多言語対応のSAPコンサルタントが5名必要。英語力必須。' },
       { round: 1, date: '2025/2/5',  attendees: '渡辺本部長、鈴田、山本', content: '基幹刷新から派生した追加案件。グローバル拠点へのERP展開計画を確認。' },
@@ -1102,7 +1102,7 @@ export const DEAL_DETAILS = {
 
   27: {
     basicInfo: { company: 'トヨタ自動車', dept: '生産技術部', clientPerson: '福田 修 部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: '生産技術部 組込みエンジニア支援', children: ['生産技術部 RustエンジニアPJ', '生産技術部 FPGAエンジニア支援'] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: '生産技術部 組込みエンジニア支援', next: null, branches: ['生産技術部 RustエンジニアPJ', '生産技術部 FPGAエンジニア支援'] },
     meetings: [
       { round: 3, date: '2025/2/20', attendees: '福田部長、鈴木', content: 'C/C++組込みエンジニア3名の参画確定。4月より自動車ECU開発PJに参画。' },
       { round: 2, date: '2025/2/5',  attendees: '福田部長、鈴木', content: 'AUTOSAR対応の組込みC/C++経験者が必須。CAN/Ethernetの通信プロトコル知識も必要。' },
@@ -1116,7 +1116,7 @@ export const DEAL_DETAILS = {
 
   28: {
     basicInfo: { company: 'トヨタ自動車', dept: '生産技術部 次世代システムチーム', clientPerson: '福田 部長、安藤 技術主任', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: '生産技術部 組込みエンジニア支援', current: '生産技術部 RustエンジニアPJ', children: [] },
+    tree: { parent: '生産技術部 組込みエンジニア支援', current: '生産技術部 RustエンジニアPJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/1/30', attendees: '安藤主任、鈴木', content: '次世代ECUをRustで開発するプロジェクト。組込みRust経験者は希少で、C++からの移行経験者でも可。' },
       { round: 1, date: '2025/1/15', attendees: '福田部長、安藤、鈴木', content: '組込みPJ派生の追加商談。次世代システムではRustの採用を検討。専門家が必要。' },
@@ -1129,7 +1129,7 @@ export const DEAL_DETAILS = {
 
   47: {
     basicInfo: { company: 'トヨタ自動車', dept: '生産技術部 エレクトロニクスチーム', clientPerson: '福田 部長、木下 FPGA専門家', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: '生産技術部 組込みエンジニア支援', current: '生産技術部 FPGAエンジニア支援', children: [] },
+    tree: { parent: '生産技術部 組込みエンジニア支援', current: '生産技術部 FPGAエンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/15', attendees: '木下専門家、鈴木', content: 'Xilinx/IntelのFPGA開発経験者が必要。VHDL/Verilogの実務5年以上が必須。高速信号処理の知識も求められる。' },
       { round: 1, date: '2025/2/1',  attendees: '福田部長、木下、鈴木', content: '組込みPJ派生の追加商談。画像処理の高速化のためFPGAエンジニアの補強が必要。' },
@@ -1142,7 +1142,7 @@ export const DEAL_DETAILS = {
 
   29: {
     basicInfo: { company: 'トヨタ自動車', dept: '情報システム部', clientPerson: '大野 浩二 課長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: '情報システム部 レガシー移行支援', children: ['情報システム部 JAVA/Kotlin刷新', '情報システム部 マイクロサービス移行'] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: '情報システム部 レガシー移行支援', next: null, branches: ['情報システム部 JAVA/Kotlin刷新', '情報システム部 マイクロサービス移行'] },
     meetings: [
       { round: 3, date: '2025/1/30', attendees: '大野課長、鈴木', content: '成約。JavaエンジニアとPythonエンジニアの計3名の参画確定。2月より稼働開始。' },
       { round: 2, date: '2024/12/20', attendees: '大野課長、鈴木', content: 'レガシーJavaシステムの移行要件確認。Spring Bootへのリアーキテクチャ経験者が必要。' },
@@ -1159,7 +1159,7 @@ export const DEAL_DETAILS = {
 
   30: {
     basicInfo: { company: 'トヨタ自動車', dept: '情報システム部 モダナイズチーム', clientPerson: '大野 課長、篠原 Kotlinリーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: '情報システム部 レガシー移行支援', current: '情報システム部 JAVA/Kotlin刷新', children: [] },
+    tree: { parent: '情報システム部 レガシー移行支援', current: '情報システム部 JAVA/Kotlin刷新', next: null, branches: [] },
     meetings: [
       { round: 3, date: '2024/12/20', attendees: '篠原リーダー、鈴木', content: '成約。KotlinエンジニアとAndroidエンジニアの計2名の参画確定。1月より稼働。' },
       { round: 2, date: '2024/12/5',  attendees: '大野課長、篠原、鈴木', content: 'KotlinへのマイグレーションPJの詳細確認。コルーチン・Flowの実務経験者が必須。' },
@@ -1173,7 +1173,7 @@ export const DEAL_DETAILS = {
 
   48: {
     basicInfo: { company: 'トヨタ自動車', dept: '情報システム部 クラウドアーキチーム', clientPerson: '大野 課長、原田 アーキテクトリーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: '情報システム部 レガシー移行支援', current: '情報システム部 マイクロサービス移行', children: [] },
+    tree: { parent: '情報システム部 レガシー移行支援', current: '情報システム部 マイクロサービス移行', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '原田リーダー、鈴木', content: 'モノリシックシステムのマイクロサービス化。Kubernetes/Istioを使ったサービスメッシュ構築経験者が必要。' },
       { round: 1, date: '2025/2/10', attendees: '大野課長、原田、鈴木', content: 'レガシー移行PJから派生した追加案件。マイクロサービスアーキテクチャへの移行計画をヒアリング。' },
@@ -1190,7 +1190,7 @@ export const DEAL_DETAILS = {
 
   31: {
     basicInfo: { company: 'トヨタ自動車', dept: 'コネクティッド部門', clientPerson: '石川 コネクティッド部門長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'コネクティッド部門 車載ソフトウェア支援', children: ['コネクティッド部門 OTA更新基盤PJ'] },
+    tree: { parent: 'デジタル推進本部 基幹刷新', current: 'コネクティッド部門 車載ソフトウェア支援', next: null, branches: ['コネクティッド部門 OTA更新基盤PJ'] },
     meetings: [
       { round: 2, date: '2025/2/15', attendees: '石川部門長、鈴木', content: '車載ソフトウェアの要件詳細確認。C++17以上の組込み経験とLinuxドライバ開発が必須。OTA更新対応も必要。' },
       { round: 1, date: '2025/2/1',  attendees: '石川部門長',       content: '福田部長の紹介でコネクティッドカー部門を訪問。車載Linux/C++の専門家が急募。' },
@@ -1204,7 +1204,7 @@ export const DEAL_DETAILS = {
 
   49: {
     basicInfo: { company: 'トヨタ自動車', dept: 'コネクティッド部門 OTAチーム', clientPerson: '石川 部門長、松岡 OTAリーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: 'コネクティッド部門 車載ソフトウェア支援', current: 'コネクティッド部門 OTA更新基盤PJ', children: [] },
+    tree: { parent: 'コネクティッド部門 車載ソフトウェア支援', current: 'コネクティッド部門 OTA更新基盤PJ', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/3/1',  attendees: '松岡リーダー、鈴木', content: 'Over-the-Air更新システムの構築。AWS IoTとC++を組み合わせたOTA基盤の専門家が必要。セキュリティ要件も厳しい。' },
       { round: 1, date: '2025/2/20', attendees: '石川部門長、松岡、鈴木', content: '車載ソフトウェア支援PJから派生。OTAアップデート基盤の構築専門家のニーズが浮上。' },
@@ -1217,7 +1217,7 @@ export const DEAL_DETAILS = {
 
   50: {
     basicInfo: { company: 'トヨタ自動車', dept: 'AI研究所', clientPerson: '田辺 AI研究所長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'AI研究所 自動運転AI人材支援', children: [] },
+    tree: { parent: null, current: 'AI研究所 自動運転AI人材支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/10', attendees: '田辺所長、鈴木', content: '自動運転AIの研究開発エンジニアが必要。PyTorch/TensorFlowの深層学習経験者と点群データ処理の専門家。' },
       { round: 1, date: '2025/1/25', attendees: '田辺所長',       content: '福田部長の紹介でAI研究所を訪問。自動運転レベル4達成に向けてAI研究者の補強が急務。' },
@@ -1235,7 +1235,7 @@ export const DEAL_DETAILS = {
   // ===== 日立製作所 =====
   51: {
     basicInfo: { company: '日立製作所', dept: 'システム統括本部', clientPerson: '中村 CTO', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'システム統括本部 基幹系モダナイゼーションPJ', children: ['システム統括本部 クラウドネイティブ移行', 'Lumada事業部 IoTプラットフォーム開発'] },
+    tree: { parent: null, current: 'システム統括本部 基幹系モダナイゼーションPJ', next: null, branches: ['システム統括本部 クラウドネイティブ移行', 'Lumada事業部 IoTプラットフォーム開発'] },
     meetings: [
       { round: 3, date: '2025/3/8', attendees: '中村CTO、鈴木', content: 'モダナイゼーション進捗確認。Java17への移行完了報告。クラウド移行とIoT基盤の追加ニーズを確認。' },
       { round: 2, date: '2025/2/10', attendees: '中村CTO、鈴木', content: 'レガシーJavaシステムの移行計画策定。段階的アプローチで合意。' },
@@ -1251,7 +1251,7 @@ export const DEAL_DETAILS = {
   },
   52: {
     basicInfo: { company: '日立製作所', dept: 'システム統括本部', clientPerson: '中村 CTO、高橋 インフラ部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'システム統括本部 クラウドネイティブ移行', children: [] },
+    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'システム統括本部 クラウドネイティブ移行', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/25', attendees: '高橋部長、鈴木', content: 'AWS/Azure選定完了。Kubernetes基盤の設計レビュー。' },
       { round: 1, date: '2025/1/30', attendees: '中村CTO、高橋部長、鈴木', content: 'モダナイゼーションの延長でクラウド移行を検討。' },
@@ -1266,7 +1266,7 @@ export const DEAL_DETAILS = {
   },
   53: {
     basicInfo: { company: '日立製作所', dept: 'Lumada事業部', clientPerson: '佐々木 Lumada事業部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'Lumada事業部 IoTプラットフォーム開発', children: ['Lumada事業部 AI分析基盤構築', 'Lumada事業部 データマネジメント戦略策定'] },
+    tree: { parent: 'システム統括本部 基幹系モダナイゼーションPJ', current: 'Lumada事業部 IoTプラットフォーム開発', next: null, branches: ['Lumada事業部 AI分析基盤構築', 'Lumada事業部 データマネジメント戦略策定'] },
     meetings: [
       { round: 2, date: '2025/3/5', attendees: '佐々木部長、佐藤', content: 'IoTプラットフォーム設計レビュー。エッジ処理の高速化がキーテーマ。' },
       { round: 1, date: '2025/2/5', attendees: '佐々木部長、佐藤', content: '中村CTOの紹介でLumada事業部を訪問。IoT基盤強化のニーズ。' },
@@ -1281,7 +1281,7 @@ export const DEAL_DETAILS = {
   },
   54: {
     basicInfo: { company: '日立製作所', dept: 'Lumada事業部 AI推進チーム', clientPerson: '佐々木部長、松田 AI推進リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 AI分析基盤構築', children: [] },
+    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 AI分析基盤構築', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '松田リーダー、山本', content: 'AI分析基盤のアーキテクチャ確定。MLOpsパイプライン構築が次のステップ。' },
       { round: 1, date: '2025/2/10', attendees: '佐々木部長、松田リーダー、山本', content: 'IoT基盤と連携したAI分析ニーズをヒアリング。' },
@@ -1296,7 +1296,7 @@ export const DEAL_DETAILS = {
   },
   55: {
     basicInfo: { company: '日立製作所', dept: 'デジタルエンジニアリング部', clientPerson: '田中 DevOps推進リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '完了' },
-    tree: { parent: null, current: 'デジタルエンジニアリング部 DevOps導入支援', children: ['デジタルエンジニアリング部 SRE体制構築'] },
+    tree: { parent: null, current: 'デジタルエンジニアリング部 DevOps導入支援', next: null, branches: ['デジタルエンジニアリング部 SRE体制構築'] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '田中リーダー、佐藤', content: 'DevOps導入完了。CI/CDパイプライン構築成功。SRE体制の必要性が浮上。' },
       { round: 1, date: '2025/1/20', attendees: '田中リーダー、佐藤', content: 'toBマーケ経由。DevOps導入のエンジニア支援依頼。' },
@@ -1309,7 +1309,7 @@ export const DEAL_DETAILS = {
   },
   56: {
     basicInfo: { company: '日立製作所', dept: 'デジタルエンジニアリング部', clientPerson: '田中 DevOps推進リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'デジタルエンジニアリング部 DevOps導入支援', current: 'デジタルエンジニアリング部 SRE体制構築', children: [] },
+    tree: { parent: 'デジタルエンジニアリング部 DevOps導入支援', current: 'デジタルエンジニアリング部 SRE体制構築', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/1', attendees: '田中リーダー、佐藤', content: 'DevOps導入の延長でSRE体制構築を開始。オブザーバビリティ専門家が必要。' },
     ],
@@ -1323,7 +1323,7 @@ export const DEAL_DETAILS = {
   },
   57: {
     basicInfo: { company: '日立製作所', dept: '人財統括本部', clientPerson: '小林 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: null, current: '人財統括本部 DX人材採用支援', children: ['人財統括本部 エグゼクティブサーチ'] },
+    tree: { parent: null, current: '人財統括本部 DX人材採用支援', next: null, branches: ['人財統括本部 エグゼクティブサーチ'] },
     meetings: [
       { round: 2, date: '2025/3/1', attendees: '小林部長、田中', content: 'DX人材の採用要件確定。即戦力のテックリード2名が最優先。' },
       { round: 1, date: '2025/2/5', attendees: '小林部長、田中', content: '初回訪問。DX推進に向けた人材不足の課題をヒアリング。' },
@@ -1337,7 +1337,7 @@ export const DEAL_DETAILS = {
   },
   58: {
     basicInfo: { company: '日立製作所', dept: '人財統括本部', clientPerson: '小林 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: '人財統括本部 DX人材採用支援', current: '人財統括本部 エグゼクティブサーチ', children: [] },
+    tree: { parent: '人財統括本部 DX人材採用支援', current: '人財統括本部 エグゼクティブサーチ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/15', attendees: '小林部長、田中', content: 'CTO補佐ポジションの採用依頼。グローバル経験者を希望。' },
     ],
@@ -1350,7 +1350,7 @@ export const DEAL_DETAILS = {
   },
   59: {
     basicInfo: { company: '日立製作所', dept: 'クラウドサービス部', clientPerson: '遠藤 クラウド事業リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'クラウドサービス部 マネージドサービス人材支援', children: [] },
+    tree: { parent: null, current: 'クラウドサービス部 マネージドサービス人材支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/10', attendees: '遠藤リーダー、鈴木', content: 'マネージドサービスチームの増員ニーズ。AWS認定保有者を希望。' },
     ],
@@ -1363,7 +1363,7 @@ export const DEAL_DETAILS = {
   },
   60: {
     basicInfo: { company: '日立製作所', dept: 'Lumada事業部 データ戦略チーム', clientPerson: '佐々木部長、岡田 データ戦略リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 データマネジメント戦略策定', children: [] },
+    tree: { parent: 'Lumada事業部 IoTプラットフォーム開発', current: 'Lumada事業部 データマネジメント戦略策定', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/18', attendees: '岡田リーダー、山本', content: 'IoTデータのマネジメント戦略策定支援。データカタログ構築が急務。' },
     ],
@@ -1379,7 +1379,7 @@ export const DEAL_DETAILS = {
   // ===== リクルート =====
   61: {
     basicInfo: { company: 'リクルート', dept: 'プロダクト開発本部', clientPerson: '渡辺 VPoE', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'プロダクト開発本部 バックエンド刷新PJ', children: ['プロダクト開発本部 フロントエンド強化', 'データサイエンス部 ML基盤エンジニア支援'] },
+    tree: { parent: null, current: 'プロダクト開発本部 バックエンド刷新PJ', next: null, branches: ['プロダクト開発本部 フロントエンド強化', 'データサイエンス部 ML基盤エンジニア支援'] },
     meetings: [
       { round: 2, date: '2025/3/5', attendees: '渡辺VPoE、佐藤', content: 'バックエンド刷新の進捗確認。Go言語への移行順調。フロントとML基盤も追加依頼。' },
       { round: 1, date: '2025/2/5', attendees: '渡辺VPoE、佐藤', content: '初回訪問。Rubyレガシーからの脱却が課題。Goエンジニアのニーズ。' },
@@ -1394,7 +1394,7 @@ export const DEAL_DETAILS = {
   },
   62: {
     basicInfo: { company: 'リクルート', dept: 'プロダクト開発本部 フロントチーム', clientPerson: '渡辺VPoE、木下 フロントリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'プロダクト開発本部 フロントエンド強化', children: [] },
+    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'プロダクト開発本部 フロントエンド強化', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/20', attendees: '木下リード、佐藤', content: 'React/Next.jsベースのフロントエンド刷新。TypeScript必須。' },
     ],
@@ -1408,7 +1408,7 @@ export const DEAL_DETAILS = {
   },
   63: {
     basicInfo: { company: 'リクルート', dept: 'SaaS事業推進部', clientPerson: '山口 SRE部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '完了' },
-    tree: { parent: null, current: 'SaaS事業推進部 SRE人材支援', children: [] },
+    tree: { parent: null, current: 'SaaS事業推進部 SRE人材支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '山口部長、佐藤', content: 'SREエンジニア2名の稼働開始報告。満足度高く完了。' },
       { round: 1, date: '2025/1/20', attendees: '山口部長、佐藤', content: 'SaaS事業のSRE体制強化ニーズ。' },
@@ -1421,7 +1421,7 @@ export const DEAL_DETAILS = {
   },
   64: {
     basicInfo: { company: 'リクルート', dept: '人事企画部', clientPerson: '加藤 CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: null, current: '人事企画部 エンジニア採用強化PJ', children: ['人事企画部 ハイクラスエンジニア採用'] },
+    tree: { parent: null, current: '人事企画部 エンジニア採用強化PJ', next: null, branches: ['人事企画部 ハイクラスエンジニア採用'] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '加藤CHRO、田中', content: 'エンジニア採用の進捗確認。ハイクラス層の採用強化も依頼。' },
       { round: 1, date: '2025/2/1', attendees: '加藤CHRO、田中', content: '初回訪問。エンジニア採用力強化の包括的支援依頼。' },
@@ -1435,7 +1435,7 @@ export const DEAL_DETAILS = {
   },
   65: {
     basicInfo: { company: 'リクルート', dept: '人事企画部', clientPerson: '加藤CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: '人事企画部 エンジニア採用強化PJ', current: '人事企画部 ハイクラスエンジニア採用', children: [] },
+    tree: { parent: '人事企画部 エンジニア採用強化PJ', current: '人事企画部 ハイクラスエンジニア採用', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/15', attendees: '加藤CHRO、田中', content: 'VPoE/CTOクラスのヘッドハンティング依頼。' },
     ],
@@ -1448,7 +1448,7 @@ export const DEAL_DETAILS = {
   },
   66: {
     basicInfo: { company: 'リクルート', dept: 'データサイエンス部', clientPerson: '渡辺VPoE、斎藤 DS部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'データサイエンス部 ML基盤エンジニア支援', children: [] },
+    tree: { parent: 'プロダクト開発本部 バックエンド刷新PJ', current: 'データサイエンス部 ML基盤エンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/10', attendees: '斎藤DS部長、佐藤', content: 'ML基盤のインフラ刷新ニーズ。Kubeflow/MLflow環境構築。' },
     ],
@@ -1463,7 +1463,7 @@ export const DEAL_DETAILS = {
   // ===== 楽天グループ =====
   67: {
     basicInfo: { company: '楽天グループ', dept: 'コマース開発本部', clientPerson: '井上 コマースCTO', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'コマース開発本部 マイクロサービス化PJ', children: ['コマース開発本部 パフォーマンス改善PJ', 'コマース開発本部 データパイプライン構築'] },
+    tree: { parent: null, current: 'コマース開発本部 マイクロサービス化PJ', next: null, branches: ['コマース開発本部 パフォーマンス改善PJ', 'コマース開発本部 データパイプライン構築'] },
     meetings: [
       { round: 3, date: '2025/3/10', attendees: '井上CTO、佐藤', content: 'マイクロサービス化の第1フェーズ完了報告。パフォーマンス改善とデータ基盤の追加支援を依頼。' },
       { round: 2, date: '2025/2/15', attendees: '井上CTO、佐藤', content: 'マイクロサービス設計レビュー。ドメイン分割方針を確定。' },
@@ -1479,7 +1479,7 @@ export const DEAL_DETAILS = {
   },
   68: {
     basicInfo: { company: '楽天グループ', dept: 'コマース開発本部 パフォーマンスチーム', clientPerson: '井上CTO、川崎 パフォーマンスリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 パフォーマンス改善PJ', children: [] },
+    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 パフォーマンス改善PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/25', attendees: '川崎リード、佐藤', content: '大規模セール時のパフォーマンス問題対応。負荷試験専門家が必要。' },
     ],
@@ -1492,7 +1492,7 @@ export const DEAL_DETAILS = {
   },
   69: {
     basicInfo: { company: '楽天グループ', dept: 'フィンテック事業部', clientPerson: '森 フィンテック事業部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'フィンテック事業部 決済基盤刷新', children: ['フィンテック事業部 ブロックチェーン検証PJ'] },
+    tree: { parent: null, current: 'フィンテック事業部 決済基盤刷新', next: null, branches: ['フィンテック事業部 ブロックチェーン検証PJ'] },
     meetings: [
       { round: 2, date: '2025/3/5', attendees: '森部長、鈴木', content: '決済基盤刷新の技術選定完了。Go言語＋gRPCで再構築。' },
       { round: 1, date: '2025/2/10', attendees: '森部長、鈴木', content: '初回訪問。決済基盤のスケーラビリティ課題。' },
@@ -1507,7 +1507,7 @@ export const DEAL_DETAILS = {
   },
   70: {
     basicInfo: { company: '楽天グループ', dept: 'フィンテック事業部 ブロックチェーンチーム', clientPerson: '森部長、西田 BCリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'フィンテック事業部 決済基盤刷新', current: 'フィンテック事業部 ブロックチェーン検証PJ', children: [] },
+    tree: { parent: 'フィンテック事業部 決済基盤刷新', current: 'フィンテック事業部 ブロックチェーン検証PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/1', attendees: '西田リーダー、山本', content: 'ブロックチェーン技術のPoC支援依頼。Solidity/Rust経験者が必要。' },
     ],
@@ -1521,7 +1521,7 @@ export const DEAL_DETAILS = {
   },
   71: {
     basicInfo: { company: '楽天グループ', dept: 'モバイル事業部', clientPerson: '橋本 モバイル開発部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '完了' },
-    tree: { parent: null, current: 'モバイル事業部 Flutter開発人材支援', children: [] },
+    tree: { parent: null, current: 'モバイル事業部 Flutter開発人材支援', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '橋本部長、佐藤', content: 'Flutter開発チーム立ち上げ完了。3名の稼働を確認。' },
       { round: 1, date: '2025/1/15', attendees: '橋本部長、佐藤', content: 'Flutter/Dartエンジニアの支援依頼。' },
@@ -1534,7 +1534,7 @@ export const DEAL_DETAILS = {
   },
   72: {
     basicInfo: { company: '楽天グループ', dept: 'AI推進室', clientPerson: '大西 AI推進室長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: 'AI推進室 レコメンドエンジン開発', children: [] },
+    tree: { parent: null, current: 'AI推進室 レコメンドエンジン開発', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/15', attendees: '大西室長、山本', content: 'レコメンドエンジンの精度向上PJ。深層学習専門家が必要。' },
     ],
@@ -1547,7 +1547,7 @@ export const DEAL_DETAILS = {
   },
   73: {
     basicInfo: { company: '楽天グループ', dept: '人事本部', clientPerson: '吉田 CHRO', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: null, current: '人事本部 テックリード採用支援', children: [] },
+    tree: { parent: null, current: '人事本部 テックリード採用支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/20', attendees: '吉田CHRO、田中', content: 'テックリード層の中途採用強化。グローバル人材を希望。' },
     ],
@@ -1560,7 +1560,7 @@ export const DEAL_DETAILS = {
   },
   74: {
     basicInfo: { company: '楽天グループ', dept: 'コマース開発本部 データチーム', clientPerson: '井上CTO、安藤 データリード', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 データパイプライン構築', children: [] },
+    tree: { parent: 'コマース開発本部 マイクロサービス化PJ', current: 'コマース開発本部 データパイプライン構築', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/28', attendees: '安藤リード、佐藤', content: 'データパイプラインの刷新ニーズ。Apache Kafka/Flinkの知見が必要。' },
     ],
@@ -1575,7 +1575,7 @@ export const DEAL_DETAILS = {
   // ===== KDDI =====
   75: {
     basicInfo: { company: 'KDDI', dept: 'ネットワーク技術本部', clientPerson: '松本 ネットワーク本部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'ネットワーク技術本部 5G基盤開発PJ', children: ['ネットワーク技術本部 ネットワーク自動化', '5G/6G推進室 エッジコンピューティング開発'] },
+    tree: { parent: null, current: 'ネットワーク技術本部 5G基盤開発PJ', next: null, branches: ['ネットワーク技術本部 ネットワーク自動化', '5G/6G推進室 エッジコンピューティング開発'] },
     meetings: [
       { round: 2, date: '2025/3/3', attendees: '松本本部長、鈴木', content: '5G基盤開発の進捗確認。自動化とエッジの追加ニーズが発生。' },
       { round: 1, date: '2025/2/1', attendees: '松本本部長、鈴木', content: '初回訪問。5G基盤の開発体制強化ニーズ。' },
@@ -1590,7 +1590,7 @@ export const DEAL_DETAILS = {
   },
   76: {
     basicInfo: { company: 'KDDI', dept: 'ネットワーク技術本部 自動化チーム', clientPerson: '松本本部長、石川 自動化リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: 'ネットワーク技術本部 ネットワーク自動化', children: [] },
+    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: 'ネットワーク技術本部 ネットワーク自動化', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/20', attendees: '石川リーダー、鈴木', content: 'ネットワーク自動化のAnsible/Terraform導入支援。' },
     ],
@@ -1603,7 +1603,7 @@ export const DEAL_DETAILS = {
   },
   77: {
     basicInfo: { company: 'KDDI', dept: '5G/6G推進室', clientPerson: '松本本部長、藤田 5G推進室長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: '5G/6G推進室 エッジコンピューティング開発', children: ['5G/6G推進室 次世代通信プロトコル研究'] },
+    tree: { parent: 'ネットワーク技術本部 5G基盤開発PJ', current: '5G/6G推進室 エッジコンピューティング開発', next: null, branches: ['5G/6G推進室 次世代通信プロトコル研究'] },
     meetings: [
       { round: 1, date: '2025/2/28', attendees: '藤田室長、佐藤', content: 'エッジコンピューティング開発のエンジニア支援依頼。低レイテンシ処理の知見が必要。' },
     ],
@@ -1616,7 +1616,7 @@ export const DEAL_DETAILS = {
   },
   78: {
     basicInfo: { company: 'KDDI', dept: '5G/6G推進室 研究チーム', clientPerson: '藤田室長、中島 研究リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: '5G/6G推進室 エッジコンピューティング開発', current: '5G/6G推進室 次世代通信プロトコル研究', children: [] },
+    tree: { parent: '5G/6G推進室 エッジコンピューティング開発', current: '5G/6G推進室 次世代通信プロトコル研究', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/15', attendees: '中島リーダー、山本', content: '次世代通信プロトコルの研究支援。QUIC/HTTP3の専門家が必要。' },
     ],
@@ -1629,7 +1629,7 @@ export const DEAL_DETAILS = {
   },
   79: {
     basicInfo: { company: 'KDDI', dept: 'DX推進本部', clientPerson: '高田 DX推進本部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'toBマーケ', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: 'DX推進本部 顧客基盤システム刷新', children: ['DX推進本部 データ分析基盤構築'] },
+    tree: { parent: null, current: 'DX推進本部 顧客基盤システム刷新', next: null, branches: ['DX推進本部 データ分析基盤構築'] },
     meetings: [
       { round: 2, date: '2025/2/28', attendees: '高田本部長、山本', content: '顧客基盤システム刷新の設計完了。データ分析基盤の追加支援を依頼。' },
       { round: 1, date: '2025/2/1', attendees: '高田本部長、山本', content: '初回訪問。顧客データ基盤の刷新ニーズ。' },
@@ -1644,7 +1644,7 @@ export const DEAL_DETAILS = {
   },
   80: {
     basicInfo: { company: 'KDDI', dept: 'DX推進本部 データ分析チーム', clientPerson: '高田本部長、川口 データ分析リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '完了' },
-    tree: { parent: 'DX推進本部 顧客基盤システム刷新', current: 'DX推進本部 データ分析基盤構築', children: [] },
+    tree: { parent: 'DX推進本部 顧客基盤システム刷新', current: 'DX推進本部 データ分析基盤構築', next: null, branches: [] },
     meetings: [
       { round: 2, date: '2025/2/10', attendees: '川口リーダー、山本', content: 'データ分析基盤構築完了。Snowflake環境の運用開始。' },
       { round: 1, date: '2025/1/15', attendees: '川口リーダー、山本', content: 'データ分析基盤の設計支援依頼。' },
@@ -1657,7 +1657,7 @@ export const DEAL_DETAILS = {
   },
   81: {
     basicInfo: { company: 'KDDI', dept: 'プラットフォーム開発部', clientPerson: '平田 プラットフォーム部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'プラットフォーム開発部 APIプラットフォーム構築', children: [] },
+    tree: { parent: null, current: 'プラットフォーム開発部 APIプラットフォーム構築', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/25', attendees: '平田部長、佐藤', content: 'APIプラットフォーム構築支援。GraphQL/REST APIの設計経験者が必要。' },
     ],
@@ -1670,7 +1670,7 @@ export const DEAL_DETAILS = {
   },
   82: {
     basicInfo: { company: 'KDDI', dept: 'セキュリティ統括部', clientPerson: '三浦 CISO', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'セキュリティ統括部 SOC構築支援', children: [] },
+    tree: { parent: null, current: 'セキュリティ統括部 SOC構築支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/18', attendees: '三浦CISO、鈴木', content: 'SOC（セキュリティオペレーションセンター）構築支援。SIEM運用経験者が必要。' },
     ],
@@ -1686,7 +1686,7 @@ export const DEAL_DETAILS = {
   // ===== ソニーグループ =====
   83: {
     basicInfo: { company: 'ソニーグループ', dept: 'R&D本部', clientPerson: '村上 R&D本部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'toBマーケ', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'R&D本部 画像処理エンジン開発PJ', children: ['R&D本部 量子コンピューティング研究支援', 'R&D本部 コンピュータビジョン研究強化'] },
+    tree: { parent: null, current: 'R&D本部 画像処理エンジン開発PJ', next: null, branches: ['R&D本部 量子コンピューティング研究支援', 'R&D本部 コンピュータビジョン研究強化'] },
     meetings: [
       { round: 2, date: '2025/3/12', attendees: '村上本部長、佐藤', content: '画像処理エンジン開発順調。量子コンピューティングとCV研究の追加支援を依頼。' },
       { round: 1, date: '2025/2/10', attendees: '村上本部長、佐藤', content: '初回訪問。次世代画像処理エンジンの開発体制強化ニーズ。' },
@@ -1700,7 +1700,7 @@ export const DEAL_DETAILS = {
   },
   84: {
     basicInfo: { company: 'ソニーグループ', dept: 'R&D本部 量子チーム', clientPerson: '村上本部長、小野 量子研究リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 量子コンピューティング研究支援', children: [] },
+    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 量子コンピューティング研究支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/1', attendees: '小野リーダー、山本', content: '量子コンピューティング研究の人材支援依頼。量子アルゴリズムの研究者が必要。' },
     ],
@@ -1713,7 +1713,7 @@ export const DEAL_DETAILS = {
   },
   85: {
     basicInfo: { company: 'ソニーグループ', dept: 'ゲーム&ネットワークサービス部', clientPerson: '田村 ゲーム開発部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', children: ['ゲーム&ネットワークサービス部 リアルタイム通信基盤'] },
+    tree: { parent: null, current: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', next: null, branches: ['ゲーム&ネットワークサービス部 リアルタイム通信基盤'] },
     meetings: [
       { round: 2, date: '2025/3/5', attendees: '田村部長、佐藤', content: 'バックエンド強化の進捗確認。リアルタイム通信基盤の追加支援を依頼。' },
       { round: 1, date: '2025/2/10', attendees: '田村部長、佐藤', content: '大規模オンラインゲームのバックエンド強化ニーズ。' },
@@ -1727,7 +1727,7 @@ export const DEAL_DETAILS = {
   },
   86: {
     basicInfo: { company: 'ソニーグループ', dept: 'ゲーム&ネットワークサービス部 通信チーム', clientPerson: '田村部長、佐野 通信リーダー', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', current: 'ゲーム&ネットワークサービス部 リアルタイム通信基盤', children: [] },
+    tree: { parent: 'ゲーム&ネットワークサービス部 バックエンド強化PJ', current: 'ゲーム&ネットワークサービス部 リアルタイム通信基盤', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/25', attendees: '佐野リーダー、佐藤', content: 'WebSocket/WebRTCベースのリアルタイム通信基盤構築。低レイテンシ実装の経験者が必要。' },
     ],
@@ -1740,7 +1740,7 @@ export const DEAL_DETAILS = {
   },
   87: {
     basicInfo: { company: 'ソニーグループ', dept: '半導体事業部', clientPerson: '原田 半導体事業部長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '完了' },
-    tree: { parent: null, current: '半導体事業部 EDA設計エンジニア支援', children: ['半導体事業部 検証自動化PJ'] },
+    tree: { parent: null, current: '半導体事業部 EDA設計エンジニア支援', next: null, branches: ['半導体事業部 検証自動化PJ'] },
     meetings: [
       { round: 2, date: '2025/2/20', attendees: '原田部長、鈴木', content: 'EDA設計エンジニア2名の稼働確認。検証自動化の追加支援を依頼。' },
       { round: 1, date: '2025/1/20', attendees: '原田部長、鈴木', content: 'EDA設計ツールの運用エンジニア支援依頼。' },
@@ -1753,7 +1753,7 @@ export const DEAL_DETAILS = {
   },
   88: {
     basicInfo: { company: 'ソニーグループ', dept: '半導体事業部 検証チーム', clientPerson: '原田部長、内藤 検証リーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: '半導体事業部 EDA設計エンジニア支援', current: '半導体事業部 検証自動化PJ', children: [] },
+    tree: { parent: '半導体事業部 EDA設計エンジニア支援', current: '半導体事業部 検証自動化PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/15', attendees: '内藤リーダー、山本', content: '半導体検証の自動化ツール開発支援。SystemVerilog/UVM経験者が必要。' },
     ],
@@ -1766,7 +1766,7 @@ export const DEAL_DETAILS = {
   },
   89: {
     basicInfo: { company: 'ソニーグループ', dept: '人事部', clientPerson: '清水 人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'toBマーケ', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: null, current: '人事部 エンジニア中途採用強化', children: ['人事部 AI研究者ヘッドハンティング'] },
+    tree: { parent: null, current: '人事部 エンジニア中途採用強化', next: null, branches: ['人事部 AI研究者ヘッドハンティング'] },
     meetings: [
       { round: 2, date: '2025/3/5', attendees: '清水部長、田中', content: 'エンジニア採用の進捗確認。AI研究者のヘッドハンティングを追加依頼。' },
       { round: 1, date: '2025/2/5', attendees: '清水部長、田中', content: '初回訪問。エンジニア中途採用の包括的支援依頼。' },
@@ -1780,7 +1780,7 @@ export const DEAL_DETAILS = {
   },
   90: {
     basicInfo: { company: 'ソニーグループ', dept: '人事部', clientPerson: '清水人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: '人事部 エンジニア中途採用強化', current: '人事部 AI研究者ヘッドハンティング', children: [] },
+    tree: { parent: '人事部 エンジニア中途採用強化', current: '人事部 AI研究者ヘッドハンティング', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/25', attendees: '清水部長、田中', content: 'AI研究者（PhD）のヘッドハンティング依頼。自然言語処理またはCV専門。' },
     ],
@@ -1793,7 +1793,7 @@ export const DEAL_DETAILS = {
   },
   91: {
     basicInfo: { company: 'ソニーグループ', dept: 'AIロボティクス研究所', clientPerson: '山下 AIロボティクス所長', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: 'AIロボティクス研究所 自律制御エンジニア支援', children: [] },
+    tree: { parent: null, current: 'AIロボティクス研究所 自律制御エンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/28', attendees: '山下所長、鈴木', content: '自律制御システムのエンジニア支援依頼。ROS2/C++の経験者が必要。' },
     ],
@@ -1806,7 +1806,7 @@ export const DEAL_DETAILS = {
   },
   92: {
     basicInfo: { company: 'ソニーグループ', dept: 'R&D本部 CVチーム', clientPerson: '村上本部長、工藤 CVリーダー', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 コンピュータビジョン研究強化', children: [] },
+    tree: { parent: 'R&D本部 画像処理エンジン開発PJ', current: 'R&D本部 コンピュータビジョン研究強化', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/18', attendees: '工藤リーダー、山本', content: 'CV研究チームの強化支援。3Dビジョンの研究者が必要。' },
     ],
@@ -1822,7 +1822,7 @@ export const DEAL_DETAILS = {
   // ===== 既存企業追加分 =====
   93: {
     basicInfo: { company: 'NTTデータ', dept: '製造事業部 AI推進チーム', clientPerson: '山田部長、木村 AI推進リーダー', ourPerson: '鈴木 一郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '鈴木 一郎', status: '実施済' },
-    tree: { parent: null, current: '製造事業部 AI外観検査PJ', children: [] },
+    tree: { parent: null, current: '製造事業部 AI外観検査PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/8', attendees: '木村リーダー、鈴木', content: 'AI外観検査システムのエンジニア支援依頼。PyTorch/OpenCV経験者が必要。' },
     ],
@@ -1835,7 +1835,7 @@ export const DEAL_DETAILS = {
   },
   94: {
     basicInfo: { company: '富士通', dept: 'デジタル推進部 データチーム', clientPerson: 'デジタル推進部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '予定' },
-    tree: { parent: null, current: 'デジタル推進部 データメッシュ導入PJ', children: [] },
+    tree: { parent: null, current: 'デジタル推進部 データメッシュ導入PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/10', attendees: 'デジタル推進部長、佐藤', content: 'データメッシュアーキテクチャの導入検討。次回詳細ヒアリング予定。' },
     ],
@@ -1848,7 +1848,7 @@ export const DEAL_DETAILS = {
   },
   95: {
     basicInfo: { company: 'ノースサンド', dept: '戦略企画部', clientPerson: '戦略企画部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: '戦略企画部 IT戦略コンサル支援', children: [] },
+    tree: { parent: null, current: '戦略企画部 IT戦略コンサル支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/2/28', attendees: '戦略企画部長、山本', content: 'IT戦略策定のコンサルタント支援依頼。' },
     ],
@@ -1861,7 +1861,7 @@ export const DEAL_DETAILS = {
   },
   96: {
     basicInfo: { company: 'Sansan', dept: 'セキュリティ部門', clientPerson: 'セキュリティ部門長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'セキュリティ部門 脆弱性診断エンジニア支援', children: [] },
+    tree: { parent: null, current: 'セキュリティ部門 脆弱性診断エンジニア支援', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/5', attendees: 'セキュリティ部門長、佐藤', content: '脆弱性診断チームの体制強化ニーズ。' },
     ],
@@ -1874,7 +1874,7 @@ export const DEAL_DETAILS = {
   },
   97: {
     basicInfo: { company: 'トヨタ自動車', dept: 'HR・人事部', clientPerson: 'HR・人事部長', ourPerson: '田中 花子', businessDept: 'PERM', channel: 'IS', acquiredBy: '田中 花子', status: '実施済' },
-    tree: { parent: null, current: 'HR・人事部 タレントマネジメント導入PJ', children: [] },
+    tree: { parent: null, current: 'HR・人事部 タレントマネジメント導入PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/1', attendees: 'HR・人事部長、田中', content: 'タレントマネジメントシステム導入支援の人材ニーズ。' },
     ],
@@ -1887,7 +1887,7 @@ export const DEAL_DETAILS = {
   },
   98: {
     basicInfo: { company: '日立製作所', dept: 'AI&データサイエンス部', clientPerson: 'AI&DS部長', ourPerson: '山本 三郎', businessDept: 'DSL', channel: 'IS', acquiredBy: '山本 三郎', status: '実施済' },
-    tree: { parent: null, current: 'AI&データサイエンス部 MLOps基盤構築', children: [] },
+    tree: { parent: null, current: 'AI&データサイエンス部 MLOps基盤構築', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/5', attendees: 'AI&DS部長、山本', content: 'MLOps基盤の構築支援依頼。Kubeflow/Vertex AIの経験者が必要。' },
     ],
@@ -1900,7 +1900,7 @@ export const DEAL_DETAILS = {
   },
   99: {
     basicInfo: { company: 'リクルート', dept: 'インフラ運用部', clientPerson: 'インフラ運用部長', ourPerson: '佐藤 次郎', businessDept: 'ITSS', channel: 'IS', acquiredBy: '佐藤 次郎', status: '実施済' },
-    tree: { parent: null, current: 'インフラ運用部 クラウド移行支援PJ', children: [] },
+    tree: { parent: null, current: 'インフラ運用部 クラウド移行支援PJ', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/1', attendees: 'インフラ運用部長、佐藤', content: 'オンプレミスからクラウドへの移行支援。AWS/GCP両対応が必要。' },
     ],
@@ -1913,7 +1913,7 @@ export const DEAL_DETAILS = {
   },
   100: {
     basicInfo: { company: '楽天グループ', dept: 'グローバル開発部', clientPerson: 'グローバル開発部長', ourPerson: '伊藤 美咲', businessDept: 'FS', channel: 'toBマーケ', acquiredBy: '伊藤 美咲', status: '実施済' },
-    tree: { parent: null, current: 'グローバル開発部 オフショア開発体制構築', children: [] },
+    tree: { parent: null, current: 'グローバル開発部 オフショア開発体制構築', next: null, branches: [] },
     meetings: [
       { round: 1, date: '2025/3/8', attendees: 'グローバル開発部長、伊藤', content: 'オフショア開発体制の構築支援。ブリッジSEの確保が急務。' },
     ],
