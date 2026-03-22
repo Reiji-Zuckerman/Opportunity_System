@@ -93,12 +93,13 @@ function transformDeals(rows) {
             branches: Array.isArray(r.tree?.branches) ? r.tree.branches : [],
           };
         }
-        // Convert old format: first child = next (continuation), rest = branches
+        // Convert old format: all children become branches (not next)
+        // Only 商談追記 creates next (horizontal chain), 担当分岐 creates branches
         return {
           parent: r.treeParent || null,
           current: r.treeCurrent || r.name,
-          next: children.length > 0 ? children[0] : null,
-          branches: children.slice(1),
+          next: null,
+          branches: children,
         };
       })(),
       meetings: Array.isArray(r.meetings) ? r.meetings : [],
@@ -224,13 +225,29 @@ export function DataProvider({ children }) {
   }, []);
 
   function useDummy() {
+    // Transform dummy DEAL_DETAILS to convert old tree format (children) to new format (next/branches)
+    const transformedDealDetails = {};
+    Object.entries(dummy.DEAL_DETAILS).forEach(([id, detail]) => {
+      const tree = detail.tree || {};
+      const children = Array.isArray(tree.children) ? tree.children : [];
+      transformedDealDetails[id] = {
+        ...detail,
+        tree: {
+          parent: tree.parent || null,
+          current: tree.current || '',
+          next: tree.next || null,
+          branches: tree.branches || children, // old children → branches
+        },
+      };
+    });
+
     setData({
       USERS: dummy.USERS,
       COMPANIES: dummy.COMPANIES,
       COMPANY_DETAILS: dummy.COMPANY_DETAILS,
       COMPANY_EXTENDED: dummy.COMPANY_EXTENDED,
       DEALS: dummy.DEALS,
-      DEAL_DETAILS: dummy.DEAL_DETAILS,
+      DEAL_DETAILS: transformedDealDetails,
       TASKS: dummy.TASKS,
       JOBS: dummy.JOBS,
       CV_SENTS: dummy.CV_SENTS,
