@@ -54,7 +54,8 @@ export default function BranchModal({ isOpen, onClose, parentDeal, dealId }) {
         acquiredBy: '',
         status,
       },
-      tree: { parent: parentDeal?.name || null, current: name, children: [] },
+      tree: { parent: parentDeal?.name || null, current: name, next: null, branches: [] },
+      _linkType: 'branch',
       meetings: datetime ? [{
         date: new Date(datetime).toLocaleDateString('ja-JP'),
         round: 1,

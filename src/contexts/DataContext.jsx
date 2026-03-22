@@ -80,11 +80,27 @@ function transformDeals(rows) {
         acquiredBy: r.acquiredBy || '',
         status: r.status,
       },
-      tree: {
-        parent: r.treeParent || null,
-        current: r.treeCurrent || r.name,
-        children: Array.isArray(r.treeChildren) ? r.treeChildren : [],
-      },
+      tree: (() => {
+        // Support both old format (children) and new format (next/branches)
+        const children = Array.isArray(r.treeChildren) ? r.treeChildren :
+                         (r.tree?.children ? r.tree.children : []);
+        // If new format fields exist, use them directly
+        if (r.tree?.next !== undefined || r.tree?.branches !== undefined) {
+          return {
+            parent: r.tree?.parent || r.treeParent || null,
+            current: r.tree?.current || r.treeCurrent || r.name,
+            next: r.tree?.next || null,
+            branches: Array.isArray(r.tree?.branches) ? r.tree.branches : [],
+          };
+        }
+        // Convert old format: first child = next (continuation), rest = branches
+        return {
+          parent: r.treeParent || null,
+          current: r.treeCurrent || r.name,
+          next: children.length > 0 ? children[0] : null,
+          branches: children.slice(1),
+        };
+      })(),
       meetings: Array.isArray(r.meetings) ? r.meetings : [],
       tasks: Array.isArray(r.tasks) ? r.tasks : [],
       jobs: Array.isArray(r.jobs) ? r.jobs : [],
@@ -302,7 +318,10 @@ export function DataProvider({ children }) {
       };
       let newDetails = prev.DEAL_DETAILS;
       if (dealDetail) {
-        const tree = dealDetail.tree || { parent: null, current: row.name, children: [] };
+        const tree = dealDetail.tree || { parent: null, current: row.name, next: null, branches: [] };
+        // Ensure new format
+        if (!('next' in tree)) { tree.next = null; }
+        if (!('branches' in tree)) { tree.branches = []; }
         newDetails = {
           ...newDetails,
           [id]: {
@@ -313,22 +332,37 @@ export function DataProvider({ children }) {
             jobs: dealDetail.jobs || [],
           },
         };
-        // 親商談の tree.children に子商談名を追加
+        // Update parent deal's tree to link to this child
         if (tree.parent) {
           const parentId = Object.keys(newDetails).find(
             key => newDetails[key]?.tree?.current === tree.parent
           );
           if (parentId && newDetails[parentId]) {
             const parentDetail = newDetails[parentId];
-            const children = parentDetail.tree.children || [];
-            if (!children.includes(row.name)) {
-              newDetails = {
-                ...newDetails,
-                [parentId]: {
-                  ...parentDetail,
-                  tree: { ...parentDetail.tree, children: [...children, row.name] },
-                },
-              };
+            const linkType = dealDetail._linkType || 'branch'; // 'next' or 'branch'
+            if (linkType === 'next') {
+              // Set as continuation (horizontal chain)
+              if (!parentDetail.tree.next) {
+                newDetails = {
+                  ...newDetails,
+                  [parentId]: {
+                    ...parentDetail,
+                    tree: { ...parentDetail.tree, next: row.name },
+                  },
+                };
+              }
+            } else {
+              // Add as branch
+              const branches = parentDetail.tree.branches || [];
+              if (!branches.includes(row.name)) {
+                newDetails = {
+                  ...newDetails,
+                  [parentId]: {
+                    ...parentDetail,
+                    tree: { ...parentDetail.tree, branches: [...branches, row.name] },
+                  },
+                };
+              }
             }
           }
         }

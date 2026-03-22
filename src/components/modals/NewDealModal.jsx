@@ -83,7 +83,7 @@ export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
         acquiredBy: acquirer,
         status,
       },
-      tree: { parent: null, current: name, children: [] },
+      tree: { parent: null, current: name, next: null, branches: [] },
       meetings: datetime ? [{
         date: new Date(datetime).toLocaleDateString('ja-JP'),
         round: 1,

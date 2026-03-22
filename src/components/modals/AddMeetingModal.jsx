@@ -1,61 +1,96 @@
-import { useState } from 'react';
-import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
+import { useState, useMemo } from 'react';
+import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox, ComboBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
 export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, meetingCount, companyName, companyId, dept }) {
-  const { MEMBERS, addMeeting, upsertJob } = useData();
+  const { MEMBERS, DIVISIONS, COMPANIES, COMPANY_DETAILS, upsertDeal, upsertJob } = useData();
+
+  const { deptOptions, personOptions } = useMemo(() => {
+    const matched = COMPANIES.find(c => c.name === companyName);
+    if (!matched) return { deptOptions: [], personOptions: [] };
+    const detail = COMPANY_DETAILS[matched.id];
+    if (!detail) return { deptOptions: [], personOptions: [] };
+    const depts = (detail.whitelist || []).map(w => w.dept);
+    const persons = (detail.whitelist || []).flatMap(w => (w.contacts || []).map(c => c.name));
+    return { deptOptions: [...new Set(depts)], personOptions: [...new Set(persons)] };
+  }, [companyName, COMPANIES, COMPANY_DETAILS]);
+
+  const [name, setName] = useState('');
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
-  const [clientAttendees, setClientAttendees] = useState(['']);
-  const [ownAttendees, setOwnAttendees] = useState([]);
+  const [divisions, setDivisions] = useState([]);
+  const [dealers, setDealers] = useState([]);
+  const [departmentName, setDepartmentName] = useState('');
+  const [personName, setPersonName] = useState('');
   const [content, setContent] = useState('');
   const [showJobs, setShowJobs] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
   const [jobCount, setJobCount] = useState('');
 
-  const addClientAttendee = () => setClientAttendees([...clientAttendees, '']);
-  const updateClientAttendee = (index, value) => {
-    const updated = [...clientAttendees];
-    updated[index] = value;
-    setClientAttendees(updated);
-  };
-
   const handleSubmit = () => {
-    if (!dealId) return;
-    const round = (meetingCount || 0) + 1;
-    const attendeeNames = clientAttendees.filter(a => a.trim());
+    if (!name) return;
+    const today = new Date().toLocaleDateString('ja-JP');
 
-    const meeting = {
-      date: datetime ? new Date(datetime).toLocaleDateString('ja-JP') : new Date().toLocaleDateString('ja-JP'),
-      round,
-      attendees: [...attendeeNames, ...ownAttendees].join('、'),
-      content: content || '',
+    const deal = {
+      companyId: companyId || null,
+      name,
+      company: companyName || '',
+      assignee: dealers.join('、'),
+      dept: divisions[0] || dept || '',
+      lastMeeting: datetime ? new Date(datetime).toLocaleDateString('ja-JP') : today,
+      status,
     };
 
-    addMeeting(dealId, meeting);
+    const dealDetail = {
+      basicInfo: {
+        company: companyName || '',
+        dept: departmentName,
+        clientPerson: personName,
+        ourPerson: dealers.join('、'),
+        businessDept: divisions.join('、') || dept || '',
+        channel: '',
+        acquiredBy: '',
+        status,
+      },
+      tree: { parent: dealName, current: name, next: null, branches: [] },
+      meetings: datetime ? [{
+        date: new Date(datetime).toLocaleDateString('ja-JP'),
+        round: 1,
+        attendees: personName,
+        content: content || '',
+      }] : [],
+      tasks: [],
+      jobs: [],
+      _linkType: 'next', // This tells upsertDeal to set parent's tree.next
+    };
+
+    const newDealId = upsertDeal(deal, dealDetail);
 
     // If job was added inline
     if (showJobs && jobTitle) {
       upsertJob({
         id: Date.now(),
-        dealId,
+        dealId: newDealId,
         companyId: companyId || null,
         title: jobTitle,
         dept: dept || '',
         count: Number(jobCount) || 1,
-        date: new Date().toLocaleDateString('ja-JP'),
+        date: today,
         company: companyName || '',
         businessDept: dept || '',
-        dealName: dealName || '',
+        dealName: name,
         status: '予定',
       });
     }
 
     // Reset
+    setName('');
     setDatetime('');
     setStatus('予定');
-    setClientAttendees(['']);
-    setOwnAttendees([]);
+    setDivisions([]);
+    setDealers([]);
+    setDepartmentName('');
+    setPersonName('');
     setContent('');
     setShowJobs(false);
     setJobTitle('');
@@ -63,45 +98,49 @@ export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, mee
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="面談追記" onSubmit={handleSubmit}>
-      <div className="text-sm font-medium text-gray-900">
-        {dealName} <span className="text-accent">(第{(meetingCount || 0) + 1}回)</span>
-      </div>
+    <Modal isOpen={isOpen} onClose={onClose} title="商談追記" onSubmit={handleSubmit}>
+      <NoteBox color="blue">「{dealName}」の続きの商談を追記します（ツリー上で横に繋がります）</NoteBox>
 
-      <FormField label="面談日時">
+      <FormField label="商談名" required>
+        <FormInput value={name} onChange={(e) => setName(e.target.value)} placeholder="続きの商談名を入力" />
+      </FormField>
+
+      <FormField label="商談日時">
         <FormInput type="datetime-local" value={datetime} onChange={(e) => setDatetime(e.target.value)} />
-        <NoteBox color="green">日時が過ぎると自動で実施済に変更</NoteBox>
       </FormField>
 
       <FormField label="ステータス">
         <ToggleGroup options={['予定', '実施済']} value={status} onChange={setStatus} />
       </FormField>
 
-      <FormField label="参加者先方">
-        {clientAttendees.map((attendee, i) => (
-          <div key={i} className="mb-2">
-            <FormInput
-              value={attendee}
-              onChange={(e) => updateClientAttendee(i, e.target.value)}
-              placeholder="先方参加者名を入力"
-            />
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={addClientAttendee}
-          className="text-sm text-accent hover:text-accent/80 font-medium"
-        >
-          + 参加者を追加
-        </button>
+      <FormField label="商談事業部">
+        <ChipSelect options={DIVISIONS} selected={divisions} onChange={setDivisions} />
       </FormField>
 
-      <FormField label="参加者自社">
-        <ChipSelect options={MEMBERS} selected={ownAttendees} onChange={setOwnAttendees} />
+      <FormField label="商談者">
+        <ChipSelect options={MEMBERS} selected={dealers} onChange={setDealers} />
       </FormField>
 
-      <FormField label="面談内容">
-        <FormTextarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="面談内容を入力" />
+      <FormField label="先方部署">
+        <ComboBox
+          options={deptOptions}
+          value={departmentName}
+          onChange={setDepartmentName}
+          placeholder="部署を選択または新規入力"
+        />
+      </FormField>
+
+      <FormField label="先方担当者">
+        <ComboBox
+          options={personOptions}
+          value={personName}
+          onChange={setPersonName}
+          placeholder="人物を選択または新規入力"
+        />
+      </FormField>
+
+      <FormField label="商談内容">
+        <FormTextarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="商談内容を入力" />
       </FormField>
 
       {!showJobs ? (
@@ -122,6 +161,8 @@ export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, mee
           </FormField>
         </div>
       )}
+
+      <div className="text-xs text-gray-500">企業名は親商談から自動引き継ぎ: {companyName}</div>
     </Modal>
   );
 }
