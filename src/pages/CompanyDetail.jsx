@@ -473,145 +473,152 @@ export default function CompanyDetail() {
         </div>
       )}
 
-      {/* ===== PERM TAB SECTIONS (PERM first) ===== */}
+      {/* ===== Sent参考情報 ===== */}
       {showInTab('perm') && (
-        <div className="space-y-6 mb-6">
-          {/* PERM Sent参考情報 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <h2 className="font-semibold text-gray-900 mb-3">Sent参考情報（PERM）</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-gray-500">PERM メモ</span>
-                <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.permNote || '—'}</div>
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <h2 className="font-semibold text-gray-900 mb-3">Sent参考情報（PERM）</h2>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="text-gray-500">PERM メモ</span>
+              <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.permNote || '—'}</div>
+            </div>
+            <div>
+              <span className="text-gray-500">Sent Pick時留意事項（CA向け）</span>
+              <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.sentPickNote || '—'}</div>
+            </div>
+            <div>
+              <span className="text-gray-500">CV送信時注意事項（アシスタント用）</span>
+              <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.cvNote || '—'}</div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">提案上限年齢</span>
+                <span className="font-medium text-gray-900">{ext.maxAge ? `${ext.maxAge}歳` : '—'}</span>
               </div>
-              <div>
-                <span className="text-gray-500">Sent Pick時留意事項（CA向け）</span>
-                <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.sentPickNote || '—'}</div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">ブラインドSENT可否</span>
+                <Badge label={ext.blindSent || '—'} />
               </div>
-              <div>
-                <span className="text-gray-500">CV送信時注意事項（アシスタント用）</span>
-                <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.cvNote || '—'}</div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">ブラインドSENT方法</span>
+                <span className="font-medium text-gray-900">{ext.blindSentMethod || '—'}</span>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">提案上限年齢</span>
-                  <span className="font-medium text-gray-900">{ext.maxAge ? `${ext.maxAge}歳` : '—'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">ブラインドSENT可否</span>
-                  <Badge label={ext.blindSent || '—'} />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">ブラインドSENT方法</span>
-                  <span className="font-medium text-gray-900">{ext.blindSentMethod || '—'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">実名SENTチャネル</span>
-                  <span className="font-medium text-gray-900">{ext.realNameChannel || '—'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500">PERM ATS</span>
-                  <span className="font-medium text-gray-900">{ext.permAts || '—'}</span>
-                </div>
-                {ext.permAtsUrl && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">ATS URL</span>
-                    <span className="font-medium text-blue-600 text-xs truncate max-w-[200px]">{ext.permAtsUrl}</span>
-                  </div>
-                )}
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">実名SENTチャネル</span>
+                <span className="font-medium text-gray-900">{ext.realNameChannel || '—'}</span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">PERM ATS</span>
+                <span className="font-medium text-gray-900">{ext.permAts || '—'}</span>
+              </div>
+              {ext.permAtsUrl && (
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-500">ATS URL</span>
+                  <span className="font-medium text-blue-600 text-xs truncate max-w-[200px]">{ext.permAtsUrl}</span>
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* PERM 求人一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Briefcase className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">求人一覧（PERM）</h2>
-              <span className="text-xs text-gray-400 ml-1">({filterJobsByDept('PERM').length}件)</span>
-            </div>
-            {renderJobTable(filterJobsByDept('PERM'))}
-          </div>
-
-          {/* PERM CV SENT一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Send className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">CV SENT一覧（PERM）</h2>
-            </div>
-            {renderActivityTable(filterCvByDept('PERM'), 'cv')}
-          </div>
-
-          {/* PERM 面接一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <UserCheck className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">面接一覧（PERM）</h2>
-            </div>
-            {renderActivityTable(filterInterviewByDept('PERM'), 'interview')}
-          </div>
-
-          {/* PERM 口頭合意一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Handshake className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">口頭合意一覧（PERM）</h2>
-            </div>
-            {renderActivityTable(filterOralByDept('PERM'), 'oral')}
           </div>
         </div>
       )}
 
-      {/* ===== ITSS TAB SECTIONS (ITSS after PERM) ===== */}
       {showInTab('itss') && (
-        <div className="space-y-6 mb-6">
-          {/* ITSS Sent参考情報 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <h2 className="font-semibold text-gray-900 mb-3">Sent参考情報（ITSS）</h2>
-            <div className="space-y-3 text-sm">
-              <div>
-                <span className="text-gray-500">FRMC</span>
-                <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.frmc || '—'}</div>
-              </div>
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <h2 className="font-semibold text-gray-900 mb-3">Sent参考情報（ITSS）</h2>
+          <div className="space-y-3 text-sm">
+            <div>
+              <span className="text-gray-500">FRMC</span>
+              <div className="bg-gray-50 rounded-lg p-3 mt-1 text-gray-700 leading-relaxed">{ext.frmc || '—'}</div>
             </div>
           </div>
+        </div>
+      )}
 
-          {/* ITSS 求人一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Briefcase className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">求人一覧（ITSS）</h2>
-              <span className="text-xs text-gray-400 ml-1">({filterJobsByDept('ITSS').length}件)</span>
-            </div>
-            {renderJobTable(filterJobsByDept('ITSS'))}
+      {/* ===== 求人一覧 (ITSS → PERM) ===== */}
+      {(showInTab('itss') || showInTab('perm')) && (
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <div className="flex items-center gap-2 mb-4 border-b border-blue-200 pb-2">
+            <Briefcase className="w-4 h-4 text-blue-600" />
+            <h2 className="font-semibold text-blue-600 text-base">求人一覧</h2>
           </div>
+          {showInTab('itss') && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">ITSS</h3>
+              {renderJobTable(filterJobsByDept('ITSS'))}
+            </div>
+          )}
+          {showInTab('perm') && (
+            <div>
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">PERM</h3>
+              {renderJobTable(filterJobsByDept('PERM'))}
+            </div>
+          )}
+        </div>
+      )}
 
-          {/* ITSS CV SENT一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Send className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">CV SENT一覧（ITSS）</h2>
-            </div>
-            {renderActivityTable(filterCvByDept('ITSS'), 'cv')}
+      {/* ===== CV SENT一覧 (ITSS → PERM) ===== */}
+      {(showInTab('itss') || showInTab('perm')) && (
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <div className="flex items-center gap-2 mb-4 border-b border-blue-200 pb-2">
+            <Send className="w-4 h-4 text-blue-600" />
+            <h2 className="font-semibold text-blue-600 text-base">CV SENT一覧</h2>
           </div>
+          {showInTab('itss') && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">ITSS</h3>
+              {renderActivityTable(filterCvByDept('ITSS'), 'cv')}
+            </div>
+          )}
+          {showInTab('perm') && (
+            <div>
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">PERM</h3>
+              {renderActivityTable(filterCvByDept('PERM'), 'cv')}
+            </div>
+          )}
+        </div>
+      )}
 
-          {/* ITSS 面接一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <UserCheck className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">面接一覧（ITSS）</h2>
-            </div>
-            {renderActivityTable(filterInterviewByDept('ITSS'), 'interview')}
+      {/* ===== 面接一覧 (ITSS → PERM) ===== */}
+      {(showInTab('itss') || showInTab('perm')) && (
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <div className="flex items-center gap-2 mb-4 border-b border-blue-200 pb-2">
+            <UserCheck className="w-4 h-4 text-blue-600" />
+            <h2 className="font-semibold text-blue-600 text-base">面接一覧</h2>
           </div>
+          {showInTab('itss') && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">ITSS</h3>
+              {renderActivityTable(filterInterviewByDept('ITSS'), 'interview')}
+            </div>
+          )}
+          {showInTab('perm') && (
+            <div>
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">PERM</h3>
+              {renderActivityTable(filterInterviewByDept('PERM'), 'interview')}
+            </div>
+          )}
+        </div>
+      )}
 
-          {/* ITSS 口頭合意一覧 */}
-          <div className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Handshake className="w-4 h-4 text-gray-500" />
-              <h2 className="font-semibold text-gray-900">口頭合意一覧（ITSS）</h2>
-            </div>
-            {renderActivityTable(filterOralByDept('ITSS'), 'oral')}
+      {/* ===== 口頭合意一覧 (ITSS → PERM) ===== */}
+      {(showInTab('itss') || showInTab('perm')) && (
+        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+          <div className="flex items-center gap-2 mb-4 border-b border-blue-200 pb-2">
+            <Handshake className="w-4 h-4 text-blue-600" />
+            <h2 className="font-semibold text-blue-600 text-base">口頭合意一覧</h2>
           </div>
+          {showInTab('itss') && (
+            <div className="mb-4">
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">ITSS</h3>
+              {renderActivityTable(filterOralByDept('ITSS'), 'oral')}
+            </div>
+          )}
+          {showInTab('perm') && (
+            <div>
+              <h3 className="font-semibold text-blue-600 text-sm mb-2">PERM</h3>
+              {renderActivityTable(filterOralByDept('PERM'), 'oral')}
+            </div>
+          )}
         </div>
       )}
 
