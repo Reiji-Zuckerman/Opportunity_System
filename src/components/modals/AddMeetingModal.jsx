@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal, { FormField, FormInput, FormTextarea, ToggleGroup, ChipSelect, NoteBox } from '../Modal';
 import { useData } from '../../contexts/DataContext';
 
-export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, meetingCount }) {
+export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, meetingCount, companyName, companyId, dept }) {
   const { MEMBERS, addMeeting, upsertJob } = useData();
   const [datetime, setDatetime] = useState('');
   const [status, setStatus] = useState('予定');
@@ -39,9 +39,13 @@ export default function AddMeetingModal({ isOpen, onClose, dealName, dealId, mee
       upsertJob({
         id: Date.now(),
         dealId,
+        companyId: companyId || null,
         title: jobTitle,
+        dept: dept || '',
         count: Number(jobCount) || 1,
         date: new Date().toLocaleDateString('ja-JP'),
+        company: companyName || '',
+        businessDept: dept || '',
         dealName: dealName || '',
         status: '予定',
       });

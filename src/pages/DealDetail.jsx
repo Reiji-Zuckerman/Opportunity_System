@@ -47,7 +47,7 @@ const DEAL_DESCRIPTION = `【商談概要】
 export default function DealDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { DEALS, DEAL_DETAILS, deleteDeal } = useData();
+  const { DEALS, DEAL_DETAILS, TASKS, JOBS, deleteDeal, updateTaskStatus } = useData();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const detail = DEAL_DETAILS[id];
   const dealSummary = DEALS.find(d => d.id === Number(id));
@@ -57,12 +57,6 @@ export default function DealDetail() {
   const [showTask, setShowTask] = useState(false);
   const [showJob, setShowJob] = useState(false);
   const [expandedMeetings, setExpandedMeetings] = useState({});
-  const [taskStatuses, setTaskStatuses] = useState(() => {
-    if (!detail) return {};
-    const map = {};
-    detail.tasks.forEach((t, idx) => { map[idx] = t.status; });
-    return map;
-  });
   const [openDropdown, setOpenDropdown] = useState(null);
 
   if (!detail) {
@@ -78,12 +72,45 @@ export default function DealDetail() {
   const dealName = dealSummary?.name || detail.tree.current;
   const sortedMeetings = [...detail.meetings].sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  // Merge tasks: detail.tasks (legacy) + global TASKS filtered by dealId, deduplicated by id
+  const mergedTasks = (() => {
+    const globalTasks = TASKS.filter(t => t.dealId === Number(id));
+    const seen = new Set();
+    const result = [];
+    // Global tasks take priority (newer data)
+    for (const t of globalTasks) {
+      if (t.id && !seen.has(t.id)) { seen.add(t.id); result.push(t); }
+    }
+    for (const t of detail.tasks) {
+      if (t.id && !seen.has(t.id)) { seen.add(t.id); result.push(t); }
+      else if (!t.id) { result.push(t); } // legacy tasks without id
+    }
+    return result;
+  })();
+
+  // Merge jobs: detail.jobs (legacy) + global JOBS filtered by dealId, deduplicated by id
+  const mergedJobs = (() => {
+    const globalJobs = JOBS.filter(j => j.dealId === Number(id));
+    const seen = new Set();
+    const result = [];
+    for (const j of globalJobs) {
+      if (j.id && !seen.has(j.id)) { seen.add(j.id); result.push(j); }
+    }
+    for (const j of detail.jobs) {
+      if (j.id && !seen.has(j.id)) { seen.add(j.id); result.push(j); }
+      else if (!j.id) { result.push(j); }
+    }
+    return result;
+  })();
+
   const toggleMeeting = (idx) => {
     setExpandedMeetings(prev => ({ ...prev, [idx]: !prev[idx] }));
   };
 
-  const handleStatusChange = (taskIdx, newStatus) => {
-    setTaskStatuses(prev => ({ ...prev, [taskIdx]: newStatus }));
+  const handleStatusChange = (taskId, newStatus) => {
+    if (taskId) {
+      updateTaskStatus(taskId, newStatus);
+    }
     setOpenDropdown(null);
   };
 
@@ -265,7 +292,7 @@ export default function DealDetail() {
               <CheckSquare className="w-4 h-4 text-gray-500" />
               <h2 className="font-semibold text-gray-900">紐づくTask</h2>
             </div>
-            {detail.tasks.length === 0 ? (
+            {mergedTasks.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">タスクがありません</p>
             ) : (
               <table className="w-full text-sm">
@@ -278,30 +305,31 @@ export default function DealDetail() {
                   </tr>
                 </thead>
                 <tbody>
-                  {detail.tasks.map((task, idx) => {
-                    const currentStatus = taskStatuses[idx] || task.status;
+                  {mergedTasks.map((task, idx) => {
+                    const currentStatus = task.status;
+                    const dropdownKey = `task-${task.id || idx}`;
                     return (
-                      <tr key={idx} className="border-b border-gray-50">
+                      <tr key={task.id || idx} className="border-b border-gray-50">
                         <td className="py-2.5 text-gray-900">{task.name}</td>
                         <td className="py-2.5 text-gray-600">{task.due}</td>
                         <td className="py-2.5 text-gray-600">{task.assignee}</td>
                         <td className="py-2.5">
                           <div className="relative">
                             <button
-                              onClick={() => setOpenDropdown(openDropdown === `task-${idx}` ? null : `task-${idx}`)}
+                              onClick={() => setOpenDropdown(openDropdown === dropdownKey ? null : dropdownKey)}
                               className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${STATUS_COLORS[currentStatus] || 'bg-gray-100 text-gray-700'}`}
                             >
                               {getStatusLabel(currentStatus)}
                               <ChevronDown className="w-3 h-3" />
                             </button>
-                            {openDropdown === `task-${idx}` && (
+                            {openDropdown === dropdownKey && (
                               <>
                                 <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />
                                 <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 min-w-[120px]">
                                   {STATUS_OPTIONS.map((opt) => (
                                     <button
                                       key={opt.value}
-                                      onClick={() => handleStatusChange(idx, opt.value)}
+                                      onClick={() => handleStatusChange(task.id, opt.value)}
                                       className={`w-full text-left px-3 py-2 text-xs hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg ${
                                         currentStatus === opt.value ? 'font-bold bg-gray-50' : ''
                                       }`}
@@ -329,11 +357,11 @@ export default function DealDetail() {
               <Briefcase className="w-4 h-4 text-gray-500" />
               <h2 className="font-semibold text-gray-900">求人情報</h2>
             </div>
-            {detail.jobs.length === 0 ? (
+            {mergedJobs.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">求人情報がありません</p>
             ) : (
               <div className="space-y-3">
-                {detail.jobs.map((job, idx) => (
+                {mergedJobs.map((job, idx) => (
                   <Link
                     key={idx}
                     to={job.id ? `/jobs/${job.id}` : '#'}
@@ -356,7 +384,7 @@ export default function DealDetail() {
       </div>
 
       {/* Modals */}
-      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} dealId={Number(id)} meetingCount={detail.meetings.length} />
+      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} dealId={Number(id)} meetingCount={detail.meetings.length} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
       <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />
       <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />
       <JobModal isOpen={showJob} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />

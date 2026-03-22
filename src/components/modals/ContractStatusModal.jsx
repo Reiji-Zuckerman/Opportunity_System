@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Modal, { FormField, FormTextarea, ToggleGroup, NoteBox } from '../Modal.jsx';
 import { useData } from '../../contexts/DataContext';
 
-export default function ContractStatusModal({ isOpen, onClose, companyName, currentStatus }) {
-  const { CONTRACT_STATUSES } = useData();
+export default function ContractStatusModal({ isOpen, onClose, companyName, companyId, currentStatus }) {
+  const { CONTRACT_STATUSES, updateContractStatus } = useData();
   const [itss, setItss] = useState(currentStatus?.itss || '未接触');
   const [perm, setPerm] = useState(currentStatus?.perm || '未接触');
   const [dsl, setDsl] = useState(currentStatus?.dsl || '未接触');
@@ -14,8 +14,9 @@ export default function ContractStatusModal({ isOpen, onClose, companyName, curr
   );
 
   const handleSubmit = () => {
-    // Mock: just close
-    onClose();
+    if (companyId) {
+      updateContractStatus(companyId, { itss, perm, dsl });
+    }
   };
 
   return (

@@ -16,6 +16,7 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
     return '';
   }, [companyId, COMPANIES]);
 
+  const [taskName, setTaskName] = useState('');
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState('未実施');
   const [categories, setCategories] = useState([]);
@@ -43,12 +44,12 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
   };
 
   const handleSubmit = () => {
-    if (!deadline) return;
+    if (!taskName && !deadline) return;
     const matchedDeal = DEALS.find(d => d.name === dealLink);
     const task = {
       id: Date.now(),
       type: 'Task',
-      name: `${categories.join('・') || 'Task'} - ${companyName || '未設定'}`,
+      name: taskName || `${categories.join('・') || 'Task'} - ${companyName || '未設定'}`,
       company: companyName,
       category: categories[0] || '',
       due: deadline,
@@ -61,6 +62,7 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
     upsertTask(task);
 
     // Reset
+    setTaskName('');
     setDeadline('');
     setStatus('未実施');
     setCategories([]);
@@ -74,6 +76,10 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Task登録" onSubmit={handleSubmit}>
+      <FormField label="Task名" required>
+        <FormInput value={taskName} onChange={(e) => setTaskName(e.target.value)} placeholder="タスク内容を入力" />
+      </FormField>
+
       <FormField label="期日" required>
         <FormInput type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
       </FormField>

@@ -665,7 +665,7 @@ export default function CompanyDetail() {
       {/* Modals */}
       {showActivityModal && <ActivityModal isOpen={true} onClose={() => setShowActivityModal(false)} companyId={Number(id)} />}
       {showTaskModal && <TaskModal isOpen={true} onClose={() => setShowTaskModal(false)} companyId={Number(id)} />}
-      {showContractModal && <ContractStatusModal onClose={() => setShowContractModal(false)} companyName={companyName} currentStatus={company.contractStatus} />}
+      {showContractModal && <ContractStatusModal onClose={() => setShowContractModal(false)} companyName={companyName} companyId={Number(id)} currentStatus={company.contractStatus} />}
       {showNewDealModal && <NewDealModal isOpen={true} onClose={() => setShowNewDealModal(false)} presetCompanyId={Number(id)} />}
       <ConfirmDialog
         isOpen={showDeleteConfirm}

@@ -3,7 +3,7 @@ import Modal, { FormField, FormInput, FormTextarea, FormSelect, ToggleGroup, Chi
 import { useData } from '../../contexts/DataContext';
 
 export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
-  const { MEMBERS, DIVISIONS, DEAL_ROUTES, COMPANIES, COMPANY_DETAILS, upsertDeal } = useData();
+  const { MEMBERS, DIVISIONS, DEAL_ROUTES, COMPANIES, COMPANY_DETAILS, upsertDeal, upsertJob } = useData();
 
   const companyOptions = useMemo(() => COMPANIES.map(c => c.name), [COMPANIES]);
 
@@ -94,7 +94,25 @@ export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
       jobs: [],
     };
 
-    upsertDeal(deal, dealDetail);
+    const newDealId = upsertDeal(deal, dealDetail);
+
+    // Save inline job if added
+    if (showJobs && jobTitle) {
+      const matchedCompany = COMPANIES.find(c => c.name === companyName);
+      upsertJob({
+        id: Date.now() + Math.random(),
+        dealId: newDealId,
+        companyId: matchedCompany?.id || null,
+        title: jobTitle,
+        dept: divisions[0] || '',
+        count: Number(jobCount) || 1,
+        date: new Date().toLocaleDateString('ja-JP'),
+        company: companyName,
+        businessDept: divisions[0] || '',
+        dealName: name,
+        status: '予定',
+      });
+    }
 
     // Reset form
     setName('');

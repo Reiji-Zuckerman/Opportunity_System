@@ -228,10 +228,27 @@ export function DataProvider({ children }) {
 
   // --- 書き込みAPI ---
   const updateTaskStatus = useCallback(async (taskId, newStatus) => {
-    setData(prev => ({
-      ...prev,
-      TASKS: prev.TASKS.map(t => t.id === taskId ? { ...t, status: newStatus } : t),
-    }));
+    setData(prev => {
+      // Find the task to get dealId
+      const task = prev.TASKS.find(t => t.id === taskId);
+      let newDealDetails = prev.DEAL_DETAILS;
+      // Also update status in DEAL_DETAILS[dealId].tasks
+      if (task?.dealId && newDealDetails[task.dealId]) {
+        const detail = newDealDetails[task.dealId];
+        newDealDetails = {
+          ...newDealDetails,
+          [task.dealId]: {
+            ...detail,
+            tasks: detail.tasks.map(t => t.id === taskId ? { ...t, status: newStatus } : t),
+          },
+        };
+      }
+      return {
+        ...prev,
+        TASKS: prev.TASKS.map(t => t.id === taskId ? { ...t, status: newStatus } : t),
+        DEAL_DETAILS: newDealDetails,
+      };
+    });
     if (source === 'api') {
       try { await apiUpdateField('TASKS', taskId, 'status', newStatus); } catch { /* silent */ }
     }
@@ -240,11 +257,27 @@ export function DataProvider({ children }) {
   const upsertTask = useCallback(async (task) => {
     setData(prev => {
       const exists = prev.TASKS.find(t => t.id === task.id);
+      let newDealDetails = prev.DEAL_DETAILS;
+      // Also add task to DEAL_DETAILS[dealId].tasks so it shows in deal detail
+      if (task.dealId && newDealDetails[task.dealId]) {
+        const detail = newDealDetails[task.dealId];
+        const detailTaskExists = detail.tasks.find(t => t.id === task.id);
+        newDealDetails = {
+          ...newDealDetails,
+          [task.dealId]: {
+            ...detail,
+            tasks: detailTaskExists
+              ? detail.tasks.map(t => t.id === task.id ? { ...t, ...task } : t)
+              : [...detail.tasks, task],
+          },
+        };
+      }
       return {
         ...prev,
         TASKS: exists
           ? prev.TASKS.map(t => t.id === task.id ? { ...t, ...task } : t)
           : [...prev.TASKS, task],
+        DEAL_DETAILS: newDealDetails,
       };
     });
     if (source === 'api') {
@@ -346,11 +379,28 @@ export function DataProvider({ children }) {
     const row = { ...job, id };
     setData(prev => {
       const exists = prev.JOBS.find(j => j.id === id);
+      let newDealDetails = prev.DEAL_DETAILS;
+      // Also add job to DEAL_DETAILS[dealId].jobs so it shows in deal detail
+      if (row.dealId && newDealDetails[row.dealId]) {
+        const detail = newDealDetails[row.dealId];
+        const detailJobExists = detail.jobs.find(j => j.id === id);
+        const jobForDetail = { id, title: row.title, count: row.count || 1, date: row.date, dept: row.dept || row.businessDept || '' };
+        newDealDetails = {
+          ...newDealDetails,
+          [row.dealId]: {
+            ...detail,
+            jobs: detailJobExists
+              ? detail.jobs.map(j => j.id === id ? { ...j, ...jobForDetail } : j)
+              : [...detail.jobs, jobForDetail],
+          },
+        };
+      }
       return {
         ...prev,
         JOBS: exists
           ? prev.JOBS.map(j => j.id === id ? { ...j, ...row } : j)
           : [...prev.JOBS, row],
+        DEAL_DETAILS: newDealDetails,
       };
     });
     if (source === 'api') {
@@ -365,6 +415,8 @@ export function DataProvider({ children }) {
       if (!detail) return prev;
       return {
         ...prev,
+        // Update lastMeeting in DEALS list
+        DEALS: prev.DEALS.map(d => d.id === Number(dealId) ? { ...d, lastMeeting: meeting.date } : d),
         DEAL_DETAILS: {
           ...prev.DEAL_DETAILS,
           [dealId]: {
@@ -409,6 +461,26 @@ export function DataProvider({ children }) {
     }
   }, [source]);
 
+  const updateContractStatus = useCallback(async (companyId, newStatus) => {
+    setData(prev => {
+      const detail = prev.COMPANY_DETAILS[companyId];
+      if (!detail) return prev;
+      return {
+        ...prev,
+        COMPANY_DETAILS: {
+          ...prev.COMPANY_DETAILS,
+          [companyId]: {
+            ...detail,
+            contractStatus: { ...detail.contractStatus, ...newStatus },
+          },
+        },
+      };
+    });
+    if (source === 'api') {
+      try { await apiUpdateField('COMPANIES', companyId, 'contractStatus', newStatus); } catch { /* silent */ }
+    }
+  }, [source]);
+
   const deleteTask = useCallback(async (taskId) => {
     setData(prev => ({
       ...prev,
@@ -445,6 +517,7 @@ export function DataProvider({ children }) {
     deleteCompany,
     deleteTask,
     deleteJob,
+    updateContractStatus,
     // Derived constants
     DIVISIONS: data ? [...new Set(data.DEALS.map(d => d.dept))] : [],
     MEMBERS: data ? [...new Set(data.DEALS.map(d => d.assignee))] : [],
