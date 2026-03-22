@@ -4,6 +4,23 @@ import * as dummy from '../data/dummy';
 
 const DataContext = createContext(null);
 
+// --- localStorage 永続化 ---
+const LS_KEY = 'opportunity_system_data';
+
+function saveToLocalStorage(data) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(data));
+  } catch { /* quota exceeded etc. */ }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* corrupt data */ }
+  return null;
+}
+
 // --- スプシの行データ → フロント用構造に変換 ---
 function transformCompanies(rows) {
   const list = rows.map(r => ({
@@ -204,6 +221,17 @@ export function DataProvider({ children }) {
   const [error, setError] = useState(null);
   const [source, setSource] = useState('dummy'); // 'api' or 'dummy'
 
+  // Wrap setData to auto-save to localStorage
+  const setDataAndPersist = useCallback((updater) => {
+    setData(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (next && next !== prev) {
+        saveToLocalStorage(next);
+      }
+      return next;
+    });
+  }, []);
+
   const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -217,8 +245,8 @@ export function DataProvider({ children }) {
         const cvSents = transformCvSents(apiData.cvSents || []);
         const { interviews, oralAgreements } = transformInterviewsOral(apiData.interviewsOral || []);
 
-        setData({
-          USERS: dummy.USERS, // Users stay local for now
+        const apiState = {
+          USERS: dummy.USERS,
           COMPANIES: companies.list,
           COMPANY_DETAILS: companies.details,
           COMPANY_EXTENDED: companies.extended,
@@ -229,40 +257,50 @@ export function DataProvider({ children }) {
           CV_SENTS: cvSents,
           INTERVIEWS: interviews,
           ORAL_AGREEMENTS: oralAgreements,
-        });
+        };
+        setData(apiState);
+        saveToLocalStorage(apiState);
         setSource('api');
       } else {
-        // Fallback to dummy
-        useDummy();
+        // Fallback: localStorage → dummy
+        useLocalOrDummy();
       }
     } catch {
-      useDummy();
+      useLocalOrDummy();
     }
     setLoading(false);
   }, []);
 
-  function useDummy() {
-    setData({
-      USERS: dummy.USERS,
-      COMPANIES: dummy.COMPANIES,
-      COMPANY_DETAILS: dummy.COMPANY_DETAILS,
-      COMPANY_EXTENDED: dummy.COMPANY_EXTENDED,
-      DEALS: dummy.DEALS,
-      DEAL_DETAILS: dummy.DEAL_DETAILS,
-      TASKS: dummy.TASKS,
-      JOBS: dummy.JOBS,
-      CV_SENTS: dummy.CV_SENTS,
-      INTERVIEWS: dummy.INTERVIEWS,
-      ORAL_AGREEMENTS: dummy.ORAL_AGREEMENTS,
-    });
-    setSource('dummy');
+  function useLocalOrDummy() {
+    const cached = loadFromLocalStorage();
+    if (cached && cached.DEALS && cached.DEAL_DETAILS) {
+      setData(cached);
+      setSource('local');
+    } else {
+      const dummyData = {
+        USERS: dummy.USERS,
+        COMPANIES: dummy.COMPANIES,
+        COMPANY_DETAILS: dummy.COMPANY_DETAILS,
+        COMPANY_EXTENDED: dummy.COMPANY_EXTENDED,
+        DEALS: dummy.DEALS,
+        DEAL_DETAILS: dummy.DEAL_DETAILS,
+        TASKS: dummy.TASKS,
+        JOBS: dummy.JOBS,
+        CV_SENTS: dummy.CV_SENTS,
+        INTERVIEWS: dummy.INTERVIEWS,
+        ORAL_AGREEMENTS: dummy.ORAL_AGREEMENTS,
+      };
+      setData(dummyData);
+      saveToLocalStorage(dummyData);
+      setSource('dummy');
+    }
   }
 
   useEffect(() => { loadData(); }, [loadData]);
 
   // --- 書き込みAPI ---
   const updateTaskStatus = useCallback(async (taskId, newStatus) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       // Find the task to get dealId
       const task = prev.TASKS.find(t => t.id === taskId);
       let newDealDetails = prev.DEAL_DETAILS;
@@ -286,10 +324,10 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await apiUpdateField('TASKS', taskId, 'status', newStatus); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const upsertTask = useCallback(async (task) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       const exists = prev.TASKS.find(t => t.id === task.id);
       let newDealDetails = prev.DEAL_DETAILS;
       // Also add task to DEAL_DETAILS[dealId].tasks so it shows in deal detail
@@ -317,13 +355,13 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await upsertRow('TASKS', task); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const upsertDeal = useCallback(async (deal, dealDetail) => {
     const id = deal.id || Date.now();
     const row = { ...deal, id };
     let parentIdToSync = null; // Track parent that needs API sync
-    setData(prev => {
+    setDataAndPersist(prev => {
       const exists = prev.DEALS.find(d => d.id === id);
       const listItem = {
         id,
@@ -420,7 +458,6 @@ export function DataProvider({ children }) {
       // Sync parent's updated tree to API
       if (parentIdToSync != null) {
         try {
-          // Read latest parent tree from state after update
           setData(prev => {
             const parentDetail = prev.DEAL_DETAILS[parentIdToSync];
             if (parentDetail?.tree) {
@@ -442,12 +479,12 @@ export function DataProvider({ children }) {
       }
     }
     return id;
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const upsertCompany = useCallback(async (company) => {
     const id = company.id || Date.now();
     const row = { ...company, id };
-    setData(prev => {
+    setDataAndPersist(prev => {
       const exists = prev.COMPANIES.find(c => c.id === id);
       const listItem = { id, name: row.name, tier: row.tier, category: row.category, itss: row.itss || '未接触', perm: row.perm || '未接触', dsl: row.dsl || '未接触', lastDealDate: row.lastDealDate || '' };
       return {
@@ -469,12 +506,12 @@ export function DataProvider({ children }) {
       try { await upsertRow('COMPANIES', row); } catch { /* silent */ }
     }
     return id;
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const upsertJob = useCallback(async (job) => {
     const id = job.id || Date.now();
     const row = { ...job, id };
-    setData(prev => {
+    setDataAndPersist(prev => {
       const exists = prev.JOBS.find(j => j.id === id);
       let newDealDetails = prev.DEAL_DETAILS;
       // Also add job to DEAL_DETAILS[dealId].jobs so it shows in deal detail
@@ -504,10 +541,10 @@ export function DataProvider({ children }) {
       try { await upsertRow('JOBS', row); } catch { /* silent */ }
     }
     return id;
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const addMeeting = useCallback(async (dealId, meeting) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       const detail = prev.DEAL_DETAILS[dealId];
       if (!detail) return prev;
       return {
@@ -526,10 +563,10 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await upsertRow('MEETINGS', { dealId, ...meeting }); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const deleteDeal = useCallback(async (dealId) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       const { [dealId]: _, [String(dealId)]: __, ...restDetails } = prev.DEAL_DETAILS;
       return {
         ...prev,
@@ -540,10 +577,10 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await apiDeleteRow('DEALS', dealId); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const deleteCompany = useCallback(async (companyId) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       const { [companyId]: _, [String(companyId)]: __, ...restDetails } = prev.COMPANY_DETAILS;
       const { [companyId]: _e, [String(companyId)]: __e, ...restExtended } = prev.COMPANY_EXTENDED;
       return {
@@ -556,10 +593,10 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await apiDeleteRow('COMPANIES', companyId); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const updateContractStatus = useCallback(async (companyId, newStatus) => {
-    setData(prev => {
+    setDataAndPersist(prev => {
       const detail = prev.COMPANY_DETAILS[companyId];
       if (!detail) return prev;
       return {
@@ -576,27 +613,27 @@ export function DataProvider({ children }) {
     if (source === 'api') {
       try { await apiUpdateField('COMPANIES', companyId, 'contractStatus', newStatus); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const deleteTask = useCallback(async (taskId) => {
-    setData(prev => ({
+    setDataAndPersist(prev => ({
       ...prev,
       TASKS: prev.TASKS.filter(t => t.id !== taskId),
     }));
     if (source === 'api') {
       try { await apiDeleteRow('TASKS', taskId); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const deleteJob = useCallback(async (jobId) => {
-    setData(prev => ({
+    setDataAndPersist(prev => ({
       ...prev,
       JOBS: prev.JOBS.filter(j => j.id !== jobId),
     }));
     if (source === 'api') {
       try { await apiDeleteRow('JOBS', jobId); } catch { /* silent */ }
     }
-  }, [source]);
+  }, [source, setDataAndPersist]);
 
   const value = {
     ...data,
