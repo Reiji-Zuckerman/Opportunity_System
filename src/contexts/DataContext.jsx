@@ -261,6 +261,7 @@ export function DataProvider({ children }) {
         setData(apiState);
         saveToLocalStorage(apiState);
         setSource('api');
+        console.log('[loadData] Source: api, deals count:', (apiData.deals || []).length);
       } else {
         // Fallback: localStorage → dummy
         useLocalOrDummy();
@@ -276,6 +277,7 @@ export function DataProvider({ children }) {
     if (cached && cached.DEALS && cached.DEAL_DETAILS) {
       setData(cached);
       setSource('local');
+      console.log('[loadData] Source: local (from localStorage)');
     } else {
       const dummyData = {
         USERS: dummy.USERS,
@@ -293,6 +295,7 @@ export function DataProvider({ children }) {
       setData(dummyData);
       saveToLocalStorage(dummyData);
       setSource('dummy');
+      console.log('[loadData] Source: dummy (fallback)');
     }
   }
 
@@ -460,9 +463,21 @@ export function DataProvider({ children }) {
 
     // --- 3. GAS APIに送信 ---
     if (source === 'api') {
-      try { await upsertRow('DEALS', row); } catch { /* silent */ }
+      console.log('[upsertDeal] Sending to GAS:', JSON.stringify(row, null, 2));
+      try {
+        const res = await upsertRow('DEALS', row);
+        console.log('[upsertDeal] GAS response:', res);
+      } catch (err) {
+        console.error('[upsertDeal] GAS error:', err);
+      }
       if (parentRow) {
-        try { await upsertRow('DEALS', parentRow); } catch { /* silent */ }
+        console.log('[upsertDeal] Sending parent to GAS:', JSON.stringify(parentRow, null, 2));
+        try {
+          const res2 = await upsertRow('DEALS', parentRow);
+          console.log('[upsertDeal] Parent GAS response:', res2);
+        } catch (err) {
+          console.error('[upsertDeal] Parent GAS error:', err);
+        }
       }
     }
     return id;
