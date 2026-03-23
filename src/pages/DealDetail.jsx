@@ -168,7 +168,7 @@ export default function DealDetail() {
           <GitBranch className="w-4 h-4 text-gray-500" />
           <h2 className="font-semibold text-gray-900">商談ツリー</h2>
         </div>
-        <div className="overflow-x-auto max-h-[200px] overflow-y-auto">
+        <div className="overflow-x-auto overflow-y-auto scrollbar-hide">
           <DealTree currentDealId={id} />
         </div>
       </div>

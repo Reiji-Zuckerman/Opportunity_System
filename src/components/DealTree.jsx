@@ -8,12 +8,11 @@ import { useData } from '../contexts/DataContext';
  * 仕様:
  *   新規商談 → ルートノード（左端）
  *   商談追記 (tree.next) → 横に「-」で繋がるチェーン
- *   担当分岐 (tree.branches) → 「└」で下に分岐
+ *   担当分岐 (tree.branches) → 「└」で下に分岐（親ノードの真下）
  *
  * 例:
  *   金融事業部長商談 - 金融事業部課長商談 - 金融事業部担当商談
  *                      └ 人事部長商談       └ 製造業部担当商談
- *   社長商談
  */
 
 function buildNameToIdMap(DEAL_DETAILS) {
@@ -76,11 +75,28 @@ function DealNode({ node, isCurrent }) {
 }
 
 /**
- * ChainRow: 横チェーン（1つのノード + next チェーン）を描画
- * さらに各ノードの branches を下に再帰的に描画
+ * NodeColumn: ノード本体 + その直下の分岐を1カラムとして描画
+ * 分岐は親ノードの真下に表示される
  */
-function ChainRow({ node, currentId, indent = 0, isBranch = false }) {
-  // Collect the horizontal chain: node → next → next → ...
+function NodeColumn({ node, currentId }) {
+  return (
+    <div className="flex flex-col">
+      <DealNode node={node} isCurrent={node.id === currentId} />
+      {node.branches.map(branch => (
+        <div key={branch.id} className="flex items-start mt-1">
+          <span className="text-gray-400 font-mono text-sm select-none mr-1 shrink-0 leading-6">└</span>
+          <ChainRow node={branch} currentId={currentId} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * ChainRow: 横チェーン（ノード → next → next → ...）を描画
+ * 各ノードはNodeColumnでラップされ、分岐がその真下に表示される
+ */
+function ChainRow({ node, currentId }) {
   const chain = [];
   let cur = node;
   while (cur) {
@@ -89,44 +105,16 @@ function ChainRow({ node, currentId, indent = 0, isBranch = false }) {
   }
 
   return (
-    <>
-      {/* Main horizontal chain row */}
-      <div className="flex items-center min-h-[32px]">
-        {/* Indent spacer */}
-        {indent > 0 && (
-          <div style={{ minWidth: indent * 40 }} className="shrink-0" />
-        )}
-        {/* Branch marker */}
-        {isBranch && (
-          <span className="text-gray-400 font-mono text-sm select-none mr-1 shrink-0">└</span>
-        )}
-        {/* Nodes in chain */}
-        {chain.map((n, idx) => (
-          <div key={n.id} className="flex items-center shrink-0">
-            {idx > 0 && (
-              <span className="text-gray-300 select-none mx-1 shrink-0">-</span>
-            )}
-            <DealNode node={n} isCurrent={n.id === currentId} />
-          </div>
-        ))}
-      </div>
-
-      {/* Branches for each node in the chain */}
-      {chain.map((n, chainIdx) => {
-        if (!n.branches || n.branches.length === 0) return null;
-        // Calculate indent: base indent + chainIdx (position in chain)
-        const branchIndent = indent + chainIdx;
-        return n.branches.map((branch) => (
-          <ChainRow
-            key={branch.id}
-            node={branch}
-            currentId={currentId}
-            indent={branchIndent}
-            isBranch={true}
-          />
-        ));
-      })}
-    </>
+    <div className="flex items-start">
+      {chain.map((n, idx) => (
+        <div key={n.id} className="flex items-start shrink-0">
+          {idx > 0 && (
+            <span className="text-gray-300 select-none mx-1 leading-8 shrink-0">-</span>
+          )}
+          <NodeColumn node={n} currentId={currentId} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -139,7 +127,6 @@ export default function DealTree({ currentDealId }) {
     const currentDeal = DEALS.find(d => d.id === Number(currentDealId));
     const companyId = currentDeal?.companyId;
 
-    // Find all root deals for this company
     const rootIds = new Set();
     if (companyId) {
       for (const deal of DEALS) {
@@ -166,8 +153,8 @@ export default function DealTree({ currentDealId }) {
   const currentId = Number(currentDealId);
 
   return (
-    <div className="overflow-x-auto -mx-1">
-      <div className="inline-block min-w-full space-y-1">
+    <div className="overflow-x-auto -mx-1 scrollbar-hide">
+      <div className="inline-block min-w-full space-y-1 p-1">
         {roots.map((root, idx) => (
           <div key={root.id}>
             {idx > 0 && <div className="h-2" />}

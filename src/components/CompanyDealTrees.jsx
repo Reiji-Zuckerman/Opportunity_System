@@ -42,8 +42,26 @@ function buildNode(id, nameToId, DEAL_DETAILS, visited = new Set()) {
   };
 }
 
-/* ChainRow: horizontal chain + recursive branches (same logic as DealTree) */
-function ChainRow({ node, indent = 0, isBranch = false }) {
+function NodeColumn({ node }) {
+  return (
+    <div className="flex flex-col">
+      <Link
+        to={`/deals/${node.id}`}
+        className="block px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-blue-600 hover:bg-gray-100 hover:underline whitespace-nowrap transition-colors"
+      >
+        {node.name}
+      </Link>
+      {node.branches.map(branch => (
+        <div key={branch.id} className="flex items-start mt-1">
+          <span className="text-gray-400 font-mono text-sm select-none mr-1 shrink-0 leading-6">└</span>
+          <ChainRow node={branch} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ChainRow({ node }) {
   const chain = [];
   let cur = node;
   while (cur) {
@@ -52,42 +70,16 @@ function ChainRow({ node, indent = 0, isBranch = false }) {
   }
 
   return (
-    <>
-      <div className="flex items-center min-h-[32px]">
-        {indent > 0 && (
-          <div style={{ minWidth: indent * 40 }} className="shrink-0" />
-        )}
-        {isBranch && (
-          <span className="text-gray-400 font-mono text-sm select-none mr-1 shrink-0">└</span>
-        )}
-        {chain.map((n, idx) => (
-          <div key={n.id} className="flex items-center shrink-0">
-            {idx > 0 && (
-              <span className="text-gray-300 select-none mx-1 shrink-0">—</span>
-            )}
-            <Link
-              to={`/deals/${n.id}`}
-              className="block px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-blue-600 hover:bg-gray-100 hover:underline whitespace-nowrap transition-colors"
-            >
-              {n.name}
-            </Link>
-          </div>
-        ))}
-      </div>
-
-      {chain.map((n, chainIdx) => {
-        if (!n.branches || n.branches.length === 0) return null;
-        const branchIndent = indent + chainIdx;
-        return n.branches.map((branch) => (
-          <ChainRow
-            key={branch.id}
-            node={branch}
-            indent={branchIndent}
-            isBranch={true}
-          />
-        ));
-      })}
-    </>
+    <div className="flex items-start">
+      {chain.map((n, idx) => (
+        <div key={n.id} className="flex items-start shrink-0">
+          {idx > 0 && (
+            <span className="text-gray-300 select-none mx-1 leading-8 shrink-0">—</span>
+          )}
+          <NodeColumn node={n} />
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -113,7 +105,7 @@ export default function CompanyDealTrees({ companyId }) {
   return (
     <div className="space-y-2">
       {trees.map((root) => (
-        <div key={root.id} className="overflow-x-auto">
+        <div key={root.id} className="overflow-x-auto scrollbar-hide">
           <ChainRow node={root} />
         </div>
       ))}
