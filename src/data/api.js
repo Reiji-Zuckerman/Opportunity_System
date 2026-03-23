@@ -5,6 +5,10 @@
 
 const GAS_URL = import.meta.env.VITE_GAS_URL || '';
 
+export function isGasConfigured() {
+  return !!GAS_URL;
+}
+
 // --- READ ---
 export async function fetchAll() {
   if (!GAS_URL) return null; // fallback to dummy

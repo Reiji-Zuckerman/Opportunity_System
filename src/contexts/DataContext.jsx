@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { fetchAll, upsertRow, deleteRow as apiDeleteRow, updateField as apiUpdateField } from '../data/api';
+import { fetchAll, upsertRow, deleteRow as apiDeleteRow, updateField as apiUpdateField, isGasConfigured } from '../data/api';
 import * as dummy from '../data/dummy';
 
 const DataContext = createContext(null);
@@ -324,10 +324,10 @@ export function DataProvider({ children }) {
         DEAL_DETAILS: newDealDetails,
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiUpdateField('TASKS', taskId, 'status', newStatus); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const upsertTask = useCallback(async (task) => {
     setDataAndPersist(prev => {
@@ -355,10 +355,10 @@ export function DataProvider({ children }) {
         DEAL_DETAILS: newDealDetails,
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await upsertRow('TASKS', task); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const upsertDeal = useCallback(async (deal, dealDetail) => {
     const id = deal.id || Date.now();
@@ -462,7 +462,7 @@ export function DataProvider({ children }) {
     });
 
     // --- 3. GAS APIに送信 ---
-    if (source === 'api') {
+    if (isGasConfigured()) {
       console.log('[upsertDeal] Sending to GAS:', JSON.stringify(row, null, 2));
       try {
         const res = await upsertRow('DEALS', row);
@@ -481,7 +481,7 @@ export function DataProvider({ children }) {
       }
     }
     return id;
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const upsertCompany = useCallback(async (company) => {
     const id = company.id || Date.now();
@@ -504,11 +504,11 @@ export function DataProvider({ children }) {
         },
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await upsertRow('COMPANIES', row); } catch { /* silent */ }
     }
     return id;
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const upsertJob = useCallback(async (job) => {
     const id = job.id || Date.now();
@@ -539,11 +539,11 @@ export function DataProvider({ children }) {
         DEAL_DETAILS: newDealDetails,
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await upsertRow('JOBS', row); } catch { /* silent */ }
     }
     return id;
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const addMeeting = useCallback(async (dealId, meeting) => {
     setDataAndPersist(prev => {
@@ -562,10 +562,10 @@ export function DataProvider({ children }) {
         },
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await upsertRow('MEETINGS', { dealId, ...meeting }); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const deleteDeal = useCallback(async (dealId) => {
     setDataAndPersist(prev => {
@@ -576,10 +576,10 @@ export function DataProvider({ children }) {
         DEAL_DETAILS: restDetails,
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiDeleteRow('DEALS', dealId); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const deleteCompany = useCallback(async (companyId) => {
     setDataAndPersist(prev => {
@@ -592,10 +592,10 @@ export function DataProvider({ children }) {
         COMPANY_EXTENDED: restExtended,
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiDeleteRow('COMPANIES', companyId); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const updateContractStatus = useCallback(async (companyId, newStatus) => {
     setDataAndPersist(prev => {
@@ -612,30 +612,30 @@ export function DataProvider({ children }) {
         },
       };
     });
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiUpdateField('COMPANIES', companyId, 'contractStatus', newStatus); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const deleteTask = useCallback(async (taskId) => {
     setDataAndPersist(prev => ({
       ...prev,
       TASKS: prev.TASKS.filter(t => t.id !== taskId),
     }));
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiDeleteRow('TASKS', taskId); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const deleteJob = useCallback(async (jobId) => {
     setDataAndPersist(prev => ({
       ...prev,
       JOBS: prev.JOBS.filter(j => j.id !== jobId),
     }));
-    if (source === 'api') {
+    if (isGasConfigured()) {
       try { await apiDeleteRow('JOBS', jobId); } catch { /* silent */ }
     }
-  }, [source, setDataAndPersist]);
+  }, [setDataAndPersist]);
 
   const value = {
     ...data,
