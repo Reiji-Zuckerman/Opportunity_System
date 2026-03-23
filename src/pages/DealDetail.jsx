@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText, Trash2 } from 'lucide-react';
+import { ArrowLeft, GitBranch, Calendar, Users, Briefcase, CheckSquare, ChevronDown, ChevronRight, FileText, Trash2, Pencil } from 'lucide-react';
 import Badge from '../components/Badge';
 import { ConfirmDialog } from '../components/Modal';
 import DealTree from '../components/DealTree';
@@ -9,6 +9,8 @@ import AddMeetingModal from '../components/modals/AddMeetingModal';
 import BranchModal from '../components/modals/BranchModal';
 import TaskModal from '../components/modals/TaskModal';
 import JobModal from '../components/modals/JobModal';
+import EditDealModal from '../components/modals/EditDealModal';
+import EditJobModal from '../components/modals/EditJobModal';
 
 const STATUS_OPTIONS = [
   { value: 'pending', label: '未実施' },
@@ -58,6 +60,8 @@ export default function DealDetail() {
   const [showJob, setShowJob] = useState(false);
   const [expandedMeetings, setExpandedMeetings] = useState({});
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [showEditDeal, setShowEditDeal] = useState(false);
+  const [editJobTarget, setEditJobTarget] = useState(null);
 
   if (!detail) {
     return (
@@ -128,6 +132,12 @@ export default function DealDetail() {
           商談一覧
         </Link>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowEditDeal(true)}
+            className="px-4 py-2 bg-white border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <Pencil className="w-4 h-4 inline mr-1" />編集
+          </button>
           <button
             onClick={() => setShowTask(true)}
             className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
@@ -362,20 +372,28 @@ export default function DealDetail() {
             ) : (
               <div className="space-y-3">
                 {mergedJobs.map((job, idx) => (
-                  <Link
-                    key={idx}
-                    to={job.id ? `/jobs/${job.id}` : '#'}
-                    className="block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-blue-600">{job.title}</span>
-                      <span className="text-xs text-gray-500">{job.count}名</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Badge label={job.dept} />
-                      <span>{job.date}</span>
-                    </div>
-                  </Link>
+                  <div key={idx} className="flex items-center gap-2">
+                    <Link
+                      to={job.id ? `/jobs/${job.id}` : '#'}
+                      className="flex-1 block p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-blue-600">{job.title}</span>
+                        <span className="text-xs text-gray-500">{job.count}名</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <Badge label={job.dept} />
+                        <span>{job.date}</span>
+                      </div>
+                    </Link>
+                    <button
+                      onClick={() => setEditJobTarget(job)}
+                      className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors shrink-0"
+                      title="編集"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
@@ -388,6 +406,8 @@ export default function DealDetail() {
       <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />
       <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />
       <JobModal isOpen={showJob} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
+      {showEditDeal && <EditDealModal isOpen={true} onClose={() => setShowEditDeal(false)} dealId={Number(id)} />}
+      {editJobTarget && <EditJobModal isOpen={true} onClose={() => setEditJobTarget(null)} job={editJobTarget} />}
       <ConfirmDialog
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}

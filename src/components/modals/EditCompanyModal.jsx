@@ -4,28 +4,26 @@ import Modal, { FormField, FormInput, FormSelect } from '../Modal';
 const TIER_OPTIONS = ['Enterprise', 'Mid', 'SMB'];
 const CATEGORY_OPTIONS = ['SIer', 'SES派遣', 'コンサル', 'Web系', '一般事業'];
 
-export default function NewCompanyModal({ isOpen, onClose, onSubmit }) {
-  const [name, setName] = useState('');
-  const [tier, setTier] = useState('');
-  const [category, setCategory] = useState('');
-  const [address, setAddress] = useState('');
+export default function EditCompanyModal({ isOpen, onClose, company, companyDetail, onSubmit }) {
+  const info = companyDetail?.info || {};
+
+  const [name, setName] = useState(company?.name || '');
+  const [tier, setTier] = useState(info.tier || '');
+  const [category, setCategory] = useState(info.category || '');
+  const [address, setAddress] = useState(companyDetail?.address || '');
 
   const handleSubmit = () => {
     if (!name.trim()) return false;
     onSubmit({
       name: name.trim(),
-      tier: tier || 'SMB',
-      category: category || '一般事業',
+      tier,
+      category,
       address,
     });
-    setName('');
-    setTier('');
-    setCategory('');
-    setAddress('');
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="新規企業追加" onSubmit={handleSubmit}>
+    <Modal isOpen={isOpen} onClose={onClose} title="企業情報編集" onSubmit={handleSubmit} submitLabel="保存">
       <FormField label="企業名" required>
         <FormInput value={name} onChange={(e) => setName(e.target.value)} placeholder="企業名を入力" />
       </FormField>

@@ -496,7 +496,10 @@ export function DataProvider({ children }) {
           : [...prev.COMPANIES, listItem],
         COMPANY_DETAILS: {
           ...prev.COMPANY_DETAILS,
-          [id]: prev.COMPANY_DETAILS[id] || { info: { tier: row.tier, category: row.category, grossProfit: 0, lastDealDate: '' }, contractStatus: {}, deptActivity: [], whitelist: [], deals: [], assignees: [] },
+          [id]: {
+            ...(prev.COMPANY_DETAILS[id] || { contractStatus: {}, deptActivity: [], whitelist: [], deals: [], assignees: [] }),
+            info: { ...(prev.COMPANY_DETAILS[id]?.info || { grossProfit: 0, lastDealDate: '' }), tier: row.tier, category: row.category },
+          },
         },
         COMPANY_EXTENDED: {
           ...prev.COMPANY_EXTENDED,

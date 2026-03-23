@@ -1,7 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Briefcase, Building2, Users, Calendar, Tag, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Briefcase, Building2, Users, Calendar, Tag, FileText, Pencil } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
+import EditJobModal from '../components/modals/EditJobModal';
 
 const JOB_DESCRIPTION = `【業務内容】
 クライアント企業のプロジェクトにおいて、要件定義・基本設計・詳細設計・実装・テスト・運用保守まで一連の工程をご担当いただきます。チームメンバーと協力しながら、品質の高いシステム開発を推進していただくポジションです。
@@ -42,6 +44,7 @@ export default function JobDetail() {
     );
   }
 
+  const [showEditJob, setShowEditJob] = useState(false);
   const deal = DEALS.find(d => d.id === job.dealId);
   const dealDetail = DEAL_DETAILS[job.dealId];
   const relatedJobs = JOBS.filter(j => j.dealId === job.dealId && j.id !== job.id);
@@ -54,6 +57,9 @@ export default function JobDetail() {
           <ArrowLeft className="w-4 h-4" />
           {deal ? '商談詳細に戻る' : '商談一覧に戻る'}
         </Link>
+        <button onClick={() => setShowEditJob(true)} className="px-4 py-2 bg-white border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+          <Pencil className="w-4 h-4 inline mr-1" />編集
+        </button>
       </div>
 
       {/* Upper: Job detail */}
@@ -175,6 +181,7 @@ export default function JobDetail() {
           </div>
         </div>
       )}
+      {showEditJob && <EditJobModal isOpen={true} onClose={() => setShowEditJob(false)} job={job} />}
     </div>
   );
 }

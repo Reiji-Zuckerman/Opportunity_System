@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Search, Plus, Filter, ChevronDown, Trash2 } from 'lucide-react';
+import { Search, Plus, Filter, ChevronDown, Trash2, Pencil } from 'lucide-react';
 import Badge from '../components/Badge';
 import { useData } from '../contexts/DataContext';
 import { ConfirmDialog } from '../components/Modal';
 import TaskModal from '../components/modals/TaskModal';
 import ActivityModal from '../components/modals/ActivityModal';
+import EditTaskModal from '../components/modals/EditTaskModal';
 
 function getWeekRange() {
   const now = new Date();
@@ -52,6 +53,7 @@ export default function TaskList() {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [editTarget, setEditTarget] = useState(null);
 
   const handleStatusChange = (taskId, newStatus) => {
     updateTaskStatus(taskId, newStatus);
@@ -279,13 +281,22 @@ export default function TaskList() {
                     </div>
                   </td>
                   <td className="px-2 py-3.5">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setDeleteTarget(task); }}
-                      className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      title="削除"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setEditTarget(task); }}
+                        className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="編集"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setDeleteTarget(task); }}
+                        className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="削除"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
@@ -301,8 +312,9 @@ export default function TaskList() {
         </table>
       </div>
 
-      <TaskModal isOpen={showTaskModal} onClose={() => setShowTaskModal(false)} />
-      <ActivityModal isOpen={showActivityModal} onClose={() => setShowActivityModal(false)} />
+      {showTaskModal && <TaskModal isOpen={true} onClose={() => setShowTaskModal(false)} />}
+      {showActivityModal && <ActivityModal isOpen={true} onClose={() => setShowActivityModal(false)} />}
+      {editTarget && <EditTaskModal isOpen={true} onClose={() => setEditTarget(null)} task={editTarget} />}
       <ConfirmDialog
         isOpen={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

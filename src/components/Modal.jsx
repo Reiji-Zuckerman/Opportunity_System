@@ -14,7 +14,10 @@ export default function Modal({ isOpen, onClose, title, children, submitLabel = 
   if (!isOpen) return null;
 
   const handleSubmit = () => {
-    if (onSubmit) onSubmit();
+    if (onSubmit) {
+      const result = onSubmit();
+      if (result === false) return; // validation failed
+    }
     onClose();
   };
 

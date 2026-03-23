@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown, Send, UserCheck, Handshake, Trash2 } from 'lucide-react';
+import { ArrowLeft, Building2, Users, FileText, CheckSquare, Briefcase, GitBranch, ChevronDown, Send, UserCheck, Handshake, Trash2, Pencil } from 'lucide-react';
 import Badge from '../components/Badge';
 import CompanyDealTrees from '../components/CompanyDealTrees';
 import { useData } from '../contexts/DataContext';
@@ -9,6 +9,7 @@ import TaskModal from '../components/modals/TaskModal';
 import ContractStatusModal from '../components/modals/ContractStatusModal';
 import NewDealModal from '../components/modals/NewDealModal';
 import { ConfirmDialog } from '../components/Modal';
+import EditCompanyModal from '../components/modals/EditCompanyModal';
 
 const TABS = [
   { key: 'all', label: '全体' },
@@ -22,8 +23,9 @@ const ATTENTION_COLORS = { A: 'bg-red-100 text-red-700', B: 'bg-yellow-100 text-
 export default function CompanyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS, deleteCompany } = useData();
+  const { COMPANIES, COMPANY_DETAILS, COMPANY_EXTENDED, DEAL_DETAILS, DEALS, JOBS, CV_SENTS, INTERVIEWS, ORAL_AGREEMENTS, deleteCompany, upsertCompany } = useData();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditCompany, setShowEditCompany] = useState(false);
   const company = COMPANY_DETAILS[id];
   const companySummary = COMPANIES.find(c => c.id === Number(id));
   const ext = COMPANY_EXTENDED[id] || {};
@@ -190,6 +192,7 @@ export default function CompanyDetail() {
           企業一覧
         </Link>
         <div className="flex items-center gap-3">
+          <button onClick={() => setShowEditCompany(true)} className="px-4 py-2 bg-white border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"><Pencil className="w-4 h-4 inline mr-1" />編集</button>
           <button onClick={() => setShowNewDealModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ 商談</button>
           <button onClick={() => setShowActivityModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Activity</button>
           <button onClick={() => setShowTaskModal(true)} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">+ Task</button>
@@ -688,6 +691,7 @@ export default function CompanyDetail() {
       {showTaskModal && <TaskModal isOpen={true} onClose={() => setShowTaskModal(false)} companyId={Number(id)} />}
       {showContractModal && <ContractStatusModal onClose={() => setShowContractModal(false)} companyName={companyName} companyId={Number(id)} currentStatus={company.contractStatus} />}
       {showNewDealModal && <NewDealModal isOpen={true} onClose={() => setShowNewDealModal(false)} presetCompanyId={Number(id)} />}
+      {showEditCompany && <EditCompanyModal isOpen={true} onClose={() => setShowEditCompany(false)} company={companySummary} companyDetail={company} onSubmit={(data) => { upsertCompany({ id: Number(id), ...data }); setShowEditCompany(false); }} />}
       <ConfirmDialog
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}

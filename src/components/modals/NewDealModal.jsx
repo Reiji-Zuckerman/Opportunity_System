@@ -58,7 +58,7 @@ export default function NewDealModal({ isOpen, onClose, presetCompanyId }) {
   }, [departmentName, personOptions, companyName, COMPANIES, COMPANY_DETAILS]);
 
   const handleSubmit = () => {
-    if (!name) return;
+    if (!name) return false;
     const matchedCompany = COMPANIES.find(c => c.name === companyName);
     const today = new Date().toLocaleDateString('ja-JP');
 
