@@ -161,14 +161,8 @@ export default function MyPage() {
       </div>
 
       {/* Modals */}
-      <ActivityModal
-        isOpen={activityModalOpen}
-        onClose={() => setActivityModalOpen(false)}
-      />
-      <TaskModal
-        isOpen={taskModalOpen}
-        onClose={() => setTaskModalOpen(false)}
-      />
+      {activityModalOpen && <ActivityModal isOpen={true} onClose={() => setActivityModalOpen(false)} />}
+      {taskModalOpen && <TaskModal isOpen={true} onClose={() => setTaskModalOpen(false)} />}
     </div>
   );
 }

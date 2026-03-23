@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ChevronDown } from 'lucide-react';
 
 export default function Modal({ isOpen, onClose, title, children, submitLabel = '登録', onSubmit, submitColor = 'bg-accent' }) {
@@ -149,20 +150,98 @@ export function ChipSelect({ options, selected, onChange, allowCustom = false })
 export function ComboBox({ options, value, onChange, placeholder = '選択または入力' }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [dropdownStyle, setDropdownStyle] = useState({});
   const ref = useRef(null);
+  const inputRef = useRef(null);
 
+  // Close on outside click (check both the trigger ref and portal dropdown)
   useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        // Also check if click is inside the portal dropdown
+        const portal = document.getElementById('combobox-portal');
+        if (portal && portal.contains(e.target)) return;
+        setOpen(false);
+      }
+    };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // Calculate dropdown position whenever open state changes
+  const updatePosition = useCallback(() => {
+    if (inputRef.current) {
+      const rect = inputRef.current.getBoundingClientRect();
+      setDropdownStyle({
+        position: 'fixed',
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+      });
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    if (open) updatePosition();
+  }, [open, updatePosition]);
+
+  // Update position on scroll within modal
+  useEffect(() => {
+    if (!open) return;
+    const scrollHandler = () => updatePosition();
+    // Listen for scroll on any ancestor
+    let el = ref.current?.parentElement;
+    while (el) {
+      el.addEventListener('scroll', scrollHandler, { passive: true });
+      el = el.parentElement;
+    }
+    window.addEventListener('resize', scrollHandler, { passive: true });
+    return () => {
+      let el2 = ref.current?.parentElement;
+      while (el2) {
+        el2.removeEventListener('scroll', scrollHandler);
+        el2 = el2.parentElement;
+      }
+      window.removeEventListener('resize', scrollHandler);
+    };
+  }, [open, updatePosition]);
+
   const filtered = options.filter(o => o.toLowerCase().includes(query.toLowerCase()));
   const showNew = query && !options.some(o => o === query);
+
+  const dropdown = open ? createPortal(
+    <div id="combobox-portal" style={dropdownStyle} className="max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+      {filtered.map((opt) => (
+        <button
+          key={opt}
+          type="button"
+          className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 transition-colors ${opt === value ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'}`}
+          onClick={() => { onChange(opt); setQuery(''); setOpen(false); }}
+        >
+          {opt}
+        </button>
+      ))}
+      {showNew && (
+        <button
+          type="button"
+          className="w-full text-left px-3 py-2 text-sm text-blue-600 font-medium hover:bg-blue-50 border-t border-gray-100"
+          onClick={() => { onChange(query); setQuery(''); setOpen(false); }}
+        >
+          + 「{query}」を新規追加
+        </button>
+      )}
+      {filtered.length === 0 && !showNew && (
+        <div className="px-3 py-2 text-sm text-gray-400">候補がありません</div>
+      )}
+    </div>,
+    document.body
+  ) : null;
 
   return (
     <div ref={ref} className="relative">
       <div
+        ref={inputRef}
         className="w-full flex items-center px-3 py-2 border border-gray-300 rounded-lg text-sm focus-within:ring-2 focus-within:ring-accent/50 focus-within:border-accent cursor-text"
         onClick={() => setOpen(true)}
       >
@@ -175,32 +254,7 @@ export function ComboBox({ options, value, onChange, placeholder = '選択また
         />
         <ChevronDown className={`w-4 h-4 text-gray-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </div>
-      {open && (
-        <div className="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
-          {filtered.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              className={`w-full text-left px-3 py-2 text-sm hover:bg-blue-50 transition-colors ${opt === value ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'}`}
-              onClick={() => { onChange(opt); setQuery(''); setOpen(false); }}
-            >
-              {opt}
-            </button>
-          ))}
-          {showNew && (
-            <button
-              type="button"
-              className="w-full text-left px-3 py-2 text-sm text-blue-600 font-medium hover:bg-blue-50 border-t border-gray-100"
-              onClick={() => { onChange(query); setQuery(''); setOpen(false); }}
-            >
-              + 「{query}」を新規追加
-            </button>
-          )}
-          {filtered.length === 0 && !showNew && (
-            <div className="px-3 py-2 text-sm text-gray-400">候補がありません</div>
-          )}
-        </div>
-      )}
+      {dropdown}
     </div>
   );
 }

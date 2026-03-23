@@ -44,7 +44,7 @@ export default function TaskModal({ isOpen, onClose, dealName, dealId, companyId
   };
 
   const handleSubmit = () => {
-    if (!taskName && !deadline) return false;
+    if (!taskName || !deadline) return false;
     const matchedDeal = DEALS.find(d => d.name === dealLink);
     const task = {
       id: Date.now(),

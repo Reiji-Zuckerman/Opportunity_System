@@ -33,6 +33,7 @@ const JOB_DESCRIPTION = `【業務内容】
 export default function JobDetail() {
   const { id } = useParams();
   const { JOBS, DEALS, DEAL_DETAILS } = useData();
+  const [showEditJob, setShowEditJob] = useState(false);
   const job = JOBS.find(j => j.id === Number(id));
 
   if (!job) {
@@ -44,7 +45,6 @@ export default function JobDetail() {
     );
   }
 
-  const [showEditJob, setShowEditJob] = useState(false);
   const deal = DEALS.find(d => d.id === job.dealId);
   const dealDetail = DEAL_DETAILS[job.dealId];
   const relatedJobs = JOBS.filter(j => j.dealId === job.dealId && j.id !== job.id);

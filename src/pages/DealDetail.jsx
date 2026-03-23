@@ -402,10 +402,10 @@ export default function DealDetail() {
       </div>
 
       {/* Modals */}
-      <AddMeetingModal isOpen={showMeeting} onClose={() => setShowMeeting(false)} dealName={dealName} dealId={Number(id)} meetingCount={detail.meetings.length} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
-      <BranchModal isOpen={showBranch} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />
-      <TaskModal isOpen={showTask} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />
-      <JobModal isOpen={showJob} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />
+      {showMeeting && <AddMeetingModal isOpen={true} onClose={() => setShowMeeting(false)} dealName={dealName} dealId={Number(id)} meetingCount={detail.meetings.length} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />}
+      {showBranch && <BranchModal isOpen={true} onClose={() => setShowBranch(false)} parentDeal={{ name: dealName, companyId: dealSummary?.companyId, company: detail.basicInfo.company }} dealId={Number(id)} />}
+      {showTask && <TaskModal isOpen={true} onClose={() => setShowTask(false)} dealName={dealName} dealId={Number(id)} companyId={dealSummary?.companyId} />}
+      {showJob && <JobModal isOpen={true} onClose={() => setShowJob(false)} dealName={dealName} dealId={Number(id)} companyName={detail.basicInfo.company} companyId={dealSummary?.companyId} dept={detail.basicInfo.businessDept} />}
       {showEditDeal && <EditDealModal isOpen={true} onClose={() => setShowEditDeal(false)} dealId={Number(id)} />}
       {editJobTarget && <EditJobModal isOpen={true} onClose={() => setEditJobTarget(null)} job={editJobTarget} />}
       <ConfirmDialog
