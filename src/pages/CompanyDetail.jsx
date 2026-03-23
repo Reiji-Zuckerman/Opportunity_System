@@ -453,7 +453,7 @@ export default function CompanyDetail() {
               </div>
             ) : (
               <div className="space-y-2">
-                {company.deals.map((deal) => (
+                {DEALS.filter(d => d.companyId === Number(id)).map((deal) => (
                   <div key={deal.id} className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-2">
                       <Link to={`/deals/${deal.id}`} className="text-sm font-medium text-blue-600 hover:underline">{deal.name}</Link>
@@ -466,7 +466,7 @@ export default function CompanyDetail() {
                     </div>
                   </div>
                 ))}
-                {company.deals.length === 0 && <p className="text-sm text-gray-400 text-center py-4">商談がありません</p>}
+                {DEALS.filter(d => d.companyId === Number(id)).length === 0 && <p className="text-sm text-gray-400 text-center py-4">商談がありません</p>}
               </div>
             )}
           </div>
