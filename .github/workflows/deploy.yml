@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/opportunity-system-mockup-w3SiR]
+    branches: [claude/opportunity-system-mockup-w3SiR, claude/fix-deal-tree-reload-CbMzs]
   workflow_dispatch:
 
 permissions:
