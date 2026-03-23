@@ -452,20 +452,41 @@ export default function CompanyDetail() {
                 <CompanyDealTrees companyId={id} />
               </div>
             ) : (
-              <div className="space-y-2">
-                {DEALS.filter(d => d.companyId === Number(id)).map((deal) => (
-                  <div key={deal.id} className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2">
-                      <Link to={`/deals/${deal.id}`} className="text-sm font-medium text-blue-600 hover:underline">{deal.name}</Link>
-                      <Badge label={deal.dept} />
-                      <Badge label={deal.status} />
+              <div className="space-y-3">
+                {DEALS.filter(d => d.companyId === Number(id)).map((deal) => {
+                  const detail = DEAL_DETAILS[deal.id];
+                  const ourPerson = detail?.basicInfo?.ourPerson || deal.assignee || '';
+                  const businessDept = detail?.basicInfo?.businessDept || deal.dept || '';
+                  const latestMeetings = (detail?.meetings || []).slice(-3);
+                  return (
+                    <div key={deal.id} className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-2">
+                          <Link to={`/deals/${deal.id}`} className="text-sm font-medium text-blue-600 hover:underline">{deal.name}</Link>
+                          <Badge label={deal.status} />
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-gray-400">
+                          {deal.remainingTasks > 0 && <span>残Task: {deal.remainingTasks}</span>}
+                          <span>{deal.lastMeeting}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
+                        {businessDept && <span className="bg-gray-100 px-2 py-0.5 rounded">{businessDept}</span>}
+                        {ourPerson && <span>{ourPerson}</span>}
+                      </div>
+                      {latestMeetings.length > 0 && (
+                        <div className="space-y-1">
+                          {latestMeetings.map((m, i) => (
+                            <p key={i} className="text-xs text-gray-600 line-clamp-1">
+                              <span className="text-gray-400 mr-1">{m.date || ''}</span>
+                              {m.content || ''}
+                            </p>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-gray-400">
-                      {deal.remainingTasks > 0 && <span>残Task: {deal.remainingTasks}</span>}
-                      <span>{deal.lastMeeting}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
                 {DEALS.filter(d => d.companyId === Number(id)).length === 0 && <p className="text-sm text-gray-400 text-center py-4">商談がありません</p>}
               </div>
             )}
